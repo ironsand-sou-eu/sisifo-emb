@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Core;
+namespace App\Models\Access;
 
 use App\Models\Genero;
 use App\Models\Permissao;
@@ -53,5 +53,9 @@ class User extends Authenticatable
 
     public function permissoes() {
         return $this->hasMany(Permissao::class);
+    }
+
+    public function camposAlterados() {
+        return $this->hasMany(LogAlteracao::class, "alterado_por");
     }
 }

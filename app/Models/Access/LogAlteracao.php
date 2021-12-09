@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Access;
 
+use App\Models\BizRules\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +14,17 @@ class LogAlteracao extends Model
     protected $primarykey = "id";
     protected $fillable = [
         "campo_id",
-        "data_alteracao",
         "valor_anterior",
-        "valor_atual"
+        "valor_atual",
+        "data_alteracao",
+        "alterado_por"
     ];
 
     public function campo() {
         return $this->belongsTo(Campo::class);
+    }
+
+    public function alteradoPor() {
+        return $this->belongsTo(User::class, "alterado_por");
     }
 }

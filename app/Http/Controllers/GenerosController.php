@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BizRules\EspaiderUf;
 use Illuminate\Http\Request;
 
-class EspaiderUfsController extends Controller
+class GenerosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class EspaiderUfsController extends Controller
      */
     public function index()
     {
-        $fullList = EspaiderUf::all();
-        return response()->json(["fullList" => $fullList]);
+        //
     }
 
     /**

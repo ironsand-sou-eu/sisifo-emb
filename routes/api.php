@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\EspaiderUfsController;
-use App\Models\Core\EspaiderUf;
+use App\Models\BizRules\EspaiderUf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
