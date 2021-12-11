@@ -19,8 +19,4 @@ class EseloComarca extends Model
     public function eseloJuizos() {
         return $this->hasMany(EseloJuizo::class);
     }
-
-    public function espaiderComarca() {
-        return $this->belongsTo(EspaiderComarca::class);
-    }
 }

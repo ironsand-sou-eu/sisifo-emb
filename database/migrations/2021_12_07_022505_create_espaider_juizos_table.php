@@ -17,7 +17,7 @@ class CreateEspaiderJuizosTable extends Migration
             $table->id();
             $table->string("nome_juizo_espaider", 120);
             $table->string("redacao_cabecalho_juizo", 150);
-            $table->string("redacao_resumida_juizo", 50);
+            $table->string("redacao_resumida_juizo", 60);
             $table->unsignedBigInteger("espaider_comarca_id");
             $table->unsignedBigInteger("espaider_orgao_id");
             $table->timestamps();

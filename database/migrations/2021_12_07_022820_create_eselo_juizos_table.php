@@ -15,7 +15,7 @@ class CreateEseloJuizosTable extends Migration
     {
         Schema::create('eselo_juizos', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_juizo_eselo", 120);
+            $table->string("nome_juizo_eselo", 150);
             $table->unsignedBigInteger("eselo_comarca_id");
             $table->unsignedBigInteger("espaider_juizo_id");
             $table->timestamps();

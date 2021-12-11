@@ -23,8 +23,4 @@ class EspaiderComarca extends Model
     public function espaiderJuizos() {
         return $this->hasMany(EspaiderJuizo::class);
     }
-
-    public function eseloComarcas() {
-        return $this->hasMany(EseloComarca::class);
-    }
 }

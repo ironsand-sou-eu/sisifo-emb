@@ -16,10 +16,7 @@ class CreateEseloComarcasTable extends Migration
         Schema::create('eselo_comarcas', function (Blueprint $table) {
             $table->id();
             $table->string("nome_comarca_eselo", 40);
-            $table->unsignedBigInteger("espaider_comarca_id");
             $table->timestamps();
-
-            $table->foreign("espaider_comarca_id")->references("id")->on("espaider_comarcas");
         });
     }
 
