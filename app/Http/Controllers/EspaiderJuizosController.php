@@ -14,7 +14,7 @@ class EspaiderJuizosController extends Controller
      */
     public function index()
     {
-        $fullList = EspaiderJuizo::all();
+        $fullList = EspaiderJuizo::with(["espaiderComarca", "espaiderOrgao"])->get();
         return response()->json(["fullList" => $fullList]);
     }
 

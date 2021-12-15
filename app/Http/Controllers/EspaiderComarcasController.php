@@ -14,7 +14,7 @@ class EspaiderComarcasController extends Controller
      */
     public function index()
     {
-        $fullList = EspaiderComarca::all();
+        $fullList = EspaiderComarca::with(["espaiderUf"])->get();
         return response()->json(["fullList" => $fullList]);
     }
 

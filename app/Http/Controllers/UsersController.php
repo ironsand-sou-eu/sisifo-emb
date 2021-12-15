@@ -14,7 +14,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $fullList = User::all();
+        $fullList = User::with(["genero_declarado"])->get();
         return response()->json(["fullList" => $fullList]);
     }
 

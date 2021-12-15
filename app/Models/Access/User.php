@@ -2,8 +2,8 @@
 
 namespace App\Models\Access;
 
-use App\Models\Genero;
-use App\Models\Permissao;
+use App\Models\Access\Genero;
+use App\Models\Access\Permissao;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

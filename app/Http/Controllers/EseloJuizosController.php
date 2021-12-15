@@ -14,7 +14,7 @@ class EseloJuizosController extends Controller
      */
     public function index()
     {
-        $fullList = EseloJuizo::all();
+        $fullList = EseloJuizo::with(["eseloComarca", "espaiderJuizo"])->get();
         return response()->json(["fullList" => $fullList]);
     }
 

@@ -14,7 +14,7 @@ class SistemasJudJuizosController extends Controller
      */
     public function index()
     {
-        $fullList = SistemasJudJuizo::all();
+        $fullList = SistemasJudJuizo::with(["espaiderJuizo"])->get();
         return response()->json(["fullList" => $fullList]);
     }
 

@@ -17,7 +17,7 @@ class EspaiderComarca extends Model
     ];
 
     public function espaiderUf() {
-        return $this->belongsTo(EspaiderUf::class);
+        return $this->belongsTo(EspaiderUf::class, "espaider_uf_id", "sigla");
     }
 
     public function espaiderJuizos() {
