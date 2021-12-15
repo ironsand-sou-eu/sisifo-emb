@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Http\Controllers\EspaiderJuizosController;
+use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,19 +16,46 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            EspaiderOrgaosSeeder::class,
-            EspaiderUfsSeeder::class,
-            EspaiderComarcasSeeder::class,
-            EspaiderJuizosSeeder::class,
-            EseloComarcasSeeder::class,
-            EseloJuizosSeeder::class,
-            SistemasJudJuizosSeeder::class,
-            GenerosSeeder::class,
-            SomeUsersSeeder::class,
-            TabelasSeeder::class,
-            TiposPermissoesSeeder::class
-        ]);
+        $nonRelationalTables = [
+            "espaider_orgaos",
+            "espaider_ufs",
+            "espaider_comarcas",
+            "espaider_juizos",
+            "eselo_comarcas",
+            "eselo_juizos",
+            "sistemas_jud_juizos",
+            "generos",
+            "users",
+            "tabelas",
+            "tipos_permissoes"
+        ];
+
+        foreach ($nonRelationalTables as $tableName) {
+            $this->seedTable($tableName);
+        }
+
+        // $this->call([]);
         // \App\Models\User::factory(10)->create();
+    }
+
+    protected function seedTable($snakeCaseTableName) {
+        $seederName = Str::studly($snakeCaseTableName) . "Seeder";
+        $path = database_path("initial-data-seed" . DIRECTORY_SEPARATOR . $seederName . ".json");
+        $dataArray = json_decode(file_get_contents($path), true);
+
+        if (!empty($dataArray["relationalFields"])){
+            foreach ($dataArray[$seederName] as &$entry) {
+                foreach ($dataArray["relationalFields"] as $relationalField) {
+                    extract($relationalField);
+                    $entry[$originField] = DB::table($relatedTable)->where($relatedSearchingField, $entry[$originField])->value($relatedIdField);
+                }
+            }
+        }
+
+        try {
+            DB::table($snakeCaseTableName)->insert($dataArray[$seederName]);
+        } catch (Exception $e) {
+            return $e;
+        };
     }
 }

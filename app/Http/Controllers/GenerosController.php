@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\Genero;
 use Illuminate\Http\Request;
 
 class GenerosController extends Controller
@@ -13,7 +14,8 @@ class GenerosController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = Genero::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

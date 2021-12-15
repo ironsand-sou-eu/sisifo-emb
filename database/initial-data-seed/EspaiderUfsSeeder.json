@@ -1,0 +1,33 @@
+{
+    "relationalFields": {},
+ 
+    "EspaiderUfsSeeder": {
+    "0": { "sigla": "AC", "nome_uf_espaider": "Acre" },
+    "1": { "sigla": "AL", "nome_uf_espaider": "Alagoas" },
+    "2": { "sigla": "AM", "nome_uf_espaider": "Amazonas" },
+    "3": { "sigla": "AP", "nome_uf_espaider": "Amapá" },
+    "4": { "sigla": "BA", "nome_uf_espaider": "Bahia" },
+    "5": { "sigla": "CE", "nome_uf_espaider": "Ceará" },
+    "6": { "sigla": "DF", "nome_uf_espaider": "Distrito Federal" },
+    "7": { "sigla": "ES", "nome_uf_espaider": "Espírito Santo" },
+    "8": { "sigla": "GO", "nome_uf_espaider": "Goiás" },
+    "9": { "sigla": "MA", "nome_uf_espaider": "Maranhão" },
+    "10": { "sigla": "MG", "nome_uf_espaider": "Minhas Gerais" },
+    "11": { "sigla": "MS", "nome_uf_espaider": "Mato Grosso do Sul" },
+    "12": { "sigla": "MT", "nome_uf_espaider": "Mato Grosso" },
+    "13": { "sigla": "PA", "nome_uf_espaider": "Pará" },
+    "14": { "sigla": "PB", "nome_uf_espaider": "Paraíba" },
+    "15": { "sigla": "PE", "nome_uf_espaider": "Pernambuco" },
+    "16": { "sigla": "PI", "nome_uf_espaider": "Piauí" },
+    "17": { "sigla": "PR", "nome_uf_espaider": "Paraná" },
+    "18": { "sigla": "RJ", "nome_uf_espaider": "Rio de Janeiro" },
+    "19": { "sigla": "RN", "nome_uf_espaider": "Rio Grande do Norte" },
+    "20": { "sigla": "RO", "nome_uf_espaider": "Rondônia" },
+    "21": { "sigla": "RR", "nome_uf_espaider": "Roraima" },
+    "22": { "sigla": "RS", "nome_uf_espaider": "Rio Grande do Sul" },
+    "23": { "sigla": "SC", "nome_uf_espaider": "Santa Catarina" },
+    "24": { "sigla": "SE", "nome_uf_espaider": "Sergipe" },
+    "25": { "sigla": "SP", "nome_uf_espaider": "São Paulo" },
+    "26": { "sigla": "TO", "nome_uf_espaider": "Tocantins" }
+}
+}

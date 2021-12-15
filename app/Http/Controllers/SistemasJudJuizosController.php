@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\SistemasJudJuizo;
 use Illuminate\Http\Request;
 
 class SistemasJudJuizosController extends Controller
@@ -13,7 +14,8 @@ class SistemasJudJuizosController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = SistemasJudJuizo::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

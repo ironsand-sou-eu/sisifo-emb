@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\EspaiderJuizo;
 use Illuminate\Http\Request;
 
 class EspaiderJuizosController extends Controller
@@ -13,7 +14,8 @@ class EspaiderJuizosController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = EspaiderJuizo::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

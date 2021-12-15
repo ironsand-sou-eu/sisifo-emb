@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\Permissao;
 use Illuminate\Http\Request;
 
 class PermissoesController extends Controller
@@ -13,7 +14,8 @@ class PermissoesController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = Permissao::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

@@ -1,0 +1,30 @@
+{
+"relationalFields": {
+    "0": {
+        "originField": "genero_declarado_id",
+        "relatedTable": "generos",
+        "relatedIdField": "id",
+        "relatedSearchingField": "genero"    
+    }
+},
+ 
+"UsersSeeder": {
+    "0": {
+        "nome_completo": "César Braga Lins Bamberg Rodriguez",
+        "nome_escolhido": "Don César de Toledo",
+        "genero_declarado_id": "Masculino",
+        "email": "cesar.rodriguez@embasa.ba.gov.br",
+        "password": "123",
+        "ativo": true
+    },
+    
+    "1": {
+        "nome_completo": "admin",
+        "nome_escolhido": "FTI",
+        "genero_declarado_id": "Masculino",
+        "email": "fti@embasa.ba.gov.br",
+        "password": "123",
+        "ativo": true
+    }
+}
+}

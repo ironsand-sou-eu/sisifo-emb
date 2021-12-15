@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\EseloComarca;
 use Illuminate\Http\Request;
 
 class EseloComarcasController extends Controller
@@ -13,7 +14,8 @@ class EseloComarcasController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = EseloComarca::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

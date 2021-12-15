@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\TipoPermissao;
 use Illuminate\Http\Request;
 
 class TiposPermissoesController extends Controller
@@ -13,7 +14,8 @@ class TiposPermissoesController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = TipoPermissao::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

@@ -1,0 +1,11 @@
+{
+    "relationalFields": {},
+ 
+    "TiposPermissoesSeeder": {
+    "0": { "nome_permissao": "criação" },
+    "1": { "nome_permissao": "leitura" },
+    "2": { "nome_permissao": "edição" },
+    "3": { "nome_permissao": "exclusão" },
+    "4": { "nome_permissao": "catchanga" }
+}
+}

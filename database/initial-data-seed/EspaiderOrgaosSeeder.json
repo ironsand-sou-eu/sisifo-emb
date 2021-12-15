@@ -1,0 +1,36 @@
+{
+    "relationalFields": {},
+ 
+    "EspaiderOrgaosSeeder": {
+    "0": { "sigla_orgao": "TJAC", "nome_orgao_espaider": "TJ/AC" }, 
+    "1": { "sigla_orgao": "TJAL", "nome_orgao_espaider": "TJ/AL" }, 
+    "2": { "sigla_orgao": "TJAM", "nome_orgao_espaider": "TJ/AM" }, 
+    "3": { "sigla_orgao": "TJAP", "nome_orgao_espaider": "TJ/AP" }, 
+    "4": { "sigla_orgao": "TJBA Tribunal", "nome_orgao_espaider": "TJ/BA - Tribunal" }, 
+    "5": { "sigla_orgao": "TJBA Fazenda Pública", "nome_orgao_espaider": "TJ/BA - Varas da Fazenda Pública" }, 
+    "6": { "sigla_orgao": "TJBA Varas", "nome_orgao_espaider": "TJ/BA - Varas de Consumo, Cíveis, Comerciais, Criminais e varas únicas" }, 
+    "7": { "sigla_orgao": "TJBA Juizados", "nome_orgao_espaider": "TJ/BA - Varas dos Sistemas dos Juizados Especiais" }, 
+    "8": { "sigla_orgao": "TJCE", "nome_orgao_espaider": "TJ/CE" }, 
+    "9": { "sigla_orgao": "TJDFT", "nome_orgao_espaider": "TJ/DFT" }, 
+    "10": { "sigla_orgao": "TJES", "nome_orgao_espaider": "TJ/ES" }, 
+    "11": { "sigla_orgao": "TJGO", "nome_orgao_espaider": "TJ/GO" }, 
+    "12": { "sigla_orgao": "TJMA", "nome_orgao_espaider": "TJ/MA" }, 
+    "13": { "sigla_orgao": "TJMG", "nome_orgao_espaider": "TJ/MG" }, 
+    "14": { "sigla_orgao": "TJMS", "nome_orgao_espaider": "TJ/MS" }, 
+    "15": { "sigla_orgao": "TJMT", "nome_orgao_espaider": "TJ/MT" }, 
+    "16": { "sigla_orgao": "TJPA", "nome_orgao_espaider": "TJ/PA" }, 
+    "17": { "sigla_orgao": "TJPB", "nome_orgao_espaider": "TJ/PB" }, 
+    "18": { "sigla_orgao": "TJPE", "nome_orgao_espaider": "TJ/PE" }, 
+    "19": { "sigla_orgao": "TJPI", "nome_orgao_espaider": "TJ/PI" }, 
+    "20": { "sigla_orgao": "TJPR", "nome_orgao_espaider": "TJ/PR" }, 
+    "21": { "sigla_orgao": "TJRJ", "nome_orgao_espaider": "TJ/RJ" }, 
+    "22": { "sigla_orgao": "TJRN", "nome_orgao_espaider": "TJ/RN" }, 
+    "23": { "sigla_orgao": "TJRO", "nome_orgao_espaider": "TJ/RO" }, 
+    "24": { "sigla_orgao": "TJRR", "nome_orgao_espaider": "TJ/RR" }, 
+    "25": { "sigla_orgao": "TJRS", "nome_orgao_espaider": "TJ/RS" }, 
+    "26": { "sigla_orgao": "TJSC", "nome_orgao_espaider": "TJ/SC" }, 
+    "27": { "sigla_orgao": "TJSE", "nome_orgao_espaider": "TJ/SE" }, 
+    "28": { "sigla_orgao": "TJSP", "nome_orgao_espaider": "TJ/SP" }, 
+    "29": { "sigla_orgao": "TJTO", "nome_orgao_espaider": "TJ/TO" }
+}  
+}

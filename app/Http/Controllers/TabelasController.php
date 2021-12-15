@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\Tabela;
 use Illuminate\Http\Request;
 
 class TabelasController extends Controller
@@ -13,7 +14,8 @@ class TabelasController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = Tabela::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

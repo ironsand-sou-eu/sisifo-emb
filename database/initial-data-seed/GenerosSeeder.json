@@ -1,0 +1,11 @@
+{
+    "relationalFields": {},
+ 
+    "GenerosSeeder": {
+    "0": { "genero": "Feminino" },
+    "1": { "genero": "Masculino" },
+    "2": { "genero": "Neutro" },
+    "3": { "genero": "Não binário" },
+    "4": { "genero": "Outros" }
+}
+}

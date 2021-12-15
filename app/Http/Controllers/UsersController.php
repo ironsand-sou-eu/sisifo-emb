@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\User;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -13,7 +14,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = User::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

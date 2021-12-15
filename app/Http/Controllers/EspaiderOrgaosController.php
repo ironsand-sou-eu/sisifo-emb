@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\EspaiderOrgao;
 use Illuminate\Http\Request;
 
 class EspaiderOrgaosController extends Controller
@@ -13,7 +14,8 @@ class EspaiderOrgaosController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = EspaiderOrgao::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

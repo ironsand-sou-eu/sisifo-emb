@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\LogAlteracao;
 use Illuminate\Http\Request;
 
 class LogAlteracoesController extends Controller
@@ -13,7 +14,8 @@ class LogAlteracoesController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = LogAlteracao::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

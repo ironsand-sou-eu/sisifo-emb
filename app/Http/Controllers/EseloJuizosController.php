@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\EseloJuizo;
 use Illuminate\Http\Request;
 
 class EseloJuizosController extends Controller
@@ -13,7 +14,8 @@ class EseloJuizosController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = EseloJuizo::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

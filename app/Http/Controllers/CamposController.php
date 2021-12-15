@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\Campo;
 use Illuminate\Http\Request;
 
 class CamposController extends Controller
@@ -13,7 +14,8 @@ class CamposController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = Campo::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**

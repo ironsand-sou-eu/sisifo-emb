@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\EspaiderComarca;
 use Illuminate\Http\Request;
 
 class EspaiderComarcasController extends Controller
@@ -13,7 +14,8 @@ class EspaiderComarcasController extends Controller
      */
     public function index()
     {
-        //
+        $fullList = EspaiderComarca::all();
+        return response()->json(["fullList" => $fullList]);
     }
 
     /**
