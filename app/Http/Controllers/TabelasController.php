@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Access\Tabela;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TabelasController extends Controller
 {
@@ -26,7 +27,7 @@ class TabelasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, Tabela::class);
     }
 
     /**

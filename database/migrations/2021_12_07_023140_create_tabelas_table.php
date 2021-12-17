@@ -15,7 +15,7 @@ class CreateTabelasTable extends Migration
     {
         Schema::create('tabelas', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_tabela", 60);
+            $table->string("nome_tabela", 60)->unique();
             $table->timestamps();
         });
     }

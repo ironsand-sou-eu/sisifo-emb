@@ -23,4 +23,9 @@ class EspaiderComarca extends Model
     public function espaiderJuizos() {
         return $this->hasMany(EspaiderJuizo::class);
     }
+
+    public static $validationRules = [
+        "nome_comarca_espaider" => ["required", "min:2", "max:40"],
+        "espaider_uf_id" => ["required", "size:2"]
+    ];
 }

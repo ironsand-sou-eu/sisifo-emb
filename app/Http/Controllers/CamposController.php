@@ -26,7 +26,7 @@ class CamposController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, Campo::class);
     }
 
     /**

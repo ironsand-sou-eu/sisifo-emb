@@ -26,7 +26,7 @@ class EseloJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, EseloJuizo::class);
     }
 
     /**

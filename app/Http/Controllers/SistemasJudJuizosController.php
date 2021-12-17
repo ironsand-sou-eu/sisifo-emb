@@ -26,7 +26,7 @@ class SistemasJudJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, SistemasJudJuizo::class);
     }
 
     /**

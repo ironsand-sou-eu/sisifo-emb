@@ -26,7 +26,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, User::class);
     }
 
     /**

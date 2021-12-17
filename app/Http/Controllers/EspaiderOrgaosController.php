@@ -26,7 +26,7 @@ class EspaiderOrgaosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, EspaiderOrgao::class);
     }
 
     /**

@@ -22,4 +22,8 @@ class Tabela extends Model
     public function campos() {
         return $this->hasMany(Campo::class);
     }
+
+    public static $validationRules = [
+        "nome_tabela" => ["required", "max:60", "unique:tabelas"]
+    ];
 }

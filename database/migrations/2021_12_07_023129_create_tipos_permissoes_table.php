@@ -15,7 +15,7 @@ class CreateTiposPermissoesTable extends Migration
     {
         Schema::create('tipos_permissoes', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_permissao", 10);
+            $table->string("nome_permissao", 10)->unique();
             $table->timestamps();
         });
     }

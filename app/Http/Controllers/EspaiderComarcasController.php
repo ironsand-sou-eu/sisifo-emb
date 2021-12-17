@@ -26,7 +26,7 @@ class EspaiderComarcasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, EspaiderComarca::class);
     }
 
     /**

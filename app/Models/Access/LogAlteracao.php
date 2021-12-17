@@ -27,4 +27,12 @@ class LogAlteracao extends Model
     public function alteradoPor() {
         return $this->belongsTo(User::class, "alterado_por");
     }
+
+    public static $validationRules = [
+        "campo_id" => ["required", "numeric"],
+        "valor_anterior" => ["required", "max:150"],
+        "valor_atual" => ["required", "max:150"],
+        "data_alteracao" => ["required", "date"],
+        "alterado_por" => ["required", "numeric"]
+    ];
 }

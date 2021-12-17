@@ -26,7 +26,7 @@ class EseloComarcasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, EseloComarca::class);
     }
 
     /**

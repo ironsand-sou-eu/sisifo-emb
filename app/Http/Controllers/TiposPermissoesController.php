@@ -26,7 +26,7 @@ class TiposPermissoesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, TipoPermissao::class);
     }
 
     /**

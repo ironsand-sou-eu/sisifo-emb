@@ -49,3 +49,18 @@ Route::get("sistemas-jud-juizos", [SistemasJudJuizosController::class, "index"])
 Route::get("tabelas", [TabelasController::class, "index"]);
 Route::get("tipos-permissoes", [TiposPermissoesController::class, "index"]);
 Route::get("users", [UsersController::class, "index"]);
+
+Route::post("campos", [CamposController::class, "store"]);
+Route::post("eselo-comarcas", [EseloComarcasController::class, "store"]);
+Route::post("eselo-juizos", [EseloJuizosController::class, "store"]);
+Route::post("espaider-comarcas", [EspaiderComarcasController::class, "store"]);
+Route::post("espaider-juizos", [EspaiderJuizosController::class, "store"]);
+Route::post("espaider-orgaos", [EspaiderOrgaosController::class, "store"]);
+Route::post("espaider-ufs", [EspaiderUfsController::class, "store"]);
+Route::post("generos", [GenerosController::class, "store"]);
+Route::post("log-alteracoes", [LogAlteracoesController::class, "store"]);
+Route::post("permissoes", [PermissoesController::class, "store"]);
+Route::post("sistemas-jud-juizos", [SistemasJudJuizosController::class, "store"]);
+Route::post("tabelas", [TabelasController::class, "store"]);
+Route::post("tipos-permissoes", [TiposPermissoesController::class, "store"]);
+Route::post("users", [UsersController::class, "store"]);

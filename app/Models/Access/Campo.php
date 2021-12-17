@@ -23,4 +23,9 @@ class Campo extends Model
     public function logsAlteracoes() {
         return $this->hasMany(LogAlteracao::class);
     }
+
+    public static $validationRules = [
+        "nome_campo" => ["required", "max:191"],
+        "tabela_id" => ["required", "numeric"]
+    ];
 }

@@ -26,7 +26,7 @@ class EspaiderJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->validateAndStore($request, EspaiderJuizo::class);
     }
 
     /**

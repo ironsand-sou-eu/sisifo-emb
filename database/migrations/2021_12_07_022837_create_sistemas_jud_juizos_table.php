@@ -15,7 +15,7 @@ class CreateSistemasJudJuizosTable extends Migration
     {
         Schema::create('sistemas_jud_juizos', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_juizo_sistemas_jud", 120);
+            $table->string("nome_juizo_sistemas_jud", 120)->unique();
             $table->unsignedBigInteger("espaider_juizo_id");
             $table->timestamps();
 

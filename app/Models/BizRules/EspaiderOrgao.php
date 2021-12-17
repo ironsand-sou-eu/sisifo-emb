@@ -19,4 +19,9 @@ class EspaiderOrgao extends Model
     public function espaiderJuizos() {
         return $this->hasMany(EspaiderJuizo::class);
     }
+
+    public static $validationRules = [
+        "nome_orgao_espaider" => ["required", "min:3", "max:90", "unique:espaider_orgaos"],
+        "sigla_orgao" => ["required", "min:2", "max:25"],
+    ];
 }
