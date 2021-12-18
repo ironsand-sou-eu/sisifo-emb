@@ -18,8 +18,4 @@ class TipoPermissao extends Model
     public function permissoes() {
         return $this->hasMany(Permissao::class);
     }
-
-    public static $validationRules = [
-        "nome_permissao" => ["required", "max:10", "unique:tipos_permissoes"],
-    ];
 }

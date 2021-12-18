@@ -19,9 +19,4 @@ class SistemasJudJuizo extends Model
     public function espaiderJuizo() {
         return $this->belongsTo(EspaiderJuizo::class);
     }
-
-    public static $validationRules = [
-        "nome_juizo_sistemas_jud" => ["required", "max:120", "unique:sistemas_jud_juizos"],
-        "espaider_juizo_id" => ["required", "numeric"]
-    ];
 }

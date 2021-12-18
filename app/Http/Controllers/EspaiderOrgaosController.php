@@ -26,7 +26,12 @@ class EspaiderOrgaosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EspaiderOrgao::class);
+        $validationRules = [
+            "nome_orgao_espaider" => ["required", "min:3", "max:90", "unique:espaider_orgaos"],
+            "sigla_orgao" => ["required", "min:2", "max:25"],
+        ];
+        
+        return $this->validateAndStore($request, EspaiderOrgao::class, $validationRules);
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Permissao;
+use App\Models\Access\Tabela;
+use App\Models\Access\User;
 use Illuminate\Http\Request;
 
 class PermissoesController extends Controller
@@ -26,7 +28,22 @@ class PermissoesController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, Permissao::class);
+        $user = User::find($request->input("user_id"));
+        $validationRules = [
+            "user_id" => ["required", "numeric"],
+            "tipo_permissao_id" => ["required", "numeric"],
+            "tabela_id" => [
+                "required", "numeric",
+                function($attribute, $value, $fail) use ($user) {
+                    if(Permissao::where($attribute, $value)->where('user_id', $user->id)->exists()) {
+                        $nomeTabela = Tabela::find($value)->value("nome_tabela");
+                        $fail("O usuário {$user->nome_escolhido} já tem permissões definidas para a tabela {$nomeTabela}.");
+                    }
+                }
+            ]
+        ];
+
+        return $this->validateAndStore($request, Permissao::class, $validationRules);
     }
 
     /**

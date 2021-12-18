@@ -24,10 +24,4 @@ class EseloJuizo extends Model
     public function espaiderJuizo() {
         return $this->belongsTo(EspaiderJuizo::class);
     }
-
-    public static $validationRules = [
-        "nome_juizo_eselo" => ["required", "min:2", "max:150", "unique:eselo_juizos"],
-        "eselo_comarca_id" => ["required", "numeric"],
-        "espaider_juizo_id" => ["required", "numeric"]
-    ];
 }

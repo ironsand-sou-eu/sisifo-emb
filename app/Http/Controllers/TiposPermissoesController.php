@@ -26,7 +26,11 @@ class TiposPermissoesController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, TipoPermissao::class);
+        $validationRules = [
+            "nome_permissao" => ["required", "max:10", "unique:tipos_permissoes"],
+        ];
+
+        return $this->validateAndStore($request, TipoPermissao::class, $validationRules);
     }
 
     /**

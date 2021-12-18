@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Campo;
+use App\Models\Access\Tabela;
 use Illuminate\Http\Request;
 
 class CamposController extends Controller
@@ -26,7 +27,21 @@ class CamposController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, Campo::class);
+        $nomeCampo = $request->input("nome_campo");
+        $validationRules = [
+            "nome_campo" => ["required", "max:191"],
+            "tabela_id" => [
+                "required", "numeric",
+                function($attribute, $value, $fail) use ($nomeCampo) {
+                    if(Campo::where($attribute, $value)->where('nome_campo', $nomeCampo)->exists()) {
+                        $nomeTabela = Tabela::find($value)->value("nome_tabela");
+                        $fail("Já existe um campo chamado {$nomeCampo} na tabela {$nomeTabela}.");
+                    }
+                }
+            ]
+        ];
+
+        return $this->validateAndStore($request, Campo::class, $validationRules);
     }
 
     /**

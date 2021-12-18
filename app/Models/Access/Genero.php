@@ -19,8 +19,4 @@ class Genero extends Model
     public function users() {
         return $this->hasMany(User::class, "genero_declarado_id");
     }
-
-    public static $validationRules = [
-        "genero" => ["required", "max:20", "unique:generos"],
-    ];
 }

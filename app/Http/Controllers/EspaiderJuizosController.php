@@ -26,7 +26,15 @@ class EspaiderJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EspaiderJuizo::class);
+        $validationRules = [
+            "nome_juizo_espaider" => ["required", "min:5", "max:120", "unique:espaider_juizos"],
+            "redacao_cabecalho_juizo" => ["required", "max:150"],
+            "redacao_resumida_juizo" => ["required", "max:60"],
+            "espaider_comarca_id" => ["required", "numeric"],
+            "espaider_orgao_id" => ["required", "numeric"]
+        ];
+        
+        return $this->validateAndStore($request, EspaiderJuizo::class, $validationRules);
     }
 
     /**

@@ -26,7 +26,18 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, User::class);
+        $validationRules = [
+            "nome_completo" => ["required", "min:5", "max:100"],
+            "nome_escolhido" => ["nullable", "min:2", "max:50"],
+            "genero_declarado_id" => ["required", "numeric"],
+            "email" => ["required", "email", "unique:users"],
+            "email_verified_at" => ["nullable", "date"],
+            "password" => ["required"],
+            "remember_token" => ["nullable", "max:100"],
+            "ativo" => ["required", "boolean"]
+        ];
+        
+        return $this->validateAndStore($request, User::class, $validationRules);
     }
 
     /**

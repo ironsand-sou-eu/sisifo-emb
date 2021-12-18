@@ -26,7 +26,13 @@ class EseloJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EseloJuizo::class);
+    $validationRules = [
+        "nome_juizo_eselo" => ["required", "min:2", "max:150", "unique:eselo_juizos"],
+        "eselo_comarca_id" => ["required", "numeric"],
+        "espaider_juizo_id" => ["required", "numeric"]
+    ];
+
+    return $this->validateAndStore($request, EseloJuizo::class, $validationRules);
     }
 
     /**

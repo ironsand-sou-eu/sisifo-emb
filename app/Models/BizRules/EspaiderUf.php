@@ -21,9 +21,4 @@ class EspaiderUf extends Model
     public function espaiderComarcas() {
         return $this->hasMany(EspaiderComarca::class);
     }
-
-    public static $validationRules = [
-        "nome_uf_espaider" => ["required", "min:4", "max:25", "unique:espaider_ufs"],
-        "sigla" => ["required", "regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
-    ];
 }

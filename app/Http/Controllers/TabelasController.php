@@ -27,7 +27,11 @@ class TabelasController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, Tabela::class);
+        $validationRules = [
+            "nome_tabela" => ["required", "max:60", "unique:tabelas"]
+        ];
+    
+        return $this->validateAndStore($request, Tabela::class, $validationRules);
     }
 
     /**

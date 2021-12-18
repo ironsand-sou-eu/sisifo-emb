@@ -26,7 +26,20 @@ class EspaiderComarcasController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EspaiderComarca::class);
+        $nomeComarca = $request->input("nome_comarca_espaider");
+        $validationRules = [
+            "nome_comarca_espaider" => ["required", "min:2", "max:40"],
+            "espaider_uf_id" => [
+                "required", "size:2",
+                function($attribute, $value, $fail) use ($nomeComarca) {
+                    if(EspaiderComarca::where($attribute, $value)->where('nome_comarca_espaider', $nomeComarca)->exists()) {
+                        $fail("Já existe uma comarca chamada {$nomeComarca} no estado {$value}.");
+                    }
+                }
+            ]
+        ];
+    
+        return $this->validateAndStore($request, EspaiderComarca::class, $validationRules);
     }
 
     /**

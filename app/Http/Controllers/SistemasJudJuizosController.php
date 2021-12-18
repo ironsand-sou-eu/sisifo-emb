@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BizRules\EspaiderJuizo;
 use App\Models\BizRules\SistemasJudJuizo;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,12 @@ class SistemasJudJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, SistemasJudJuizo::class);
+        $validationRules = [
+            "nome_juizo_sistemas_jud" => ["required", "max:120", "unique:sistemas_jud_juizos"],
+            "espaider_juizo_id" => ["required", "numeric"]
+        ];
+        
+        return $this->validateAndStore($request, SistemasJudJuizo::class, $validationRules);
     }
 
     /**

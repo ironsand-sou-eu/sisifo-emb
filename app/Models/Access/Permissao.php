@@ -29,10 +29,4 @@ class Permissao extends Model
     public function tipoPermissao() {
         return $this->belongsTo(TipoPermissao::class);
     }
-
-    public static $validationRules = [
-        "user_id" => ["required", "numeric"],
-        "tabela_id" => ["required", "numeric"],
-        "tipo_permissao_id" => ["required", "numeric"]
-    ];
 }

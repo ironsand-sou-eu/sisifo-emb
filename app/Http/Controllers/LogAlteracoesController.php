@@ -26,7 +26,15 @@ class LogAlteracoesController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, LogAlteracao::class);
+        $validationRules = [
+            "campo_id" => ["required", "numeric"],
+            "valor_anterior" => ["required", "max:150"],
+            "valor_atual" => ["required", "max:150"],
+            "data_alteracao" => ["required", "date"],
+            "alterado_por" => ["required", "numeric"]
+        ];
+
+        return $this->validateAndStore($request, LogAlteracao::class, $validationRules);
     }
 
     /**

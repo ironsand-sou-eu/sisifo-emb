@@ -26,7 +26,11 @@ class EseloComarcasController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EseloComarca::class);
+        $validationRules = [
+            "nome_comarca_eselo" => ["required", "min:2", "max:40", "unique:eselo_comarcas"]
+        ];
+    
+        return $this->validateAndStore($request, EseloComarca::class, $validationRules);
     }
 
     /**

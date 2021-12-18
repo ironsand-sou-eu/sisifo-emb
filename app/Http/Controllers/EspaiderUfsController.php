@@ -26,7 +26,12 @@ class EspaiderUfsController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EspaiderUf::class);
+        $validationRules = [
+            "nome_uf_espaider" => ["required", "min:4", "max:25", "unique:espaider_ufs"],
+            "sigla" => ["required", "regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
+        ];
+    
+        return $this->validateAndStore($request, EspaiderUf::class, $validationRules);
     }
 
     /**

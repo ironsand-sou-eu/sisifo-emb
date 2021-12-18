@@ -26,7 +26,10 @@ class GenerosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, Genero::class);
+        $validationRules = [
+            "genero" => ["required", "max:20", "unique:generos"],
+        ];    
+        return $this->validateAndStore($request, Genero::class, $validationRules);
     }
 
     /**

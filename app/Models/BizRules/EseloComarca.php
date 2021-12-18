@@ -18,8 +18,4 @@ class EseloComarca extends Model
     public function eseloJuizos() {
         return $this->hasMany(EseloJuizo::class);
     }
-
-    public static $validationRules = [
-        "nome_comarca_eselo" => ["required", "min:2", "max:40", "unique:eselo_comarcas"]
-    ];
 }

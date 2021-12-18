@@ -14,14 +14,18 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function validateAndStore(Request $request, string $modelClassName) {
-        $validation = Validator::make($request->all(), $modelClassName::$validationRules);
+    public function validateAndStore(Request $request, $modelClassName, $validationRules) {
+        $validation = Validator::make($request->all(), $validationRules);
         if ($validation->fails() ){
             return response()->json(["resp" => "Falha ao criar o registro", $validation->errors()], 422);
         }
     
         $validatedData = $validation->validated();
-        $modelClassName::create($validatedData);
+        try {
+            $modelClassName::create($validatedData);
+        } catch (\Throwable $th) {
+            return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
+        }
         return response()->json(["resp" => "Registro criado com sucesso", "data" => $validatedData], 201);
     }
 
