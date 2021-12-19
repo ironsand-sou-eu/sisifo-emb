@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class EspaiderUfsController extends Controller
 {
+    private $validationRules = [
+        "nome_uf_espaider" => ["required", "min:4", "max:25", "unique:espaider_ufs"],
+        "sigla" => ["required", "regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -26,12 +31,7 @@ class EspaiderUfsController extends Controller
      */
     public function store(Request $request)
     {
-        $validationRules = [
-            "nome_uf_espaider" => ["required", "min:4", "max:25", "unique:espaider_ufs"],
-            "sigla" => ["required", "regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
-        ];
-    
-        return $this->validateAndStore($request, EspaiderUf::class, $validationRules);
+        return $this->validateAndStore($request, EspaiderUf::class, $this->validationRules);
     }
 
     /**
@@ -54,7 +54,7 @@ class EspaiderUfsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->validateAndUpdate($request, EspaiderUf::class, $id, $this->validationRules);
     }
 
     /**

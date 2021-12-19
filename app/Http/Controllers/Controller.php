@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\Campo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -27,6 +28,23 @@ class Controller extends BaseController
             return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
         }
         return response()->json(["resp" => "Registro criado com sucesso", "data" => $validatedData], 201);
+    }
+
+    public function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules) {
+        $entity = $modelClassName::findOrFail($id);
+        
+        $validation = Validator::make($request->all(), $validationRules);
+        if ($validation->fails() ){
+            return response()->json(["resp" => "Falha ao atualizar o registro", $validation->errors()], 422);
+        }
+    
+        $validatedData = $validation->validated();
+        try {
+            $entity->update($validatedData);
+        } catch (\Throwable $th) {
+            return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
+        }
+        return response()->json(["resp" => "Registro atualizado com sucesso", "data" => $validatedData], 201);
     }
 
 }

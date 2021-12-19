@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class TiposPermissoesController extends Controller
 {
+    private $validationRules = [
+        "nome_permissao" => ["required", "max:10", "unique:tipos_permissoes"],
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -26,11 +30,7 @@ class TiposPermissoesController extends Controller
      */
     public function store(Request $request)
     {
-        $validationRules = [
-            "nome_permissao" => ["required", "max:10", "unique:tipos_permissoes"],
-        ];
-
-        return $this->validateAndStore($request, TipoPermissao::class, $validationRules);
+        return $this->validateAndStore($request, TipoPermissao::class, $this->validationRules);
     }
 
     /**
@@ -53,7 +53,7 @@ class TiposPermissoesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->validateAndUpdate($request, TipoPermissao::class, $id, $this->validationRules);
     }
 
     /**

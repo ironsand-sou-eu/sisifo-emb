@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class EspaiderJuizosController extends Controller
 {
+    private $validationRules = [
+        "nome_juizo_espaider" => ["required", "min:5", "max:120", "unique:espaider_juizos"],
+        "redacao_cabecalho_juizo" => ["required", "max:150"],
+        "redacao_resumida_juizo" => ["required", "max:60"],
+        "espaider_comarca_id" => ["required", "numeric"],
+        "espaider_orgao_id" => ["required", "numeric"]
+    ];
+    
     /**
      * Display a listing of the resource.
      *
@@ -26,15 +34,7 @@ class EspaiderJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        $validationRules = [
-            "nome_juizo_espaider" => ["required", "min:5", "max:120", "unique:espaider_juizos"],
-            "redacao_cabecalho_juizo" => ["required", "max:150"],
-            "redacao_resumida_juizo" => ["required", "max:60"],
-            "espaider_comarca_id" => ["required", "numeric"],
-            "espaider_orgao_id" => ["required", "numeric"]
-        ];
-        
-        return $this->validateAndStore($request, EspaiderJuizo::class, $validationRules);
+        return $this->validateAndStore($request, EspaiderJuizo::class, $this->validationRules);
     }
 
     /**
@@ -57,7 +57,7 @@ class EspaiderJuizosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->validateAndUpdate($request, EspaiderJuizo::class, $id, $this->validationRules);
     }
 
     /**

@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class LogAlteracoesController extends Controller
 {
+    private $validationRules = [
+        "campo_id" => ["required", "numeric"],
+        "valor_anterior" => ["required", "max:150"],
+        "valor_atual" => ["required", "max:150"],
+        "data_alteracao" => ["required", "date"],
+        "alterado_por" => ["required", "numeric"]
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -26,15 +34,7 @@ class LogAlteracoesController extends Controller
      */
     public function store(Request $request)
     {
-        $validationRules = [
-            "campo_id" => ["required", "numeric"],
-            "valor_anterior" => ["required", "max:150"],
-            "valor_atual" => ["required", "max:150"],
-            "data_alteracao" => ["required", "date"],
-            "alterado_por" => ["required", "numeric"]
-        ];
-
-        return $this->validateAndStore($request, LogAlteracao::class, $validationRules);
+        return $this->validateAndStore($request, LogAlteracao::class, $this->validationRules);
     }
 
     /**
@@ -57,7 +57,7 @@ class LogAlteracoesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->validateAndUpdate($request, LogAlteracao::class, $id, $this->validationRules);
     }
 
     /**

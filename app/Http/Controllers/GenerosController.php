@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class GenerosController extends Controller
 {
+    private $validationRules = [
+        "genero" => ["required", "max:20", "unique:generos"],
+    ];    
+
     /**
      * Display a listing of the resource.
      *
@@ -26,10 +30,7 @@ class GenerosController extends Controller
      */
     public function store(Request $request)
     {
-        $validationRules = [
-            "genero" => ["required", "max:20", "unique:generos"],
-        ];    
-        return $this->validateAndStore($request, Genero::class, $validationRules);
+        return $this->validateAndStore($request, Genero::class, $this->validationRules);
     }
 
     /**
@@ -52,7 +53,7 @@ class GenerosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->validateAndUpdate($request, Genero::class, $id, $this->validationRules);
     }
 
     /**

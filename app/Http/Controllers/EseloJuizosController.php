@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class EseloJuizosController extends Controller
 {
+    private $validationRules = [
+        "nome_juizo_eselo" => ["required", "min:2", "max:150", "unique:eselo_juizos"],
+        "eselo_comarca_id" => ["required", "numeric"],
+        "espaider_juizo_id" => ["required", "numeric"]
+    ];
+
+
     /**
      * Display a listing of the resource.
      *
@@ -26,13 +33,7 @@ class EseloJuizosController extends Controller
      */
     public function store(Request $request)
     {
-    $validationRules = [
-        "nome_juizo_eselo" => ["required", "min:2", "max:150", "unique:eselo_juizos"],
-        "eselo_comarca_id" => ["required", "numeric"],
-        "espaider_juizo_id" => ["required", "numeric"]
-    ];
-
-    return $this->validateAndStore($request, EseloJuizo::class, $validationRules);
+        return $this->validateAndStore($request, EseloJuizo::class, $this->validationRules);
     }
 
     /**
@@ -55,7 +56,7 @@ class EseloJuizosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->validateAndUpdate($request, EseloJuizo::class, $id, $this->validationRules);
     }
 
     /**

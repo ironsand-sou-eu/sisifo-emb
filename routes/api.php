@@ -64,3 +64,18 @@ Route::post("sistemas-jud-juizos", [SistemasJudJuizosController::class, "store"]
 Route::post("tabelas", [TabelasController::class, "store"]);
 Route::post("tipos-permissoes", [TiposPermissoesController::class, "store"]);
 Route::post("users", [UsersController::class, "store"]);
+
+Route::put("campos/{id}", [CamposController::class, "update"]);
+Route::put("eselo-comarcas/{id}", [EseloComarcasController::class, "update"]);
+Route::put("eselo-juizos/{id}", [EseloJuizosController::class, "update"]);
+Route::put("espaider-comarcas/{id}", [EspaiderComarcasController::class, "update"]);
+Route::put("espaider-juizos/{id}", [EspaiderJuizosController::class, "update"]);
+Route::put("espaider-orgaos/{id}", [EspaiderOrgaosController::class, "update"]);
+Route::put("espaider-ufs/{id}", [EspaiderUfsController::class, "update"]);
+Route::put("generos/{id}", [GenerosController::class, "update"]);
+Route::put("log-alteracoes/{id}", [LogAlteracoesController::class, "update"]);
+Route::put("permissoes/{id}", [PermissoesController::class, "update"]);
+Route::put("sistemas-jud-juizos/{id}", [SistemasJudJuizosController::class, "update"]);
+Route::put("tabelas/{id}", [TabelasController::class, "update"]);
+Route::put("tipos-permissoes/{id}", [TiposPermissoesController::class, "update"]);
+Route::put("users/{id}", [UsersController::class, "update"]);
