@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BizRules\EspaiderComarca;
+use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
 
 class EspaiderComarcasController extends Controller
@@ -29,16 +30,9 @@ class EspaiderComarcasController extends Controller
         $nomeComarca = $request->input("nome_comarca_espaider");
         $validationRules = [
             "nome_comarca_espaider" => ["required", "min:2", "max:40"],
-            "espaider_uf_id" => [
-                "required", "size:2",
-                function($attribute, $value, $fail) use ($nomeComarca) {
-                    if(EspaiderComarca::where($attribute, $value)->where('nome_comarca_espaider', $nomeComarca)->exists()) {
-                        $fail("Já existe uma comarca chamada {$nomeComarca} no estado {$value}.");
-                    }
-                }
-            ]
+            "espaider_uf_id" => ["required", "size:2", new UniqueCombinationRule(EspaiderComarca::class, ["nome_comarca_espaider", $nomeComarca])]
         ];
-    
+
         return $this->validateAndStore($request, EspaiderComarca::class, $validationRules);
     }
 
@@ -62,7 +56,13 @@ class EspaiderComarcasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nomeComarca = $request->input("nome_comarca_espaider");
+        $validationRules = [
+            "nome_comarca_espaider" => ["min:2", "max:40"],
+            "espaider_uf_id" => ["size:2", new UniqueCombinationRule(EspaiderComarca::class, ["nome_comarca_espaider", $nomeComarca])]
+        ];
+
+        return $this->validateAndUpdate($request, EspaiderComarca::class, $id, $validationRules);
     }
 
     /**

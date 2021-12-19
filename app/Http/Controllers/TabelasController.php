@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class TabelasController extends Controller
 {
-    private $validationRules = [
-        "nome_tabela" => ["required", "max:60", "unique:tabelas"]
-    ];
-
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +27,10 @@ class TabelasController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, Tabela::class, $this->validationRules);
+        $validationRules = [
+            "nome_tabela" => ["required", "max:60", "unique:tabelas"]
+        ];
+        return $this->validateAndStore($request, Tabela::class, $validationRules);
     }
 
     /**
@@ -54,7 +53,10 @@ class TabelasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->validateAndUpdate($request, Tabela::class, $id, $this->validationRules);
+        $validationRules = [
+            "nome_tabela" => ["max:60", "unique:tabelas"]
+        ];
+        return $this->validateAndUpdate($request, Tabela::class, $id, $validationRules);
     }
 
     /**

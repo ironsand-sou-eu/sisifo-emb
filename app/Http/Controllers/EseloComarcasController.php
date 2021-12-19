@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 
 class EseloComarcasController extends Controller
 {
-    private $validationRules = [
-        "nome_comarca_eselo" => ["required", "min:2", "max:40", "unique:eselo_comarcas"]
-    ];
-
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +26,10 @@ class EseloComarcasController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EseloComarca::class, $this->validationRules);
+        $validationRules = [
+            "nome_comarca_eselo" => ["required", "min:2", "max:40", "unique:eselo_comarcas"]
+        ];
+        return $this->validateAndStore($request, EseloComarca::class, $validationRules);
     }
 
     /**
@@ -53,7 +52,10 @@ class EseloComarcasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->validateAndUpdate($request, EseloComarca::class, $id, $this->validationRules);
+        $validationRules = [
+            "nome_comarca_eselo" => ["min:2", "max:40", "unique:eselo_comarcas"]
+        ];
+        return $this->validateAndUpdate($request, EseloComarca::class, $id, $validationRules);
     }
 
     /**

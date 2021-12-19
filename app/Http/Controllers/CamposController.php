@@ -3,24 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Campo;
-use App\Models\Access\Tabela;
 use Illuminate\Http\Request;
+use App\Rules\UniqueCombinationRule;
 
 class CamposController extends Controller
 {
-    private $validationRules = [
-        "nome_campo" => ["required", "max:191"],
-        "tabela_id" => [
-            "required", "numeric",
-            function($attribute, $value, $fail) use ($nomeCampo) {
-                if(Campo::where($attribute, $value)->where('nome_campo', $nomeCampo)->exists()) {
-                    $nomeTabela = Tabela::find($value)->value("nome_tabela");
-                    $fail("Já existe um campo chamado {$nomeCampo} na tabela {$nomeTabela}.");
-                }
-            }
-        ]
-    ];
-
     /**
      * Display a listing of the resource.
      *
@@ -41,20 +28,12 @@ class CamposController extends Controller
     public function store(Request $request)
     {
         $nomeCampo = $request->input("nome_campo");
-        // $validationRules = [
-        //     "nome_campo" => ["required", "max:191"],
-        //     "tabela_id" => [
-        //         "required", "numeric",
-        //         function($attribute, $value, $fail) use ($nomeCampo) {
-        //             if(Campo::where($attribute, $value)->where('nome_campo', $nomeCampo)->exists()) {
-        //                 $nomeTabela = Tabela::find($value)->value("nome_tabela");
-        //                 $fail("Já existe um campo chamado {$nomeCampo} na tabela {$nomeTabela}.");
-        //             }
-        //         }
-        //     ]
-        // ];
+        $validationRules = [
+            "nome_campo" => ["required", "max:191"],
+            "tabela_id" => ["required", "numeric", new UniqueCombinationRule(Campo::class, ['nome_campo', $nomeCampo])]
+        ];
 
-        return $this->validateAndStore($request, Campo::class, $this->validationRules);
+        return $this->validateAndStore($request, Campo::class, $validationRules);
     }
 
     /**
@@ -78,6 +57,10 @@ class CamposController extends Controller
     public function update(Request $request, $id)
     {
         $nomeCampo = $request->input("nome_campo");
+        $validationRules = [
+            "nome_campo" => ["max:191"],
+            "tabela_id" => ["numeric", new UniqueCombinationRule(Campo::class, ['nome_campo', $nomeCampo])]
+        ];
 
         return $this->validateAndUpdate($request, Campo::class, $id, $validationRules);
     }

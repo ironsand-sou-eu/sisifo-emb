@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class SistemasJudJuizosController extends Controller
 {
-    private $validationRules = [
-        "nome_juizo_sistemas_jud" => ["required", "max:120", "unique:sistemas_jud_juizos"],
-        "espaider_juizo_id" => ["required", "numeric"]
-    ];
-    
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +27,11 @@ class SistemasJudJuizosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, SistemasJudJuizo::class, $this->validationRules);
+        $validationRules = [
+            "nome_juizo_sistemas_jud" => ["required", "max:120", "unique:sistemas_jud_juizos"],
+            "espaider_juizo_id" => ["required", "numeric"]
+        ];
+        return $this->validateAndStore($request, SistemasJudJuizo::class, $validationRules);
     }
 
     /**
@@ -55,7 +54,11 @@ class SistemasJudJuizosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->validateAndUpdate($request, SistemasJudJuizo::class, $id, $this->validationRules);
+        $validationRules = [
+            "nome_juizo_sistemas_jud" => ["max:120", "unique:sistemas_jud_juizos"],
+            "espaider_juizo_id" => ["numeric"]
+        ];
+        return $this->validateAndUpdate($request, SistemasJudJuizo::class, $id, $validationRules);
     }
 
     /**

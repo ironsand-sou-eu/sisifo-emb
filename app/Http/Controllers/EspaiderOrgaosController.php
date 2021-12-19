@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 class EspaiderOrgaosController extends Controller
 {
-    private $validationRules = [
-        "nome_orgao_espaider" => ["required", "min:3", "max:90", "unique:espaider_orgaos"],
-        "sigla_orgao" => ["required", "min:2", "max:25"],
-    ];
-    
-
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +26,11 @@ class EspaiderOrgaosController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, EspaiderOrgao::class, $this->validationRules);
+        $validationRules = [
+            "nome_orgao_espaider" => ["required", "min:3", "max:90", "unique:espaider_orgaos"],
+            "sigla_orgao" => ["required", "min:2", "max:25"],
+        ];
+        return $this->validateAndStore($request, EspaiderOrgao::class, $validationRules);
     }
 
     /**
@@ -55,7 +53,11 @@ class EspaiderOrgaosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->validateAndUpdate($request, EspaiderOrgao::class, $id, $this->validationRules);
+        $validationRules = [
+            "nome_orgao_espaider" => ["min:3", "max:90", "unique:espaider_orgaos"],
+            "sigla_orgao" => ["min:2", "max:25"],
+        ];
+        return $this->validateAndUpdate($request, EspaiderOrgao::class, $id, $validationRules);
     }
 
     /**

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Permissao;
-use App\Models\Access\Tabela;
-use App\Models\Access\User;
+use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
 
 class PermissoesController extends Controller
@@ -28,21 +27,12 @@ class PermissoesController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::find($request->input("user_id"));
+        $userId = $request->input("user_id");
         $validationRules = [
             "user_id" => ["required", "numeric"],
             "tipo_permissao_id" => ["required", "numeric"],
-            "tabela_id" => [
-                "required", "numeric",
-                function($attribute, $value, $fail) use ($user) {
-                    if(Permissao::where($attribute, $value)->where('user_id', $user->id)->exists()) {
-                        $nomeTabela = Tabela::find($value)->value("nome_tabela");
-                        $fail("O usuário {$user->nome_escolhido} já tem permissões definidas para a tabela {$nomeTabela}.");
-                    }
-                }
-            ]
+            "tabela_id" => ["required", "numeric", new UniqueCombinationRule(Permissao::class, "user_id", $userId)]
         ];
-
         return $this->validateAndStore($request, Permissao::class, $validationRules);
     }
 
@@ -66,7 +56,13 @@ class PermissoesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $userId = $request->input("user_id");
+        $validationRules = [
+            "user_id" => ["numeric"],
+            "tipo_permissao_id" => ["numeric"],
+            "tabela_id" => ["numeric", new UniqueCombinationRule(Permissao::class, "user_id", $userId)]
+        ];
+        return $this->validateAndUpdate($request, Permissao::class, $id, $validationRules);
     }
 
     /**

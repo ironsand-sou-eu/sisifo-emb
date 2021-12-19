@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    private $validationRules = [
-        "nome_completo" => ["required", "min:5", "max:100"],
-        "nome_escolhido" => ["nullable", "min:2", "max:50"],
-        "genero_declarado_id" => ["required", "numeric"],
-        "email" => ["required", "email", "unique:users"],
-        "email_verified_at" => ["nullable", "date"],
-        "password" => ["required"],
-        "remember_token" => ["nullable", "max:100"],
-        "ativo" => ["required", "boolean"]
-    ];
-    
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +26,17 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->validateAndStore($request, User::class, $this->validationRules);
+        $validationRules = [
+            "nome_completo" => ["required", "min:5", "max:100"],
+            "nome_escolhido" => ["nullable", "min:2", "max:50"],
+            "genero_declarado_id" => ["required", "numeric"],
+            "email" => ["required", "email", "unique:users"],
+            "email_verified_at" => ["nullable", "date"],
+            "password" => ["required"],
+            "remember_token" => ["nullable", "max:100"],
+            "ativo" => ["required", "boolean"]
+        ];
+        return $this->validateAndStore($request, User::class, $validationRules);
     }
 
     /**
@@ -60,7 +59,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->validateAndUpdate($request, User::class, $id, $this->validationRules);
+        $validationRules = [
+            "nome_completo" => ["min:5", "max:100"],
+            "nome_escolhido" => ["min:2", "max:50"],
+            "genero_declarado_id" => ["numeric"],
+            "email" => ["email", "unique:users"],
+            "email_verified_at" => ["date"],
+            "remember_token" => ["max:100"],
+            "ativo" => ["boolean"]
+        ];
+        return $this->validateAndUpdate($request, User::class, $id, $validationRules);
     }
 
     /**
