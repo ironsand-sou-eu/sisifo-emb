@@ -67,6 +67,6 @@ class TabelasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(Tabela::class, $id);
     }
 }

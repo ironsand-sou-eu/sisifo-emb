@@ -66,6 +66,6 @@ class EseloComarcasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(EseloComarca::class, $id);
     }
 }

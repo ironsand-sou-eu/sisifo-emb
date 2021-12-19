@@ -74,6 +74,6 @@ class LogAlteracoesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(LogAlteracao::class, $id);
     }
 }

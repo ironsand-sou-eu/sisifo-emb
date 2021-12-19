@@ -79,3 +79,18 @@ Route::put("sistemas-jud-juizos/{id}", [SistemasJudJuizosController::class, "upd
 Route::put("tabelas/{id}", [TabelasController::class, "update"]);
 Route::put("tipos-permissoes/{id}", [TiposPermissoesController::class, "update"]);
 Route::put("users/{id}", [UsersController::class, "update"]);
+
+Route::delete("campos/{id}", [CamposController::class, "destroy"]);
+Route::delete("eselo-comarcas/{id}", [EseloComarcasController::class, "destroy"]);
+Route::delete("eselo-juizos/{id}", [EseloJuizosController::class, "destroy"]);
+Route::delete("espaider-comarcas/{id}", [EspaiderComarcasController::class, "destroy"]);
+Route::delete("espaider-juizos/{id}", [EspaiderJuizosController::class, "destroy"]);
+Route::delete("espaider-orgaos/{id}", [EspaiderOrgaosController::class, "destroy"]);
+Route::delete("espaider-ufs/{id}", [EspaiderUfsController::class, "destroy"]);
+Route::delete("generos/{id}", [GenerosController::class, "destroy"]);
+Route::delete("log-alteracoes/{id}", [LogAlteracoesController::class, "destroy"]);
+Route::delete("permissoes/{id}", [PermissoesController::class, "destroy"]);
+Route::delete("sistemas-jud-juizos/{id}", [SistemasJudJuizosController::class, "destroy"]);
+Route::delete("tabelas/{id}", [TabelasController::class, "destroy"]);
+Route::delete("tipos-permissoes/{id}", [TiposPermissoesController::class, "destroy"]);
+Route::delete("users/{id}", [UsersController::class, "destroy"]);

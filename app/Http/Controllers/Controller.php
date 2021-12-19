@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Access\Campo;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,36 +13,56 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function validateAndStore(Request $request, $modelClassName, $validationRules) {
-        $validation = Validator::make($request->all(), $validationRules);
-        if ($validation->fails() ){
-            return response()->json(["resp" => "Falha ao criar o registro", $validation->errors()], 422);
+    protected function validateAndStore(Request $request, $modelClassName, $validationRules) {
+        $validationResponse = [];
+        if (!$this->successfullyValidated($request, $validationRules, $validationResponse)) {
+            return $validationResponse;
         }
-    
-        $validatedData = $validation->validated();
+
         try {
-            $modelClassName::create($validatedData);
+            $modelClassName::create($validationResponse);
         } catch (\Throwable $th) {
-            return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
+            return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => "Registro criado com sucesso", "data" => $validatedData], 201);
+        return response()->json(["resp" => "Registro criado com sucesso", "data" => $validationResponse], 201);
     }
 
-    public function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules) {
-        $entity = $modelClassName::findOrFail($id);
+    protected function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules) {
+        $validationResponse = [];
+        if (!$this->successfullyValidated($request, $validationRules, $validationResponse)) {
+            return $validationResponse;
+        }
         
-        $validation = Validator::make($request->all(), $validationRules);
-        if ($validation->fails() ){
-            return response()->json(["resp" => "Falha ao atualizar o registro", $validation->errors()], 422);
-        }
-    
-        $validatedData = $validation->validated();
         try {
-            $entity->update($validatedData);
+            $entity = $modelClassName::findOrFail($id);
+            $entity->update($validationResponse);
         } catch (\Throwable $th) {
-            return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
+            return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => "Registro atualizado com sucesso", "data" => $validatedData], 201);
+        return response()->json(["resp" => "Registro atualizado com sucesso", "data" => $validationResponse], 200);
     }
 
+    private function successfullyValidated(Request $request, $rules, &$validationResponse) {
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails()) {
+            $validationResponse = response()->json(["resp" => "Erro de validação", $validation->errors()], 422);
+            return false;
+        }
+        $validationResponse = $validation->validated();
+        return true;
+    }
+
+    protected function delete($modelClassName, $id) {
+        $entity = $modelClassName::find($id);
+        try {
+            $entity->delete();
+        } catch (\Throwable $th) {
+            return $this->dbErrorResponse($th);
+        }
+        return response()->json(["resp" => "Registro excluído com sucesso", "deletedEntity" => $entity], 200);
+    }
+
+    protected function dbErrorResponse($th) {
+        return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
+    }
 }

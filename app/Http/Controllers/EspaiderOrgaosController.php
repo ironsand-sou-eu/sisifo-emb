@@ -54,8 +54,8 @@ class EspaiderOrgaosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_orgao_espaider" => ["min:3", "max:90", "unique:espaider_orgaos"],
-            "sigla_orgao" => ["min:2", "max:25"],
+            "nome_orgao_espaider" => ["required", "min:3", "max:90", "unique:espaider_orgaos"],
+            "sigla_orgao" => ["required", "min:2", "max:25"],
         ];
         return $this->validateAndUpdate($request, EspaiderOrgao::class, $id, $validationRules);
     }
@@ -68,6 +68,6 @@ class EspaiderOrgaosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(EspaiderOrgao::class, $id);
     }
 }

@@ -68,6 +68,6 @@ class EspaiderUfsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(EspaiderUf::class, $id);
     }
 }

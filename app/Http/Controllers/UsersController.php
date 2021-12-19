@@ -79,6 +79,6 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(User::class, $id);
     }
 }

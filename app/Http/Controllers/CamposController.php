@@ -73,6 +73,6 @@ class CamposController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(Campo::class, $id);
     }
 }

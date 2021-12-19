@@ -66,6 +66,6 @@ class GenerosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(Genero::class, $id);
     }
 }

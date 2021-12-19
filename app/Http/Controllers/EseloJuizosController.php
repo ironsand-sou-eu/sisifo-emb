@@ -70,6 +70,6 @@ class EseloJuizosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(EseloJuizo::class, $id);
     }
 }

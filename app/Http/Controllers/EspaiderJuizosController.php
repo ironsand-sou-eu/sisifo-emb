@@ -74,6 +74,6 @@ class EspaiderJuizosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->delete(EspaiderJuizo::class, $id);
     }
 }
