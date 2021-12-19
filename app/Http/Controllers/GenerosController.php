@@ -40,7 +40,8 @@ class GenerosController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = Genero::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

@@ -42,7 +42,8 @@ class EseloJuizosController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = EseloJuizo::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

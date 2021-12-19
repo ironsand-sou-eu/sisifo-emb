@@ -41,7 +41,8 @@ class EspaiderOrgaosController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = EspaiderOrgao::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

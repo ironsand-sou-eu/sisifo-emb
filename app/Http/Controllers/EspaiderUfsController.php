@@ -41,7 +41,8 @@ class EspaiderUfsController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = EspaiderUf::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

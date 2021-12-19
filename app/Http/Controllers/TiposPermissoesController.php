@@ -40,7 +40,8 @@ class TiposPermissoesController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = TipoPermissao::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

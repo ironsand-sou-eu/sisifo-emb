@@ -35,6 +35,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get("campos/{id}", [CamposController::class, "show"]);
+Route::get("eselo-comarcas/{id}", [EseloComarcasController::class, "show"]);
+Route::get("eselo-juizos/{id}", [EseloJuizosController::class, "show"]);
+Route::get("espaider-comarcas/{id}", [EspaiderComarcasController::class, "show"]);
+Route::get("espaider-juizos/{id}", [EspaiderJuizosController::class, "show"]);
+Route::get("espaider-orgaos/{id}", [EspaiderOrgaosController::class, "show"]);
+Route::get("espaider-ufs/{id}", [EspaiderUfsController::class, "show"]);
+Route::get("generos/{id}", [GenerosController::class, "show"]);
+Route::get("log-alteracoes/{id}", [LogAlteracoesController::class, "show"]);
+Route::get("permissoes/{id}", [PermissoesController::class, "show"]);
+Route::get("sistemas-jud-juizos/{id}", [SistemasJudJuizosController::class, "show"]);
+Route::get("tabelas/{id}", [TabelasController::class, "show"]);
+Route::get("tipos-permissoes/{id}", [TiposPermissoesController::class, "show"]);
+Route::get("users/{id}", [UsersController::class, "show"]);
+
 Route::get("campos", [CamposController::class, "index"]);
 Route::get("eselo-comarcas", [EseloComarcasController::class, "index"]);
 Route::get("eselo-juizos", [EseloJuizosController::class, "index"]);

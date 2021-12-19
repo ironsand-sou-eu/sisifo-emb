@@ -42,7 +42,8 @@ class SistemasJudJuizosController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = SistemasJudJuizo::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

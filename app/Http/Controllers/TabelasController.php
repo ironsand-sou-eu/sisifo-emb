@@ -41,7 +41,8 @@ class TabelasController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = Tabela::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

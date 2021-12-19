@@ -44,7 +44,8 @@ class EspaiderComarcasController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = EspaiderComarca::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

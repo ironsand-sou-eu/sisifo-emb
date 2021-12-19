@@ -47,7 +47,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = User::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

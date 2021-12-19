@@ -44,7 +44,8 @@ class CamposController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = Campo::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

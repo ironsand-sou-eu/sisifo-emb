@@ -44,7 +44,8 @@ class EspaiderJuizosController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = EspaiderJuizo::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

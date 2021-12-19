@@ -40,7 +40,8 @@ class EseloComarcasController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = EseloComarca::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**

@@ -44,7 +44,8 @@ class PermissoesController extends Controller
      */
     public function show($id)
     {
-        //
+        $entity = Permissao::findOrFail($id);
+        return response()->json(["entity" => $entity]);
     }
 
     /**
