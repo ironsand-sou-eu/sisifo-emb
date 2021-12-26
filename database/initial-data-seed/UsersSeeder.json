@@ -14,7 +14,7 @@
         "nome_escolhido": "Don César de Toledo",
         "genero_declarado_id": "Masculino",
         "email": "cesar.rodriguez@embasa.ba.gov.br",
-        "password": "123",
+        "password": "$2a$12$ao8tkv63Q/0Pyt7gw9dyH.hDWu8tGfuVaOf4RXGp.aMWUK1Ps79KS",
         "ativo": true
     },
     
@@ -23,7 +23,7 @@
         "nome_escolhido": "FTI",
         "genero_declarado_id": "Masculino",
         "email": "fti@embasa.ba.gov.br",
-        "password": "123",
+        "password": "$2a$12$ao8tkv63Q/0Pyt7gw9dyH.hDWu8tGfuVaOf4RXGp.aMWUK1Ps79KS",
         "ativo": true
     }
 }
