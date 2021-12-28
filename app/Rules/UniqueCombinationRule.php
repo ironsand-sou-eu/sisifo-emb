@@ -49,7 +49,11 @@ class UniqueCombinationRule implements Rule
      */
     public function message()
     {
-        return "Já existe um registro com a coluna {$this->fieldnameUnderValidation} no valor {$$this->valueUnderValidation} ".
-                "e a coluna {$this->secondFieldName} no valor {$this->secondFieldValue}.";
+        return __('validation.uniqueRuleBroken', [
+            'fieldUnderValidation' => '$this->fieldnameUnderValidation',
+            'valueUnderValidation' => '$this->valueUnderValidation',
+            'secondFieldName' => '$this->secondFieldName',
+            'secondFieldValue' => '$this->secondFieldValue'
+        ]);
     }
 }

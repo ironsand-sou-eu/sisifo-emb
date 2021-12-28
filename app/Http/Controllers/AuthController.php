@@ -32,11 +32,11 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(["resp" => "Erro de validação", $validator->errors()], 422);
+            return response()->json(["resp" => __('validation.genericError'), $validator->errors()], 422);
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['resp' => 'Falha na autenticação'], 401);
+            return response()->json(['resp' => __('auth.genericError')], 401);
         }
 
         return $this->createNewToken($token);
@@ -76,7 +76,7 @@ class AuthController extends Controller
      */
     public function logout() {
         auth()->logout();
-        return response()->json(['resp' => 'Logoff realizado com sucesso']);
+        return response()->json(['resp' => __('auth.logoff')]);
     }
 
     /**

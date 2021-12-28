@@ -8,7 +8,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 
 class Controller extends BaseController
 {
@@ -25,7 +24,7 @@ class Controller extends BaseController
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => "Registro criado com sucesso", "data" => $validationResponse], 201);
+        return response()->json(["resp" => __('db.create.success'), "createdEntity" => $validationResponse], 201);
     }
 
     protected function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules) {
@@ -40,17 +39,18 @@ class Controller extends BaseController
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => "Registro atualizado com sucesso", "data" => $validationResponse], 200);
+        return response()->json(["resp" => __('db.update.success'), "updatedEntity" => $validationResponse], 200);
     }
 
     private function successfullyValidated(Request $request, $rules, &$validationResponse) {
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
-            $validationResponse = response()->json(["resp" => "Erro de validação", $validation->errors()], 422);
+            $validationResponse = response()->json(["resp" => __('validation.genericError'), $validation->errors()], 422);
             return false;
+        } else {
+            $validationResponse = $validation->validated();
+            return true;
         }
-        $validationResponse = $validation->validated();
-        return true;
     }
 
     protected function delete($modelClassName, $id) {
@@ -60,10 +60,10 @@ class Controller extends BaseController
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => "Registro excluído com sucesso", "deletedEntity" => $entity], 200);
+        return response()->json(["resp" => __('db.delete.success'), "deletedEntity" => $entity], 200);
     }
 
     protected function dbErrorResponse($th) {
-        return response()->json(["resp" => "Falha no banco de dados", "data" => $th], 500);
+        return response()->json(["resp" => __('db.error'), "data" => $th], 500);
     }
 }

@@ -14,7 +14,9 @@ return [
     */
 
     'failed' => 'Essas credenciais não foram encontradas em nossos registros.',
+    'genericError' => 'Erro na autenticação, vide detalhes.',
     'password' => 'A senha informada está incorreta.',
     'throttle' => 'Muitas tentativas de login. Tente novamente em :seconds segundos.',
+    'logoff' => 'Logoff realizado com sucesso.',
 
 ];

@@ -133,6 +133,9 @@ return [
     |
     */
 
+    'genericError' => 'Erro na validação, vide detalhes',
+    'uniqueRuleBroken' => 'Já existe um registro com a coluna :fieldUnderValidation no valor :valueUnderValidation " .
+        "e a coluna :secondFieldName no valor :secondFieldValue.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
