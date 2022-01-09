@@ -12,10 +12,25 @@ class EseloJuizosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = EseloJuizo::with(["eseloComarca", "espaiderJuizo"])->get();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = EseloJuizo::with(["eseloComarca", "espaiderJuizo"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Juízos (redação do e-Selo)',
+                'description' => 'Juízos existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
+                'url' => url('/eselo-juizos'),
+                'apiUrl' => url('/api/eselo-juizos'),
+                'dbFieldNames' => ["nome_juizo_eselo", "eselo_comarca.nome_comarca_eselo", "espaider_juizo.nome_juizo_espaider"],
+                'dbNameField' => "nome_juizo_eselo",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Juízo (e-Selo)', 'Comarca (e-Selo)', 'Juízo (Espaider)']
+            ]);
+        }
     }
 
     /**
@@ -42,7 +57,7 @@ class EseloJuizosController extends Controller
      */
     public function show($id)
     {
-        $entity = EseloJuizo::findOrFail($id);
+        $entity = EseloJuizo::with(["eseloComarca", "espaiderJuizo"])->findOrFail($id);
         return response()->json(["entity" => $entity]);
     }
 

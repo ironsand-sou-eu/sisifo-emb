@@ -12,10 +12,25 @@ class LogAlteracoesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = LogAlteracao::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = LogAlteracao::with(["campo", "alteradoPor"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Log de Alterações',
+                'description' => '',
+                'url' => url('/log-alteracoes'),
+                'apiUrl' => url('/api/log-alteracoes'),
+                'dbFieldNames' => ["campo.nome_campo", "valor_anterior", "valor_atual", "data_alteracao", "alterado_por.nome_escolhido"],
+                'dbNameField' => "valor_atual",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Campo', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por']
+            ]);
+        }
     }
 
     /**
@@ -44,7 +59,7 @@ class LogAlteracoesController extends Controller
      */
     public function show($id)
     {
-        $entity = LogAlteracao::findOrFail($id);
+        $entity = LogAlteracao::with(["campo", "alteradoPor"])->findOrFail($id);
         return response()->json(["entity" => $entity]);
     }
 

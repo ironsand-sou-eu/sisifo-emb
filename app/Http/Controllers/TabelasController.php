@@ -13,10 +13,25 @@ class TabelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = Tabela::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = Tabela::all();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Tabelas',
+                'description' => 'Tabelas que compõem o banco de dados do Sísifo',
+                'url' => url('/tabelas'),
+                'apiUrl' => url('/api/tabelas'),
+                'dbFieldNames' => ["nome_tabela"],
+                'dbNameField' => "nome_tabela",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Tabela']
+            ]);
+        }
     }
 
     /**

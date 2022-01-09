@@ -4,6 +4,7 @@ namespace App\Models\Access;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Campo extends Model
 {

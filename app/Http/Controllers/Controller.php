@@ -66,4 +66,8 @@ class Controller extends BaseController
     protected function dbErrorResponse($th) {
         return response()->json(["resp" => __('db.error'), "data" => $th], 500);
     }
+
+    protected function isApiRoute(Request $request) {
+        return $request->route()->getPrefix() === 'api';
+    }
 }

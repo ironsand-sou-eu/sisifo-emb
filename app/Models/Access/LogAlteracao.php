@@ -2,7 +2,7 @@
 
 namespace App\Models\Access;
 
-use App\Models\BizRules\User;
+use App\Models\Access\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

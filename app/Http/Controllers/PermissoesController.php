@@ -13,10 +13,25 @@ class PermissoesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = Permissao::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = Permissao::all(); #with(["user", "tabela", "tipoPermissao"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Permissões',
+                'description' => 'Permissões dos usuários do Sísifo',
+                'url' => url('/permissoes'),
+                'apiUrl' => url('/api/permissoes'),
+                'dbFieldNames' => ["user.nome_escolhido", "tabela.nome_tabela", "permissao.nome_permissao"],
+                'dbNameField' => "user.nome_escolhido",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Usuário', 'Tabela', 'Permissão']
+            ]);
+        }
     }
 
     /**

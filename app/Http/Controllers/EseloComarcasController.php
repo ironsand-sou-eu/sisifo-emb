@@ -12,10 +12,25 @@ class EseloComarcasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = EseloComarca::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = EseloComarca::all();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Comarcas (redação do e-Selo)',
+                'description' => 'Comarcas existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
+                'url' => url('/eselo-comarcas'),
+                'apiUrl' => url('/api/eselo-comarcas'),
+                'dbFieldNames' => ["nome_comarca_eselo"],
+                'dbNameField' => "nome_comarca_eselo",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Comarca (e-Selo)']
+            ]);
+        }
     }
 
     /**

@@ -13,10 +13,25 @@ class SistemasJudJuizosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = SistemasJudJuizo::with(["espaiderJuizo"])->get();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = SistemasJudJuizo::with(["espaiderJuizo"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Juízos (Sistemas do Judiciário)',
+                'description' => 'Juízos existentes nos sistemas processuais do Judiciário (a redação deve ser idêntica à daquele sistema).',
+                'url' => url('/sistemas-jud-juizos'),
+                'apiUrl' => url('/api/sistemas-jud-juizos'),
+                'dbFieldNames' => ["nome_juizo_sistemas_jud", "espaider_juizo.nome_juizo_espaider"],
+                'dbNameField' => "nome_juizo_sistemas_jud",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Juízo (sistemas processuais do Judiciário)', 'Juízo (Espaider)']
+            ]);
+        }
     }
 
     /**
@@ -42,7 +57,7 @@ class SistemasJudJuizosController extends Controller
      */
     public function show($id)
     {
-        $entity = SistemasJudJuizo::findOrFail($id);
+        $entity = SistemasJudJuizo::with(["espaiderJuizo"])->findOrFail($id);
         return response()->json(["entity" => $entity]);
     }
 

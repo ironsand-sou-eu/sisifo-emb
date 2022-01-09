@@ -12,10 +12,25 @@ class EspaiderOrgaosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = EspaiderOrgao::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = EspaiderOrgao::all();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Órgãos',
+                'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
+                'url' => url('/espaider-orgaos'),
+                'apiUrl' => url('/api/espaider-orgaos'),
+                'dbFieldNames' => ["nome_orgao_espaider", "sigla_orgao"],
+                'dbNameField' => "nome_orgao_espaider",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Órgão (Espaider)', 'Sigla']
+            ]);
+        }
     }
 
     /**

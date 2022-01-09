@@ -1,0 +1,41 @@
+:root {
+    --ceu-noturno-color: #0b2160;
+    --turquesa-sisifo-color: #64a19d;
+}
+
+.bg-gradient-sisifo {
+    background-color: var(--turquesa-sisifo-color);
+    background-image: linear-gradient(150deg, var(--ceu-noturno-color) 10%, var(--turquesa-sisifo-color) 100%);
+    background-size: cover;
+  }
+  
+  .conteudo-centralizado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    padding-bottom: 1em;
+  }
+
+  .message {
+    font-size: 1.1rem;
+    width: auto;
+    max-width: fit-content;
+    border-radius: 3px;
+  }
+
+  .error {
+    color: #a33a3a;
+    background: #ff93937a;
+    border: 1px solid #a33a3a;
+    }
+
+  .success {
+    color: #04552f;
+    background: #85f77a61;
+    border: 1px solid #04552f;
+    }
+
+    .hidden {
+      display: none;
+    }

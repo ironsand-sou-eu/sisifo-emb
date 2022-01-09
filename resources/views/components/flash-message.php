@@ -1,0 +1,1 @@
+<div flash class="message hidden my-3 py-2 px-3" onclick="this.classList.add('hidden')"></div>

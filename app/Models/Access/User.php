@@ -26,7 +26,8 @@ class User extends Authenticatable implements JWTSubject
         'genero_declarado_id',
         'email',
         'password',
-        'ativo'
+        'ativo',
+        'avatar_path'
     ];
 
     /**
@@ -48,7 +49,7 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function genero_declarado() {
+    public function generoDeclarado() {
         return $this->belongsTo(Genero::class, "genero_declarado_id");
     }
 

@@ -13,10 +13,25 @@ class CamposController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = Campo::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = Campo::with(["tabela"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Campos',
+                'description' => 'Campos que compõem as tabelas do Sísifo',
+                'url' => url('/campos'),
+                'apiUrl' => url('/api/campos'),
+                'dbFieldNames' => ["nome_campo", "tabela.nome_tabela"],
+                'dbNameField' => "nome_campo",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Campo', 'Tabela']
+            ]);
+        }
     }
 
     /**

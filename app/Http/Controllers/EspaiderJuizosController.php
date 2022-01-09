@@ -12,10 +12,25 @@ class EspaiderJuizosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = EspaiderJuizo::with(["espaiderComarca", "espaiderOrgao"])->get();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = EspaiderJuizo::with(["espaiderComarca", "espaiderOrgao"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Juízos (redação do Espaider)',
+                'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
+                'url' => url('/espaider-juizos'),
+                'apiUrl' => url('/api/espaider-juizos'),
+                'dbFieldNames' => ["nome_juizo_espaider", "redacao_cabecalho_juizo", "redacao_resumida_juizo", "espaider_comarca.nome_comarca_espaider", "espaider_orgao.sigla_orgao"],
+                'dbNameField' => "nome_juizo_espaider",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Juízo (Espaider)', 'Redação para cabeçalho de peças', 'Redação resumida para peças', 'Comarca (Espaider)', 'Órgão (Espaider)']
+            ]);
+        }
     }
 
     /**
@@ -44,7 +59,7 @@ class EspaiderJuizosController extends Controller
      */
     public function show($id)
     {
-        $entity = EspaiderJuizo::findOrFail($id);
+        $entity = EspaiderJuizo::with(["espaiderComarca", "espaiderOrgao"])->findOrFail($id);
         return response()->json(["entity" => $entity]);
     }
 

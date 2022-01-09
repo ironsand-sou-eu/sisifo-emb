@@ -12,10 +12,25 @@ class EspaiderUfsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = EspaiderUf::all();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = EspaiderUf::all();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'UFs',
+                'description' => 'Unidades da Federação existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
+                'url' => url('/espaider-ufs'),
+                'apiUrl' => url('/api/espaider-ufs'),
+                'dbFieldNames' => ["nome_uf_espaider", "sigla"],
+                'dbNameField' => "nome_uf_espaider",
+                'dbIdField' => "sigla",
+                'tableColumnNames' => ['UF', 'Sigla']
+            ]);
+        }
     }
 
     /**

@@ -12,10 +12,25 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fullList = User::with(["genero_declarado"])->get();
-        return response()->json(["fullList" => $fullList]);
+        if ($this->isApiRoute($request)) {
+            $fullList = User::with(["generoDeclarado"])->get();
+            return response()->json(["fullList" => $fullList]);
+        } else {
+            $jwt = $request->cookie('jat');
+            return view("components.index", [
+                'jwt' => $jwt,
+                'title' => 'Usuários',
+                'description' => 'Usuários do Sísifo',
+                'url' => url('/users'),
+                'apiUrl' => url('/api/users'),
+                'dbFieldNames' => ["nome_escolhido", "nome_completo", "email", "genero_declarado.genero", "ativo"],
+                'dbNameField' => "nome_escolhido",
+                'dbIdField' => "id",
+                'tableColumnNames' => ['Nome', 'Nome completo', 'E-mail', 'Gênero', 'Ativo']
+            ]);
+        }
     }
 
     /**
@@ -34,7 +49,8 @@ class UsersController extends Controller
             "email_verified_at" => ["nullable", "date"],
             "password" => ["required"],
             "remember_token" => ["nullable", "max:100"],
-            "ativo" => ["required", "boolean"]
+            "ativo" => ["required", "boolean"],
+            "avatar_path" => ["nullable"]
         ];
         return $this->validateAndStore($request, User::class, $validationRules);
     }
@@ -47,7 +63,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $entity = User::findOrFail($id);
+        $entity = User::with(["generoDeclarado"])->findOrFail($id);
         return response()->json(["entity" => $entity]);
     }
 
