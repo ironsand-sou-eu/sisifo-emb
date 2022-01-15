@@ -33,8 +33,8 @@
             <i class="fas fa-angle-up"></i>
         </a>
         <!-- Scripts-->
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/sb-admin-2.min.js"></script>
+        <script src="/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/sb-admin-2.min.js"></script>
         <script src="https://kit.fontawesome.com/b915ce401c.js" crossorigin="anonymous"></script>
     </body>
 </html>

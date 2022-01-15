@@ -27,15 +27,13 @@ class DatabaseSeeder extends Seeder
             "generos",
             "users",
             "tabelas",
+            "eselo_configs",
             "tipos_permissoes"
         ];
 
         foreach ($nonRelationalTables as $tableName) {
             $this->seedTable($tableName);
         }
-
-        // $this->call([]);
-        // \App\Models\User::factory(10)->create();
     }
 
     protected function seedTable($snakeCaseTableName) {

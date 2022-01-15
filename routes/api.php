@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CamposController;
 use App\Http\Controllers\EseloComarcasController;
+use App\Http\Controllers\EseloConfigsController;
 use App\Http\Controllers\EseloJuizosController;
 use App\Http\Controllers\EspaiderComarcasController;
 use App\Http\Controllers\EspaiderJuizosController;
@@ -42,11 +43,13 @@ Route::group([
         // Route::post("/logout", [AuthController::class, "logout"]);
         Route::post("/refresh", [AuthController::class, "refresh"]);
         Route::get("/user-profile", [AuthController::class, "userProfile"]);
+        Route::get("/info-eselo-via-espaider/{slug}", [EseloJuizosController::class, "getEseloInfoFromEspaiderJuizoSlug"]);
 
         Route::apiResources([
             "campos" => CamposController::class,
             "eselo-comarcas" => EseloComarcasController::class,
             "eselo-juizos" => EseloJuizosController::class,
+            "eselo-configs" => EseloConfigsController::class,
             "espaider-comarcas" => EspaiderComarcasController::class,
             "espaider-juizos" => EspaiderJuizosController::class,
             "espaider-orgaos" => EspaiderOrgaosController::class,

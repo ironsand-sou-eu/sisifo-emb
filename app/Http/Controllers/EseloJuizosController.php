@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BizRules\EseloJuizo;
+use App\Models\BizRules\EspaiderJuizo;
 use Illuminate\Http\Request;
 
 class EseloJuizosController extends Controller
@@ -87,5 +88,26 @@ class EseloJuizosController extends Controller
     public function destroy($id)
     {
         return $this->delete(EseloJuizo::class, $id);
+    }
+
+    /**
+     * Get e-Selo's juízo and comarca from espaider's juízo slug
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function getEseloInfoFromEspaiderJuizoSlug($slug)
+    {
+        $espaiderJuizo = EspaiderJuizo::where('slug', $slug)->first();
+        $eseloJuizos = EseloJuizo::with('eseloComarca')->whereBelongsTo($espaiderJuizo)->get();
+
+        foreach ($eseloJuizos as $eseloJuizo) {
+            $resp[] = [
+                'eseloJuizo' => $eseloJuizo->nome_juizo_eselo,
+                'comarca' => $eseloJuizo->eseloComarca->nome_comarca_eselo
+            ];
+        }
+
+        return response()->json(["data" => $resp]);
     }
 }

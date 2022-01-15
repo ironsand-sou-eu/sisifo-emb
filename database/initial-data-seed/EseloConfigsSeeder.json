@@ -1,0 +1,25 @@
+{
+    "relationalFields": {},
+ 
+    "EseloConfigsSeeder": {
+    "0": { "nome": "Tipo de Documento", "valor": "J2" },
+    "1": { "nome": "Período", "valor": "12" },
+    "2": { "nome": "Referência Cabeçalho", "valor": "PPJCM/DAJES" },
+    "3": { "nome": "Texto Cabeçalho", "valor": "PAGTO CUSTAS" },
+    "4": { "nome": "Nº Conta Cliente", "valor": "JUDICIAL" },
+    "5": { "nome": "Nome", "valor": "JUDICIAL" },
+    "6": { "nome": "CNPJ", "valor": "" },
+    "7": { "nome": "CPF", "valor": "" },
+    "8": { "nome": "Rua", "valor": "CAB" },
+    "9": { "nome": "Local", "valor": "SALVADOR" },
+    "10": { "nome": "CEP", "valor": "41830-050" },
+    "11": { "nome": "Condições de Pagamento", "valor": "1" },
+    "12": { "nome": "Forma de Pagamento", "valor": "W" },
+    "13": { "nome": "Atribuição Fornecedor", "valor": "1" },
+    "14": { "nome": "Banco Empresa", "valor": "BB100" },
+    "15": { "nome": "Chave Breve da conta", "valor": "40000" },
+    "16": { "nome": "Conta Razao", "valor": "41600006" },
+    "17": { "nome": "Atribuição Despesa", "valor": "1" },
+    "18": { "nome": "Centro de Custo", "valor": "20060200CC" }
+}
+}

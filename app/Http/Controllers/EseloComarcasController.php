@@ -53,10 +53,43 @@ class EseloComarcasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $entity = EseloComarca::findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            $entity = EseloComarca::findOrFail($id);
+            return response()->json(["entity" => $entity]);
+        } else {
+            return $this->edit($request, $id);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, $id)
+    {
+        if ($this->isApiRoute($request)) 
+            return response('', 404);
+
+        $jwt = $request->cookie('jat');
+        $entity = EseloComarca::find($id);
+        return view("components.edit", [
+            'jwt' => $jwt,
+            'title' => 'Editando comarca (redação e-Selo)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'id' => $id,
+            'name' => $entity->nome_comarca_eselo,
+            'url' => url('/eselo-comarcas'),
+            'apiUrl' => url('/api/eselo-comarcas'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_comarca_eselo', 'tooltip' => 'Comarca (e-Selo)', 'inputType' => 'text']
+            ]
+        ]);
     }
 
     /**

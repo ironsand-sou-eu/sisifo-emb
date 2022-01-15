@@ -16,6 +16,7 @@ class CreateEspaiderJuizosTable extends Migration
         Schema::create('espaider_juizos', function (Blueprint $table) {
             $table->id();
             $table->string("nome_juizo_espaider", 120)->unique();
+            $table->string("slug", 120)->unique();
             $table->string("redacao_cabecalho_juizo", 150);
             $table->string("redacao_resumida_juizo", 60);
             $table->unsignedBigInteger("espaider_comarca_id");

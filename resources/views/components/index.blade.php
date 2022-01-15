@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-    
+    <script type="text/javascript" src="/assets/js/delete.js"></script>
     <script type="text/javascript">
         $(document).ready( function () {
             var table = $('#dataTable').DataTable( {
@@ -73,51 +73,20 @@
                 }
             })
 
-            $('#dataTable').on( 'click', 'i', async function (ev) {
-                let entityId = table.row( $(this).parents('tr') ).data()['{{ $dbIdField }}'];
-                let entityName = table.row( $(this).parents('tr') ).data()['{{ $dbNameField }}'];
-                
-                if (!window.confirm(`Tem certeza de que deseja excluir o registro "${entityName}"?`)) {
-                    return
+            $('#dataTable').on( 'click', 'i', function(ev) {
+                let params = {
+                    table: table,
+                    ev: ev,
+                    id: table.row( $(this).parents('tr') ).data()['{{ $dbIdField }}'],
+                    name: table.row( $(this).parents('tr') ).data()['{{ $dbNameField }}'],
+                    apiUrl: "{{ $apiUrl }}",
+                    jwt: "{{ $jwt }}"
                 }
-                ev.preventDefault()
+                let nameContent = params.name.replace(/^<a .*?>/, '')
+                nameContent = nameContent.replace('</a>', '')
+                params.name = nameContent
 
-                const options = {
-                    method: 'DELETE',
-                    headers: { "Authorization": "Bearer {{ $jwt }}" }
-                }
-                let rssUrl = `{{ $apiUrl }}/${entityId}`
-                const flashDiv = document.querySelector("[flash]")
-                try {
-                    const resp = await fetch(rssUrl, options)
-                    const json = await resp.json()
-                    
-                    if (resp.status >= 400) {
-                        throw {resp, json}
-                    }
-
-                    flashDiv.innerHTML = json.resp
-                    flashDiv.classList.add("success")
-                    flashDiv.classList.remove("hidden", "error")
-                    table.ajax.reload()
-
-                } catch (err) {
-                    switch (err.resp.status) {
-                        case 404:
-                            errMsg = `Não foi encontrado um registro com o ID ${entityId}`
-                            break;
-                        default:
-                            errMsg = `${err.json.resp}.<br>Detalhes: ${err.json.data.errorInfo}`
-                            if (errMsg.includes('a foreign key constraint fails')) {
-                                errMsg = `O registro não pôde ser excluído, pois possui outros registros vinculados.`
-                            }
-                            break;
-                    }
-
-                    flashDiv.innerHTML = errMsg
-                    flashDiv.classList.add("error")
-                    flashDiv.classList.remove("hidden", "success")
-                }
+                apiDelete(params)
             });
         })
     </script>
