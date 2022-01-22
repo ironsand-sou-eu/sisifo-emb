@@ -51,6 +51,33 @@ class EspaiderUfsController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Nova Unidade da Federação (redação Espaider)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/espaider-ufs'),
+            'apiUrl' => url('/api/espaider-ufs'),
+            'displayFields' => [
+                0 => ['name' => 'nome_uf_espaider', 'caption' => 'Unidade da Federação (Espaider)', 'inputType' => 'text'],
+                1 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

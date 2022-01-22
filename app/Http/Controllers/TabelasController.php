@@ -50,6 +50,32 @@ class TabelasController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Nova tabela (redação Sísifo)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/tabelas'),
+            'apiUrl' => url('/api/tabelas'),
+            'displayFields' => [
+                0 => ['name' => 'nome_tabela', 'caption' => 'Nome da tabela', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

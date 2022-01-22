@@ -55,6 +55,34 @@ class EspaiderComarcasController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $espaiderUfs = EspaiderUf::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Nova comarca (redação Espaider)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/espaider-comarcas'),
+            'apiUrl' => url('/api/espaider-comarcas'),
+            'displayFields' => [
+                0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text'],
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider' ]
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

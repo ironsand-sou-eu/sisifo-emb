@@ -1,5 +1,5 @@
 <div class="form-input field my-4">
-    <input list="{{ $name . 's' }}" name="{{ $name }}" id="{{ $name }}" value="{{ $selected }}">
+    <input list="{{ $name . 's' }}" name="{{ $name }}" id="{{ $name }}" value="{{ $selected ?? '' }}">
     <label for="{{ $name }}" data-title="{{ $caption }}"></label>
     <datalist id="{{ $name . 's' }}">
         @foreach ($options as $option)

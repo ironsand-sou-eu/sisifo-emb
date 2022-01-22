@@ -56,6 +56,7 @@
                     <div class="card-body pb-0">
                         <ul class="mb-0">
                             <li><a href="{{ url('/users') }}" class='collapse-item'>Usuários do Sísifo</a></li>
+                            <!-- <li><a href="{{ url('/permissoes') }}" class='collapse-item'>Permissões</a></li> -->
                             <li><a href="{{ url('/log-alteracoes') }}" class='collapse-item'>Logs</a></li>
                             <li><a href="{{ url('/tabelas') }}" class='collapse-item'>Tabelas</a></li>
                             <li><a href="{{ url('/campos') }}" class='collapse-item'>Campos</a></li>

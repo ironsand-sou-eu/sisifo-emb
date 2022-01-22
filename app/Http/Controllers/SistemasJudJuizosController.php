@@ -52,6 +52,34 @@ class SistemasJudJuizosController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $espaiderJuizos = EspaiderJuizo::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Novo juízo (redação de outros sistemas)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/sistemas-jud-juizos'),
+            'apiUrl' => url('/api/sistemas-jud-juizo'),
+            'displayFields' => [
+                0 => ['name' => 'nome_juizo_sistemas_jud', 'caption' => 'Juízo (outros sistemas)', 'inputType' => 'text'],
+                1 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider' ],
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

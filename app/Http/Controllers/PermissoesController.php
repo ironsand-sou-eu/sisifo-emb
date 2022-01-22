@@ -57,6 +57,37 @@ class PermissoesController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $users = User::all();
+        $tabelas = Tabela::all();
+        $tiposPermissao = TipoPermissao::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Nova permissão',
+            'description' => 'Use esta tela para aplicar uma permissão a um usuário.',
+            'url' => url('/permissoes'),
+            'apiUrl' => url('/api/permissoes'),
+            'displayFields' => [
+                0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido'],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela'],
+                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

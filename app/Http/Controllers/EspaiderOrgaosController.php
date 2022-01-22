@@ -51,6 +51,33 @@ class EspaiderOrgaosController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Novo órgão (redação Espaider)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/espaider-orgaos'),
+            'apiUrl' => url('/api/espaider-orgaos'),
+            'displayFields' => [
+                0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Órgão (Espaider)', 'inputType' => 'text'],
+                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -74,7 +101,7 @@ class EspaiderOrgaosController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Nome do órgão', 'inputType' => 'text'],
-                0 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text']
+                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text']
             ]
         ];
 

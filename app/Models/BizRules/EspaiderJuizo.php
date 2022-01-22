@@ -13,9 +13,9 @@ class EspaiderJuizo extends Model
     protected $primarykey = "id";
     protected $fillable = [
         "nome_juizo_espaider",
-        "slug",
         "redacao_cabecalho_juizo",
         "redacao_resumida_juizo",
+        "slug",
         "espaider_comarca_id",
         "espaider_orgao_id"
     ];

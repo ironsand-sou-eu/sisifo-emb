@@ -56,6 +56,39 @@ class EspaiderJuizosController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $espaiderComarcas = EspaiderComarca::all();
+        $espaiderOrgaos = EspaiderOrgao::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Novo juízo (redação Espaider)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/espaider-juizos'),
+            'apiUrl' => url('/api/espaider-juizos'),
+            'displayFields' => [
+                0 => ['name' => 'nome_juizo_espaider', 'caption' => 'Nome do juízo (Espaider)', 'inputType' => 'text'],
+                1 => ['name' => 'redacao_cabecalho_juizo', 'caption' => 'Texto de cabeçalho de peças', 'inputType' => 'text'],
+                2 => ['name' => 'redacao_resumida_juizo', 'caption' => 'Texto resumido para peças', 'inputType' => 'text'],
+                3 => ['name' => 'slug', 'caption' => 'Slug (uso interno do sistema)', 'inputType' => 'text'],
+                4 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider'],
+                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

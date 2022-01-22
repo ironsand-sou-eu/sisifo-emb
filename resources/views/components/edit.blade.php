@@ -13,8 +13,8 @@
             </div>
         </div>
         <aside class="column ml-3">
-            <x-back-button url="{{ $url }}" />
-            <x-trash-button id="{{ $id }}" name="{{ $entity->{$displayFields[0]['name']} }}" apiUrl="{{ $apiUrl }}" url="{{ $url }}" jwt="{{ $jwt }}" />
+            <x-buttons.back url="{{ $url }}" />
+            <x-buttons.trash id="{{ $id }}" name="{{ $entity->{$displayFields[0]['name']} }}" apiUrl="{{ $apiUrl }}" url="{{ $url }}" jwt="{{ $jwt }}" />
         </aside>
     </div>
 
@@ -24,7 +24,6 @@
                 <form name="update" action="{{ $url }}" method="post" class="w-100" update-form>
                     <fieldset class="position-relative">
                         @csrf
-                        {{-- @method('PUT') --}}
 
                         @foreach ($displayFields as $field)
                             @switch ($field['inputType'])
@@ -37,7 +36,7 @@
                             @endswitch
                         @endforeach
                     </fieldset>
-                    <x-save-button :params="['id' => $id, 'apiUrl' => $apiUrl, 'jwt' => $jwt]" />
+                    <x-buttons.update :params="['id' => $id, 'apiUrl' => $apiUrl, 'url' => $url, 'jwt' => $jwt]" />
                 </form>
             </div>
         </div>

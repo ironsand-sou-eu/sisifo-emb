@@ -50,7 +50,36 @@ class EseloConfigsController extends Controller
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
-        /**
+    /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Nova configuração do Sísifo DAJEs',
+            'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha' . 
+                'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para' . 
+                'compreender, procure o financeiro da PPJ',
+            'url' => url('/eselo-configs'),
+            'apiUrl' => url('/api/eselo-configs'),
+            'displayFields' => [
+                0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text'],
+                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -69,7 +98,7 @@ class EseloConfigsController extends Controller
             'title' => 'Editando configuração do Sísifo DAJEs',
             'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha' . 
                 'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para' . 
-                'compreender, procure o financeiro da PPJ',
+                'compreender, procure o financeiro da PPJ.',
             'id' => $id,
             'url' => url('/eselo-configs'),
             'apiUrl' => url('/api/eselo-configs'),

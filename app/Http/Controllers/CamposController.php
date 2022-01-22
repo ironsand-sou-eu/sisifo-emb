@@ -54,7 +54,35 @@ class CamposController extends Controller
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
-        /**
+    /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $tabelas = Tabela::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Novo campo (redação Sísifo)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'url' => url('/campos'),
+            'apiUrl' => url('/api/campos'),
+            'displayFields' => [
+                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text'],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela' ],
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

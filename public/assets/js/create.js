@@ -1,7 +1,7 @@
-async function apiUpdate(params) {
+async function apiCreate(params) {
     params.e?.preventDefault()
 
-    const form = document.querySelector('[update-form]')
+    const form = document.querySelector('[create-form]')
     const updateData = new FormData(form)
     // Mudar os textos de belongsTo para IDs
     form.querySelectorAll('datalist').forEach(element => {
@@ -14,15 +14,14 @@ async function apiUpdate(params) {
     })
 
     const options = {
-        method: 'PUT',
+        method: 'POST',
         headers: { "Authorization": `Bearer ${params.jwt}` },
         body: new URLSearchParams(updateData)
     }
     
-    let rssUrl = `${params.apiUrl}/${params.id}`
     const flashDiv = document.querySelector("[flash]")
     try {
-        const resp = await fetch(rssUrl, options)
+        const resp = await fetch(params.apiUrl, options)
         const json = await resp.json()
         
         if (resp.status >= 400) {

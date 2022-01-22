@@ -14,7 +14,7 @@
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
                         <div class="col-sm-12">
-                            <x-new-button />
+                            <x-buttons.new url='{{ "{$url}/novo" }}'/>
                             <table class="display dataTable dtr-inline" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <thead>
                                     <tr role="row">

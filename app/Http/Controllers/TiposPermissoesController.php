@@ -50,6 +50,33 @@ class TiposPermissoesController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Novo tipo de permissão',
+            'description' => 'Esta tabela serve para criar um novo tipo/nível de permissão. Para aplicar permissões' .
+                'a usuários concretos, use o menu "Permissões".',
+            'url' => url('/tipos-permissoes'),
+            'apiUrl' => url('/api/tipos-permissoes'),
+            'displayFields' => [
+                0 => ['name' => 'nome_permissao', 'caption' => 'Nome da permissão', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

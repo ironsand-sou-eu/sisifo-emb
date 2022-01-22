@@ -59,6 +59,36 @@ class UsersController extends Controller
     }
 
     /**
+     * Open resource's creation form in frontend.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\View
+     */
+    public function create(Request $request)
+    {
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $generos = Genero::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Novo usuário',
+            'description' => '',
+            'url' => url('/users'),
+            'apiUrl' => url('/api/users'),
+            'displayFields' => [
+                0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
+                1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
+                2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero']
+            ]
+        ];
+
+        return view("components.new", $params);
+    }
+
+    /**
      * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request

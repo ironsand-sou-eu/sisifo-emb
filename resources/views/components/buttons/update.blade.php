@@ -18,6 +18,7 @@
             e: e,
             id: "{{ $params['id'] }}",
             apiUrl: "{{ $params['apiUrl'] }}",
+            url: "{{ $params['url'] }}",
             jwt: "{{ $params['jwt'] }}",
         }
         apiUpdate(params)
