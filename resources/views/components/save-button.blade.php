@@ -7,10 +7,19 @@
     </a>
 </div>
 
-<script type="text/javascript" src="/assets/js/.js"></script>
+<script type="text/javascript" src="/assets/js/update.js"></script>
 <script type="text/javascript">
-    const delBtn = document.querySelector('#save_button_wrapper')
-    delBtn.onclick = ev => {
-
-    };
+    const saveBtn = document.querySelector('#save_button_wrapper')
+    const form = document.querySelector('[update-form]')
+    
+    saveBtn.addEventListener('click', e => {
+        e.preventDefault
+        let params = {
+            e: e,
+            id: "{{ $params['id'] }}",
+            apiUrl: "{{ $params['apiUrl'] }}",
+            jwt: "{{ $params['jwt'] }}",
+        }
+        apiUpdate(params)
+    })
 </script>

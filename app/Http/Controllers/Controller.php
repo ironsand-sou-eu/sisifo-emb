@@ -24,7 +24,7 @@ class Controller extends BaseController
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => __('db.create.success'), "createdEntity" => $validationResponse], 201);
+        return $this->jsonResponse(["resp" => __('db.create.success'), "createdEntity" => $validationResponse], 201);
     }
 
     protected function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules) {
@@ -39,13 +39,13 @@ class Controller extends BaseController
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => __('db.update.success'), "updatedEntity" => $validationResponse], 200);
+        return $this->jsonResponse(["resp" => __('db.update.success'), "updatedEntity" => $validationResponse], 200);
     }
 
     private function successfullyValidated(Request $request, $rules, &$validationResponse) {
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
-            $validationResponse = response()->json(["resp" => __('validation.genericError'), $validation->errors()], 422);
+            $validationResponse = $this->jsonResponse(["resp" => __('validation.genericError'), $validation->errors()], 422);
             return false;
         } else {
             $validationResponse = $validation->validated();
@@ -60,14 +60,42 @@ class Controller extends BaseController
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
-        return response()->json(["resp" => __('db.delete.success'), "deletedEntity" => $entity], 200);
+        return $this->jsonResponse(["resp" => __('db.delete.success'), "deletedEntity" => $entity], 200);
     }
 
     protected function dbErrorResponse($th) {
-        return response()->json(["resp" => __('db.error'), "data" => $th], 500);
+        return $this->jsonResponse(["resp" => __('db.error'), "data" => $th], 500);
     }
 
     protected function isApiRoute(Request $request) {
         return $request->route()->getPrefix() === 'api';
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request $request 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Request $request, $id)
+    {
+        if ($this->isApiRoute($request)) {
+            $entity = $this->mainModel::findOrFail($id);
+            return $this->jsonResponse(["entity" => $entity]);
+        } else {
+            return $this->edit($request, $id);
+        }
+    }
+
+    protected function jsonResponse($data, $code = 200)
+    {
+        return response()->json(
+            $data,
+            $code,
+            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
 }

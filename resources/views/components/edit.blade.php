@@ -1,7 +1,7 @@
 <x-layout>
     <!-- Page Heading -->
     <div class="header-wrapper mb-3">
-        <div>
+        <div class="w-100">
             <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
             <p class="mb-2">{{ $description }}</p>
             <div class="header-info">
@@ -21,19 +21,23 @@
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="row col-sm-12">
-                <form action="" method="post" class="w-100">
+                <form name="update" action="{{ $url }}" method="post" class="w-100" update-form>
                     <fieldset class="position-relative">
                         @csrf
-                        @method('PUT')
+                        {{-- @method('PUT') --}}
 
                         @foreach ($displayFields as $field)
-                        <div class="form-input field mt-2">
-                            <input type="{{ $field['inputType'] }}" name="{{ $field['name'] }}" id="{{ $field['name'] }}" value="{{ $entity->{$field['name']} }}">
-                            <label for="{{ $field['name'] }}" data-title="{{ $field['tooltip'] }}"></label>
-                        </div>
+                            @switch ($field['inputType'])
+                            @case ('text')
+                                <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" value="{{ $entity->{$field['name']} }}" />
+                                @break
+                            @case ('select')
+                                <x-forms.select name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" />
+                                @break
+                            @endswitch
                         @endforeach
                     </fieldset>
-                    <x-save-button />
+                    <x-save-button :params="['id' => $id, 'apiUrl' => $apiUrl, 'jwt' => $jwt]" />
                 </form>
             </div>
         </div>

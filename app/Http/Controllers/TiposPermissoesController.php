@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class TiposPermissoesController extends Controller
 {
+    protected $mainModel = 'App\Models\Access\TipoPermissao';
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,7 @@ class TiposPermissoesController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = TipoPermissao::all();
+            $fullList = $this->mainModel::all();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -44,19 +46,38 @@ class TiposPermissoesController extends Controller
         $validationRules = [
             "nome_permissao" => ["required", "max:10", "unique:tipos_permissoes"],
         ];
-        return $this->validateAndStore($request, TipoPermissao::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = TipoPermissao::findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando tipo de permissão',
+            'description' => '',
+            'id' => $id,
+            'name' => $entity->nome_permissao,
+            'url' => url('/tipos-permissoes'),
+            'apiUrl' => url('/api/tipos-permissoes'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_permissao', 'caption' => 'Tipo de permissão', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
     /**
@@ -69,9 +90,9 @@ class TiposPermissoesController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_permissao" => ["max:10", "unique:tipos_permissoes"],
+            "nome_permissao" => ["max:10"],
         ];
-        return $this->validateAndUpdate($request, TipoPermissao::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -82,6 +103,6 @@ class TiposPermissoesController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(TipoPermissao::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

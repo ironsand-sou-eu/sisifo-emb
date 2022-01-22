@@ -144,7 +144,7 @@
       position: absolute;
       top: 0;
       left: 15px;
-      line-height: 30px;
+      line-height: 40px;
       font-size: 14px;
       color: #777;
       transition: 300ms all;
@@ -152,7 +152,7 @@
 
     .field input {
       width: 100%;
-      line-height: 30px;
+      line-height: 40px;
       padding: 0 8px;
       box-sizing: border-box;
       font-size: 14px;

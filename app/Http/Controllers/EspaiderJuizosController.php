@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class EspaiderJuizosController extends Controller
 {
+    protected $mainModel = 'App\Models\BizRules\EspaiderJuizo';
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,7 @@ class EspaiderJuizosController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = EspaiderJuizo::with(["espaiderComarca", "espaiderOrgao"])->get();
+            $fullList = $this->mainModel::with(["espaiderComarca", "espaiderOrgao"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -48,22 +50,44 @@ class EspaiderJuizosController extends Controller
             "espaider_comarca_id" => ["required", "numeric"],
             "espaider_orgao_id" => ["required", "numeric"]
         ];
-        return $this->validateAndStore($request, EspaiderJuizo::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = EspaiderJuizo::with(["espaiderComarca", "espaiderOrgao"])->findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando juízo (redação Espaider)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'id' => $id,
+            'name' => $entity->nome_juizo_espaider,
+            'url' => url('/espaider-juizos'),
+            'apiUrl' => url('/api/espaider-juizos'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_juizo_espaider', 'caption' => 'Nome do juízo (Espaider)', 'inputType' => 'text'],
+                1 => ['name' => 'redacao_cabecalho_juizo', 'caption' => 'Texto de cabeçalho de peças', 'inputType' => 'text'],
+                2 => ['name' => 'redacao_resumida_juizo', 'caption' => 'Texto resumido para peças', 'inputType' => 'text'],
+                3 => ['name' => 'slug', 'caption' => 'Slug (uso interno do sistema)', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -73,13 +97,13 @@ class EspaiderJuizosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_juizo_espaider" => ["min:5", "max:120", "unique:espaider_juizos"],
+            "nome_juizo_espaider" => ["min:5", "max:120"],
             "redacao_cabecalho_juizo" => ["max:150"],
             "redacao_resumida_juizo" => ["max:60"],
             "espaider_comarca_id" => ["numeric"],
             "espaider_orgao_id" => ["numeric"]
         ];
-        return $this->validateAndUpdate($request, EspaiderJuizo::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -90,6 +114,6 @@ class EspaiderJuizosController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(EspaiderJuizo::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

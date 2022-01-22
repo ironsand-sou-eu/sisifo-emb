@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class LogAlteracoesController extends Controller
 {
+    protected $mainModel = 'App\Models\Access\LogAlteracao';
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,7 @@ class LogAlteracoesController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = LogAlteracao::with(["campo", "alteradoPor"])->get();
+            $fullList = $this->mainModel::with(["campo", "alteradoPor"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -48,22 +50,43 @@ class LogAlteracoesController extends Controller
             "data_alteracao" => ["required", "date"],
             "alterado_por" => ["required", "numeric"]
         ];
-        return $this->validateAndStore($request, LogAlteracao::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = LogAlteracao::with(["campo", "alteradoPor"])->findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Visualizando registro de alteração',
+            'description' => '',
+            'id' => $id,
+            'name' => $entity->nome_comarca_eselo,
+            'url' => url('/log-alteracoes'),
+            'apiUrl' => url('/api/log-alteracoes'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'valor_anterior', 'caption' => 'Valor original', 'inputType' => 'text'],
+                1 => ['name' => 'valor_atual', 'caption' => 'Valor alterado', 'inputType' => 'text'],
+                2 => ['name' => 'data_alteracao', 'caption' => 'Data da alteração', 'inputType' => 'datetime']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -79,7 +102,7 @@ class LogAlteracoesController extends Controller
             "data_alteracao" => ["date"],
             "alterado_por" => ["numeric"]
         ];
-        return $this->validateAndUpdate($request, LogAlteracao::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -90,6 +113,6 @@ class LogAlteracoesController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(LogAlteracao::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

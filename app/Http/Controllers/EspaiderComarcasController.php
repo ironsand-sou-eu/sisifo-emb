@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class EspaiderComarcasController extends Controller
 {
+    protected $mainModel = 'App\Models\BizRules\EspaiderComarca';
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class EspaiderComarcasController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = EspaiderComarca::with(["espaiderUf"])->get();
+            $fullList = $this->mainModel::with(["espaiderUf"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -48,22 +50,41 @@ class EspaiderComarcasController extends Controller
             "espaider_uf_id" => ["required", "size:2", new UniqueCombinationRule(EspaiderComarca::class, ["nome_comarca_espaider", $nomeComarca])]
         ];
 
-        return $this->validateAndStore($request, EspaiderComarca::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = EspaiderComarca::with(["espaiderUf"])->findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando comarca (redação Espaider)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'id' => $id,
+            'name' => $entity->nome_comarca_eselo,
+            'url' => url('/espaider-comarcas'),
+            'apiUrl' => url('/api/espaider-comarcas'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -78,7 +99,7 @@ class EspaiderComarcasController extends Controller
             "espaider_uf_id" => ["size:2", new UniqueCombinationRule(EspaiderComarca::class, ["nome_comarca_espaider", $nomeComarca])]
         ];
 
-        return $this->validateAndUpdate($request, EspaiderComarca::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -89,6 +110,6 @@ class EspaiderComarcasController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(EspaiderComarca::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

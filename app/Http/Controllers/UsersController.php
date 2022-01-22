@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\User;
+use App\Models\Access\Genero;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+    protected $mainModel = 'App\Models\Access\User';
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +18,7 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = User::with(["generoDeclarado"])->get();
+            $fullList = $this->mainModel::with(["generoDeclarado"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -52,19 +55,42 @@ class UsersController extends Controller
             "ativo" => ["required", "boolean"],
             "avatar_path" => ["nullable"]
         ];
-        return $this->validateAndStore($request, User::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = User::with(["generoDeclarado"])->findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::with('generoDeclarado')->find($id);
+        $generos = Genero::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando Usuário',
+            'description' => '',
+            'id' => $id,
+            'name' => $entity->nome_escolhido,
+            'url' => url('/users'),
+            'apiUrl' => url('/api/users'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
+                1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
+                2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos]
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
     /**
@@ -80,12 +106,12 @@ class UsersController extends Controller
             "nome_completo" => ["min:5", "max:100"],
             "nome_escolhido" => ["min:2", "max:50"],
             "genero_declarado_id" => ["numeric"],
-            "email" => ["email", "unique:users"],
+            "email" => ["email"],
             "email_verified_at" => ["date"],
             "remember_token" => ["max:100"],
             "ativo" => ["boolean"]
         ];
-        return $this->validateAndUpdate($request, User::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -96,6 +122,6 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(User::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

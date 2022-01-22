@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BizRules\EspaiderJuizo;
 use App\Models\BizRules\SistemasJudJuizo;
 use Illuminate\Http\Request;
 
 class SistemasJudJuizosController extends Controller
 {
+    protected $mainModel = 'App\Models\BizRules\SistemasJudJuizo';
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +17,7 @@ class SistemasJudJuizosController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = SistemasJudJuizo::with(["espaiderJuizo"])->get();
+            $fullList = $this->mainModel::with(["espaiderJuizo"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -46,22 +47,41 @@ class SistemasJudJuizosController extends Controller
             "nome_juizo_sistemas_jud" => ["required", "max:120", "unique:sistemas_jud_juizos"],
             "espaider_juizo_id" => ["required", "numeric"]
         ];
-        return $this->validateAndStore($request, SistemasJudJuizo::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = SistemasJudJuizo::with(["espaiderJuizo"])->findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando juízos (Sistemas do Judiciário)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'id' => $id,
+            'name' => $entity->nome_comarca_eselo,
+            'url' => url('/sistemas-jud-juizos'),
+            'apiUrl' => url('/api/sistemas-jud-juizos'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_juizo_sistemas_jud', 'caption' => 'Juízo (sistema do Judiciário)', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -71,10 +91,10 @@ class SistemasJudJuizosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_juizo_sistemas_jud" => ["max:120", "unique:sistemas_jud_juizos"],
+            "nome_juizo_sistemas_jud" => ["max:120"],
             "espaider_juizo_id" => ["numeric"]
         ];
-        return $this->validateAndUpdate($request, SistemasJudJuizo::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -85,6 +105,6 @@ class SistemasJudJuizosController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(SistemasJudJuizo::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

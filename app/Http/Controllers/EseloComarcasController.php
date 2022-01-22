@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class EseloComarcasController extends Controller
 {
+    protected $mainModel = 'App\Models\BizRules\EseloComarca';
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,7 @@ class EseloComarcasController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = EseloComarca::all();
+            $fullList = $this->mainModel::all();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -36,7 +38,7 @@ class EseloComarcasController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,41 +46,25 @@ class EseloComarcasController extends Controller
         $validationRules = [
             "nome_comarca_eselo" => ["required", "min:2", "max:40", "unique:eselo_comarcas"]
         ];
-        return $this->validateAndStore($request, EseloComarca::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $id)
-    {
-        if ($this->isApiRoute($request)) {
-            $entity = EseloComarca::findOrFail($id);
-            return response()->json(["entity" => $entity]);
-        } else {
-            return $this->edit($request, $id);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Open the specified resource for edition in frontend.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
     public function edit(Request $request, $id)
     {
-        if ($this->isApiRoute($request)) 
+        if ($this->isApiRoute($request)) {
             return response('', 404);
+        }
 
-        $jwt = $request->cookie('jat');
-        $entity = EseloComarca::find($id);
-        return view("components.edit", [
-            'jwt' => $jwt,
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
             'title' => 'Editando comarca (redação e-Selo)',
             'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
             'id' => $id,
@@ -87,9 +73,11 @@ class EseloComarcasController extends Controller
             'apiUrl' => url('/api/eselo-comarcas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_comarca_eselo', 'tooltip' => 'Comarca (e-Selo)', 'inputType' => 'text']
+                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text']
             ]
-        ]);
+        ];
+
+        return view("components.edit", $params);
     }
 
     /**
@@ -102,9 +90,9 @@ class EseloComarcasController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_comarca_eselo" => ["min:2", "max:40", "unique:eselo_comarcas"]
+            "nome_comarca_eselo" => ["min:2", "max:40"]
         ];
-        return $this->validateAndUpdate($request, EseloComarca::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -115,6 +103,6 @@ class EseloComarcasController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(EseloComarca::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

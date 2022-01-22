@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class EspaiderUfsController extends Controller
 {
+    protected $mainModel = 'App\Models\BizRules\EspaiderUf';
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,7 @@ class EspaiderUfsController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = EspaiderUf::all();
+            $fullList = $this->mainModel::all();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -45,22 +47,42 @@ class EspaiderUfsController extends Controller
             "nome_uf_espaider" => ["required", "min:4", "max:25", "unique:espaider_ufs"],
             "sigla" => ["required", "regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
         ];
-        return $this->validateAndStore($request, EspaiderUf::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = EspaiderUf::findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando UF (redação do Espaider)',
+            'description' => 'Unidades da Federação',
+            'id' => $id,
+            'name' => $entity->nome_uf_espaider,
+            'url' => url('/espaider-ufs'),
+            'apiUrl' => url('/api/espaider-ufs'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_uf_espaider', 'caption' => 'Nome', 'inputType' => 'text'],
+                0 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -70,10 +92,10 @@ class EspaiderUfsController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_uf_espaider" => ["min:4", "max:25", "unique:espaider_ufs"],
-            "sigla" => ["regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
+            "nome_uf_espaider" => ["min:4", "max:25"],
+            "sigla" => ["regex:/^[A-Z]{2}$/"],
         ];
-        return $this->validateAndUpdate($request, EspaiderUf::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -84,6 +106,6 @@ class EspaiderUfsController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(EspaiderUf::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

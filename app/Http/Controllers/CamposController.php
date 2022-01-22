@@ -8,6 +8,8 @@ use App\Rules\UniqueCombinationRule;
 
 class CamposController extends Controller
 {
+    protected $mainModel = 'App\Models\Access\Campo';
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CamposController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = Campo::with(["tabela"])->get();
+            $fullList = $this->mainModel::with(["tabela"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -45,25 +47,44 @@ class CamposController extends Controller
         $nomeCampo = $request->input("nome_campo");
         $validationRules = [
             "nome_campo" => ["required", "max:191"],
-            "tabela_id" => ["required", "numeric", new UniqueCombinationRule(Campo::class, ['nome_campo', $nomeCampo])]
+            "tabela_id" => ["required", "numeric", new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])]
         ];
 
-        return $this->validateAndStore($request, Campo::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
-    /**
-     * Display the specified resource.
+        /**
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = Campo::findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando campo',
+            'description' => '',
+            'id' => $id,
+            'name' => $entity->nome_comarca_eselo,
+            'url' => url('/campos'),
+            'apiUrl' => url('/api/campos'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -75,10 +96,10 @@ class CamposController extends Controller
         $nomeCampo = $request->input("nome_campo");
         $validationRules = [
             "nome_campo" => ["max:191"],
-            "tabela_id" => ["numeric", new UniqueCombinationRule(Campo::class, ['nome_campo', $nomeCampo])]
+            "tabela_id" => ["numeric", new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])]
         ];
 
-        return $this->validateAndUpdate($request, Campo::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -89,6 +110,6 @@ class CamposController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(Campo::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }

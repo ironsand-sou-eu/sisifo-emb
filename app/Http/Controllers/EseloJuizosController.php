@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class EseloJuizosController extends Controller
 {
+    protected $mainModel = 'App\Models\BizRules\EseloJuizo';
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class EseloJuizosController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = EseloJuizo::with(["eseloComarca", "espaiderJuizo"])->get();
+            $fullList = $this->mainModel::with(["eseloComarca", "espaiderJuizo"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -47,22 +49,41 @@ class EseloJuizosController extends Controller
             "eselo_comarca_id" => ["required", "numeric"],
             "espaider_juizo_id" => ["required", "numeric"]
         ];
-        return $this->validateAndStore($request, EseloJuizo::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
-    /**
-     * Display the specified resource.
+        /**
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = EseloJuizo::with(["eseloComarca", "espaiderJuizo"])->findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando juízos (redação e-Selo)',
+            'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
+            'id' => $id,
+            'name' => $entity->nome_juizo_eselo,
+            'url' => url('/eselo-juizos'),
+            'apiUrl' => url('/api/eselo-juizos'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -72,11 +93,11 @@ class EseloJuizosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_juizo_eselo" => ["min:2", "max:150", "unique:eselo_juizos"],
+            "nome_juizo_eselo" => ["min:2", "max:150"],
             "eselo_comarca_id" => ["numeric"],
             "espaider_juizo_id" => ["numeric"]
         ];
-        return $this->validateAndUpdate($request, EseloJuizo::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -87,7 +108,7 @@ class EseloJuizosController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(EseloJuizo::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 
     /**
@@ -99,7 +120,7 @@ class EseloJuizosController extends Controller
     public function getEseloInfoFromEspaiderJuizoSlug($slug)
     {
         $espaiderJuizo = EspaiderJuizo::where('slug', $slug)->first();
-        $eseloJuizos = EseloJuizo::with('eseloComarca')->whereBelongsTo($espaiderJuizo)->get();
+        $eseloJuizos = $this->mainModel::with('eseloComarca')->whereBelongsTo($espaiderJuizo)->get();
 
         foreach ($eseloJuizos as $eseloJuizo) {
             $resp[] = [

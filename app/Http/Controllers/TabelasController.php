@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Access\Tabela;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class TabelasController extends Controller
 {
+    protected $mainModel = 'App\Models\Access\Tabela';
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +17,7 @@ class TabelasController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = Tabela::all();
+            $fullList = $this->mainModel::all();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -45,22 +46,41 @@ class TabelasController extends Controller
         $validationRules = [
             "nome_tabela" => ["required", "max:60", "unique:tabelas"]
         ];
-        return $this->validateAndStore($request, Tabela::class, $validationRules);
+        return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
     /**
-     * Display the specified resource.
+     * Open the specified resource for edition in frontend.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Support\Facades\View
      */
-    public function show($id)
+    public function edit(Request $request, $id)
     {
-        $entity = Tabela::findOrFail($id);
-        return response()->json(["entity" => $entity]);
+        if ($this->isApiRoute($request)) {
+            return response('', 404);
+        }
+
+        $entity = $this->mainModel::find($id);
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Editando tabela',
+            'description' => '',
+            'id' => $id,
+            'name' => $entity->nome_comarca_eselo,
+            'url' => url('/tabelas'),
+            'apiUrl' => url('/api/tabelas'),
+            'entity' => $entity,
+            'displayFields' => [
+                0 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text']
+            ]
+        ];
+
+        return view("components.edit", $params);
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -70,9 +90,9 @@ class TabelasController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_tabela" => ["max:60", "unique:tabelas"]
+            "nome_tabela" => ["max:60"]
         ];
-        return $this->validateAndUpdate($request, Tabela::class, $id, $validationRules);
+        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
     /**
@@ -83,6 +103,6 @@ class TabelasController extends Controller
      */
     public function destroy($id)
     {
-        return $this->delete(Tabela::class, $id);
+        return $this->delete($this->mainModel, $id);
     }
 }
