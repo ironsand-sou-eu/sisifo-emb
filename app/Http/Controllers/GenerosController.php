@@ -68,7 +68,6 @@ class GenerosController extends Controller
             'title' => 'Editando gênero',
             'description' => '',
             'id' => $id,
-            'name' => $entity->genero,
             'url' => url('/generos'),
             'apiUrl' => url('/api/generos'),
             'entity' => $entity,

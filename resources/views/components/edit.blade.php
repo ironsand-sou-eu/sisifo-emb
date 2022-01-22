@@ -5,7 +5,7 @@
             <h1 class="h3 mb-2 text-gray-800">{{ $title }}</h1>
             <p class="mb-2">{{ $description }}</p>
             <div class="header-info">
-                <div class="w-100">{{ $entity->{$displayFields[0]['name']} }}</div>
+                <div class="w-100 entry-name">{{ $entity->{$displayFields[0]['name']} }}</div>
                 <div class="dates column">
                     <p>Atualizado em: <span>{{ $entity->updated_at ?? "Original" }}</span></p>
                     <p>Criado em: <span>{{ $entity->created_at ?? "Original" }}</span></p>
@@ -14,7 +14,7 @@
         </div>
         <aside class="column ml-3">
             <x-back-button url="{{ $url }}" />
-            <x-trash-button id="{{ $id }}" name="{{ $name }}" apiUrl="{{ $apiUrl }}" jwt="{{ $jwt }}" />
+            <x-trash-button id="{{ $id }}" name="{{ $entity->{$displayFields[0]['name']} }}" apiUrl="{{ $apiUrl }}" url="{{ $url }}" jwt="{{ $jwt }}" />
         </aside>
     </div>
 
@@ -32,7 +32,7 @@
                                 <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" value="{{ $entity->{$field['name']} }}" />
                                 @break
                             @case ('select')
-                                <x-forms.select name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" />
+                                <x-forms.select name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" id="{{ $field['id'] }}" value="{{ $field['value'] }}" selected="{{ $field['selected'] }}" />
                                 @break
                             @endswitch
                         @endforeach

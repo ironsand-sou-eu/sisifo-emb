@@ -5,7 +5,7 @@ async function apiUpdate(params) {
     const updateData = new FormData(form)
     // Mudar os textos de belongsTo para IDs
     form.querySelectorAll('datalist').forEach(element => {
-        const bindedInput = element.previousElementSibling
+        const bindedInput = element.previousElementSibling.previousElementSibling
         const selectedOption = element.options.namedItem(bindedInput.value);
         if (selectedOption) {
             const selectedId = selectedOption.getAttribute('data-id');
@@ -32,6 +32,7 @@ async function apiUpdate(params) {
         flashDiv.innerHTML = json.resp
         flashDiv.classList.add("success")
         flashDiv.classList.remove("hidden", "error")
+        // document.querySelector('.entry-name').innerHTML = 
 
     } catch (err) {
         errMsg = `${err.json.resp}.<br>Detalhes: ${JSON.stringify(err.json[0])}`

@@ -69,7 +69,6 @@ class EspaiderUfsController extends Controller
             'title' => 'Editando UF (redação do Espaider)',
             'description' => 'Unidades da Federação',
             'id' => $id,
-            'name' => $entity->nome_uf_espaider,
             'url' => url('/espaider-ufs'),
             'apiUrl' => url('/api/espaider-ufs'),
             'entity' => $entity,

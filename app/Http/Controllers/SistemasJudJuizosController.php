@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BizRules\SistemasJudJuizo;
+use App\Models\BizRules\EspaiderJuizo;
 use Illuminate\Http\Request;
 
 class SistemasJudJuizosController extends Controller
@@ -63,18 +64,19 @@ class SistemasJudJuizosController extends Controller
             return response('', 404);
         }
 
-        $entity = $this->mainModel::find($id);
+        $entity = $this->mainModel::with('espaiderJuizo')->find($id);
+        $espaiderJuizos = EspaiderJuizo::all();
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando juízos (Sistemas do Judiciário)',
             'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
             'id' => $id,
-            'name' => $entity->nome_comarca_eselo,
             'url' => url('/sistemas-jud-juizos'),
             'apiUrl' => url('/api/sistemas-jud-juizos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_juizo_sistemas_jud', 'caption' => 'Juízo (sistema do Judiciário)', 'inputType' => 'text']
+                0 => ['name' => 'nome_juizo_sistemas_jud', 'caption' => 'Juízo (sistema do Judiciário)', 'inputType' => 'text'],
+                1 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider ]
             ]
         ];
 

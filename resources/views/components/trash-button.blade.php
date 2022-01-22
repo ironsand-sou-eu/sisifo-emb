@@ -16,7 +16,8 @@
             id: "{{ $id }}",
             name: "{{ $name }}",
             apiUrl: "{{ $apiUrl }}",
-            jwt: "{{ $jwt }}"
+            jwt: "{{ $jwt }}",
+            redirect: "{{ $url }}"
         }
         apiDelete(params)
     };

@@ -68,7 +68,6 @@ class EseloComarcasController extends Controller
             'title' => 'Editando comarca (redação e-Selo)',
             'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
             'id' => $id,
-            'name' => $entity->nome_comarca_eselo,
             'url' => url('/eselo-comarcas'),
             'apiUrl' => url('/api/eselo-comarcas'),
             'entity' => $entity,

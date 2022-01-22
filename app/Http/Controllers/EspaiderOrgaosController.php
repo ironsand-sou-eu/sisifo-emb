@@ -69,7 +69,6 @@ class EspaiderOrgaosController extends Controller
             'title' => 'Editando órgão (redação Espaider)',
             'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
             'id' => $id,
-            'name' => $entity->nome_orgao_espaider,
             'url' => url('/espaider-orgaos'),
             'apiUrl' => url('/api/espaider-orgaos'),
             'entity' => $entity,

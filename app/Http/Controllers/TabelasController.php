@@ -68,7 +68,6 @@ class TabelasController extends Controller
             'title' => 'Editando tabela',
             'description' => '',
             'id' => $id,
-            'name' => $entity->nome_comarca_eselo,
             'url' => url('/tabelas'),
             'apiUrl' => url('/api/tabelas'),
             'entity' => $entity,

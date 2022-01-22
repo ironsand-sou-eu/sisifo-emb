@@ -68,7 +68,6 @@ class TiposPermissoesController extends Controller
             'title' => 'Editando tipo de permissão',
             'description' => '',
             'id' => $id,
-            'name' => $entity->nome_permissao,
             'url' => url('/tipos-permissoes'),
             'apiUrl' => url('/api/tipos-permissoes'),
             'entity' => $entity,

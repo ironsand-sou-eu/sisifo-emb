@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BizRules\EspaiderComarca;
+use App\Models\BizRules\EspaiderUf;
 use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
 
@@ -66,18 +67,19 @@ class EspaiderComarcasController extends Controller
             return response('', 404);
         }
 
-        $entity = $this->mainModel::find($id);
+        $entity = $this->mainModel::with('espaiderUf')->find($id);
+        $espaiderUfs = EspaiderUf::all();
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando comarca (redação Espaider)',
             'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
             'id' => $id,
-            'name' => $entity->nome_comarca_eselo,
             'url' => url('/espaider-comarcas'),
             'apiUrl' => url('/api/espaider-comarcas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text']
+                0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text'],
+                1 => ['name' => 'espaider_uf_id', 'caption' => 'Unidade da Federação', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider', 'selected' => $entity->espaiderUf->nome_uf_espaider ]
             ]
         ];
 

@@ -19,13 +19,17 @@ async function apiDelete(params) {
         if (resp.status >= 400) {
             throw {resp, json}
         }
-
+        
         flashDiv.innerHTML = json.resp
         flashDiv.classList.add("success")
         flashDiv.classList.remove("hidden", "error")
 
         params.table?.ajax.reload()
-
+        
+        if (params.redirect) {
+            window.location.href = params.redirect
+        }
+        
     } catch (err) {
         switch (err.resp.status) {
             case 404:

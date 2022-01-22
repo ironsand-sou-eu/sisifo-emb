@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Permissao;
+use App\Models\Access\User;
+use App\Models\Access\Tabela;
+use App\Models\Access\TipoPermissao;
 use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
 
@@ -18,7 +21,7 @@ class PermissoesController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all(); #with(["user", "tabela", "tipoPermissao"])->get();
+            $fullList = $this->mainModel::with(['user', 'tabela', 'tipoPermissao'])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
@@ -28,7 +31,7 @@ class PermissoesController extends Controller
                 'description' => 'Permissões dos usuários do Sísifo',
                 'url' => url('/permissoes'),
                 'apiUrl' => url('/api/permissoes'),
-                'dbFieldNames' => ["user.nome_escolhido", "tabela.nome_tabela", "permissao.nome_permissao"],
+                'dbFieldNames' => ["user.nome_escolhido", "tabela.nome_tabela", "tipo_permissao.nome_permissao"],
                 'dbNameField' => "user.nome_escolhido",
                 'dbIdField' => "id",
                 'tableColumnNames' => ['Usuário', 'Tabela', 'Permissão']
@@ -66,18 +69,22 @@ class PermissoesController extends Controller
             return response('', 404);
         }
 
-        $entity = $this->mainModel::find($id);
+        $entity = $this->mainModel::with(['user', 'tabela', 'tipoPermissao'])->find($id);
+        $users = User::all();
+        $tabelas = Tabela::all();
+        $tiposPermissao = TipoPermissao::all();
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando permissão',
             'description' => '',
             'id' => $id,
-            'name' => '',
             'url' => url('/permissoes'),
             'apiUrl' => url('/api/permissoes'),
             'entity' => $entity,
             'displayFields' => [
-                // 0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text']
+                0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido', 'selected' => $entity->user->nome_escolhido ],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela ],
+                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao', 'selected' => $entity->tipoPermissao->nome_permissao ]
             ]
         ];
 
@@ -97,7 +104,7 @@ class PermissoesController extends Controller
         $validationRules = [
             "user_id" => ["numeric"],
             "tipo_permissao_id" => ["numeric"],
-            "tabela_id" => ["numeric", new UniqueCombinationRule(Permissao::class, "user_id", $userId)]
+            "tabela_id" => ["numeric"]
         ];
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }

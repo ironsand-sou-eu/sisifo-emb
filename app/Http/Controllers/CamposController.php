@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Campo;
+use App\Models\Access\Tabela;
 use Illuminate\Http\Request;
 use App\Rules\UniqueCombinationRule;
 
@@ -66,18 +67,19 @@ class CamposController extends Controller
             return response('', 404);
         }
 
-        $entity = $this->mainModel::find($id);
+        $entity = $this->mainModel::with('tabelas')->find($id);
+        $tabelas = Tabela::all();
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando campo',
             'description' => '',
             'id' => $id,
-            'name' => $entity->nome_comarca_eselo,
             'url' => url('/campos'),
             'apiUrl' => url('/api/campos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text']
+                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text'],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela ]
             ]
         ];
 

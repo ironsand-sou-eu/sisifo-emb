@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BizRules\EseloJuizo;
+use App\Models\BizRules\EseloComarca;
 use App\Models\BizRules\EspaiderJuizo;
 use Illuminate\Http\Request;
 
@@ -65,18 +66,21 @@ class EseloJuizosController extends Controller
             return response('', 404);
         }
 
-        $entity = $this->mainModel::find($id);
+        $entity = $this->mainModel::with(['eseloComarca', 'espaiderJuizo'])->find($id);
+        $eseloComarcas = EseloComarca::all();
+        $espaiderJuizos = EspaiderJuizo::all();
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando juízos (redação e-Selo)',
             'description' => 'O nome deve estar escrito exatamente como está registrado naquele sistema.',
             'id' => $id,
-            'name' => $entity->nome_juizo_eselo,
             'url' => url('/eselo-juizos'),
             'apiUrl' => url('/api/eselo-juizos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text']
+                0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text'],
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo', 'selected' => $entity->eseloComarca->nome_comarca_eselo ],
+                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider ]
             ]
         ];
 

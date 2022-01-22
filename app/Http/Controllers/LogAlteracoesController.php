@@ -72,7 +72,6 @@ class LogAlteracoesController extends Controller
             'title' => 'Visualizando registro de alteração',
             'description' => '',
             'id' => $id,
-            'name' => $entity->nome_comarca_eselo,
             'url' => url('/log-alteracoes'),
             'apiUrl' => url('/api/log-alteracoes'),
             'entity' => $entity,

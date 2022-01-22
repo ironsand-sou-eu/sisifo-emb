@@ -78,7 +78,6 @@ class UsersController extends Controller
             'title' => 'Editando Usuário',
             'description' => '',
             'id' => $id,
-            'name' => $entity->nome_escolhido,
             'url' => url('/users'),
             'apiUrl' => url('/api/users'),
             'entity' => $entity,
@@ -86,7 +85,7 @@ class UsersController extends Controller
                 0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
                 1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
                 2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
-                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos]
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero]
             ]
         ];
 

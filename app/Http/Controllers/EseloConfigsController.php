@@ -71,7 +71,6 @@ class EseloConfigsController extends Controller
                 'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para' . 
                 'compreender, procure o financeiro da PPJ',
             'id' => $id,
-            'name' => $entity->nome,
             'url' => url('/eselo-configs'),
             'apiUrl' => url('/api/eselo-configs'),
             'entity' => $entity,
