@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CamposController;
+use App\Http\Controllers\DajeController;
 use App\Http\Controllers\EseloComarcasController;
 use App\Http\Controllers\EseloConfigsController;
 use App\Http\Controllers\EseloJuizosController;
@@ -61,6 +62,7 @@ Route::group([
             "tabelas" => TabelasController::class,
             "tipos-permissoes" => TiposPermissoesController::class,
             "users" => UsersController::class,
+            "dajes" => DajeController::class,
         ]);
     }
 );

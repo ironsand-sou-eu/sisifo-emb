@@ -74,7 +74,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout() {
-        auth()->logout();
+        auth()->logout(true);
         return response()->json(['resp' => __('auth.logoff')]);
     }
 
@@ -107,7 +107,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth()->factory()->getTTL() * 60 * 4,
             'user' => auth()->user()
         ]);
     }}
