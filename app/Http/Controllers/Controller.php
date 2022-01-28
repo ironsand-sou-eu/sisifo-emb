@@ -8,6 +8,11 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Access\Tabela;
+use App\Models\Access\Campo;
+use App\Models\Access\LogAlteracao;
+use App\Http\Middleware\FrontendAuth;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Controller extends BaseController
 {
@@ -35,10 +40,14 @@ class Controller extends BaseController
         
         try {
             $entity = $modelClassName::findOrFail($id);
+            $updatedData = $this->getUpdatedFields($entity, $validationResponse);
             $entity->update($validationResponse);
         } catch (\Throwable $th) {
             return $this->dbErrorResponse($th);
         }
+        $jwt = $this->getJwtFromAuthorizationHeader($request);
+        $userId = FrontendAuth::getDecodedPayload($jwt)['sub'];
+        $this->logUpdates($userId, $updatedData, $modelClassName);
         return $this->jsonResponse(["resp" => __('db.update.success'), "updatedEntity" => $validationResponse], 200);
     }
 
@@ -98,4 +107,70 @@ class Controller extends BaseController
         );
     }
 
+    /**
+     * Returns the fields whose values were changed.
+     *
+     * @param  Entity $entity 
+     * @param  Array  $ValidatedInputFields
+     * 
+     * @return Array
+     */
+    protected function getUpdatedFields($entity, $ValidatedInputFields)
+    {
+        $updatedFields = [];
+        foreach ($ValidatedInputFields as $fieldName => $value) {
+            if ($entity->$fieldName !== $value) {
+                $updatedFields[$fieldName] = [
+                    'valor_anterior' => $entity->$fieldName,
+                    'valor_atual' => $value
+                ];
+            }
+        }
+        return $updatedFields;
+    }
+
+    /**
+     * Log the changes.
+     *
+     * @param  int $userId 
+     * @param  Array  $updatedFields
+     * 
+     * @return Array
+     */
+    protected function logUpdates($userId, $updatedFields, $modelName)
+    {
+        if ($modelName == 'App\Models\Access\LogAlteracao') {
+            return;
+        }
+        
+        $table = $this->getTableFromModelName($modelName);
+        
+        foreach ($updatedFields as $campoName => $valuesArray) {
+            $campo = Campo::where('nome_campo', $campoName)->where('tabela_id', $table->id)->first();
+            $this->logIndividualUpdate($campo, $userId, $valuesArray);
+        }
+    }
+    
+    protected function logIndividualUpdate($campo, $userId, $valuesArray)
+    {
+        $valuesArray['campo_id'] = $campo->id;
+        $valuesArray['data_alteracao'] = date('Y-m-d H:i:s');
+        $valuesArray['alterado_por'] = $userId;
+        LogAlteracao::create($valuesArray);
+        return;
+    }
+
+    protected function getJwtFromAuthorizationHeader(Request $request)
+    {
+        $jwt = $request->header('authorization');
+        $jwt = str_replace('Bearer ', '', $jwt);
+        return $jwt;
+    }
+
+    protected function getTableFromModelName($modelName)
+    {
+        $model = new $modelName;
+        $tableName = $model->getTable();
+        return Tabela::where('nome_tabela', $tableName)->first();
+    }
 }

@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             "users",
             "tabelas",
             "eselo_configs",
-            "tipos_permissoes"
+            "tipos_permissoes",
+            "campos"
         ];
 
         foreach ($nonRelationalTables as $tableName) {

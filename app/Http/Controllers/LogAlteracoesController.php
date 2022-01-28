@@ -17,20 +17,20 @@ class LogAlteracoesController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["campo", "alteradoPor"])->get();
+            $fullList = $this->mainModel::with(["campo", "campo.tabela", "alteradoPor"])->get();
             return response()->json(["fullList" => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+            return view("logs-alteracoes.index", [
                 'jwt' => $jwt,
                 'title' => 'Log de Alterações',
                 'description' => '',
                 'url' => url('/log-alteracoes'),
                 'apiUrl' => url('/api/log-alteracoes'),
-                'dbFieldNames' => ["campo.nome_campo", "valor_anterior", "valor_atual", "data_alteracao", "alterado_por.nome_escolhido"],
-                'dbNameField' => "valor_atual",
+                'dbFieldNames' => ["campo.nome_campo", "campo.tabela.nome_tabela", "valor_anterior", "valor_atual", "data_alteracao", "alterado_por.nome_escolhido"],
+                'dbNameField' => "campo.nome_campo",
                 'dbIdField' => "id",
-                'tableColumnNames' => ['Campo', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por']
+                'tableColumnNames' => ['Campo', 'Tabela', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por']
             ]);
         }
     }
@@ -96,33 +96,13 @@ class LogAlteracoesController extends Controller
         return view("components.edit", $params);
     }
 
-/**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $validationRules = [
-            "campo_id" => ["numeric"],
-            "valor_anterior" => ["max:150"],
-            "valor_atual" => ["max:150"],
-            "data_alteracao" => ["date"],
-            "alterado_por" => ["numeric"]
-        ];
-        return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
+        return response('', 404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        return $this->delete($this->mainModel, $id);
+        return response('', 404);
     }
 }

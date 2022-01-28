@@ -1,7 +1,7 @@
 {
-    "relationalFields": {},
- 
-    "TabelasSeeder": {
+"relationalFields": {},
+
+"TabelasSeeder": {
     "0": { "nome_tabela": "campos" },
     "1": { "nome_tabela": "eselo_comarcas" },
     "2": { "nome_tabela": "eselo_juizos" },
@@ -14,6 +14,9 @@
     "9": { "nome_tabela": "sistemas_jud_juizos" },
     "10": { "nome_tabela": "tabelas" },
     "11": { "nome_tabela": "tipos_permissoes" },
-    "12": { "nome_tabela": "users" }
+    "12": { "nome_tabela": "users" },
+    "13": { "nome_tabela": "dajes_gerados" },
+    "14": { "nome_tabela": "eselo_configs" },
+    "15": { "nome_tabela": "log_alteracoes" }
 }
 }

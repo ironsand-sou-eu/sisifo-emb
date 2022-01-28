@@ -12,6 +12,7 @@ class LogAlteracao extends Model
 
     protected $table = "log_alteracoes";
     protected $primarykey = "id";
+    public $timestamps = false;
     protected $fillable = [
         "campo_id",
         "valor_anterior",

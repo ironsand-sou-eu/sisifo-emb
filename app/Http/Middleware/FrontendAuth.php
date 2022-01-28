@@ -35,7 +35,7 @@ class FrontendAuth
         return $next($request);
     }
 
-    static protected function getDecodedPayload($jwt) {
+    static public function getDecodedPayload($jwt) {
         $payload = explode('.', $jwt)[1];
         $decodedPayload = base64_decode($payload);
         return json_decode($decodedPayload, true);

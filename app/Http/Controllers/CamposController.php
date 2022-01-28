@@ -114,7 +114,7 @@ class CamposController extends Controller
         return view("components.edit", $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
