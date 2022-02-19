@@ -33,9 +33,7 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::group([
-    'middleware' => ['auth.frontend'],
-], function ($router) {
+Route::middleware('auth.frontend')->group(function ($router) {
         Route::get('/', function () {
             return view('dashboard');
         })->name('dashboard');

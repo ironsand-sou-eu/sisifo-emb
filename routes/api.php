@@ -37,10 +37,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->name('apiLogin');
 // Route::post("/register", [AuthController::class, "register"]);
 
-Route::group([
-    'middleware' => ['jwt.verify'],
-    // 'prefix' => 'auth'
-], function ($router) {
+Route::middleware('jwt.verify')->group(function ($router) {
         // Route::post("/logout", [AuthController::class, "logout"]);
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
