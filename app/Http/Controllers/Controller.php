@@ -170,7 +170,6 @@ class Controller extends BaseController
         $valuesArray['data_alteracao'] = date('Y-m-d H:i:s');
         $valuesArray['alterado_por'] = $userId;
         LogAlteracao::create($valuesArray);
-
     }
 
     protected function getJwtFromAuthorizationHeader(Request $request)
