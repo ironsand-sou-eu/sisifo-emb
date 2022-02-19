@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Access\User;
 use App\Models\Access\Genero;
+use App\Models\Access\User;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
     protected $mainModel = 'App\Models\Access\User';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,20 +18,22 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["generoDeclarado"])->get();
-            return response()->json(["fullList" => $fullList]);
+            $fullList = $this->mainModel::with(['generoDeclarado'])->get();
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Usuários',
                 'description' => 'Usuários do Sísifo',
                 'url' => url('/users'),
                 'apiUrl' => url('/api/users'),
-                'dbFieldNames' => ["nome_escolhido", "nome_completo", "email", "genero_declarado.genero", "ativo"],
-                'dbNameField' => "nome_escolhido",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Nome', 'Nome completo', 'E-mail', 'Gênero', 'Ativo']
+                'dbFieldNames' => ['nome_escolhido', 'nome_completo', 'email', 'genero_declarado.genero', 'ativo'],
+                'dbNameField' => 'nome_escolhido',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Nome', 'Nome completo', 'E-mail', 'Gênero', 'Ativo'],
             ]);
         }
     }
@@ -45,16 +47,17 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_completo" => ["required", "min:5", "max:100"],
-            "nome_escolhido" => ["nullable", "min:2", "max:50"],
-            "genero_declarado_id" => ["required", "numeric"],
-            "email" => ["required", "email", "unique:users"],
-            "email_verified_at" => ["nullable", "date"],
-            "password" => ["required"],
-            "remember_token" => ["nullable", "max:100"],
-            "ativo" => ["required", "boolean"],
-            "avatar_path" => ["nullable"]
+            'nome_completo' => ['required', 'min:5', 'max:100'],
+            'nome_escolhido' => ['nullable', 'min:2', 'max:50'],
+            'genero_declarado_id' => ['required', 'numeric'],
+            'email' => ['required', 'email', 'unique:users'],
+            'email_verified_at' => ['nullable', 'date'],
+            'password' => ['required'],
+            'remember_token' => ['nullable', 'max:100'],
+            'ativo' => ['required', 'boolean'],
+            'avatar_path' => ['nullable'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -81,11 +84,11 @@ class UsersController extends Controller
                 0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
                 1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
                 2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
-                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero']
-            ]
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -115,11 +118,11 @@ class UsersController extends Controller
                 0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
                 1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
                 2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
-                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero]
-            ]
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
     /**
@@ -132,14 +135,15 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_completo" => ["min:5", "max:100"],
-            "nome_escolhido" => ["min:2", "max:50"],
-            "genero_declarado_id" => ["numeric"],
-            "email" => ["email"],
-            "email_verified_at" => ["date"],
-            "remember_token" => ["max:100"],
-            "ativo" => ["boolean"]
+            'nome_completo' => ['min:5', 'max:100'],
+            'nome_escolhido' => ['min:2', 'max:50'],
+            'genero_declarado_id' => ['numeric'],
+            'email' => ['email'],
+            'email_verified_at' => ['date'],
+            'remember_token' => ['max:100'],
+            'ativo' => ['boolean'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

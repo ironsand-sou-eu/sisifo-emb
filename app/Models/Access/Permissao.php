@@ -9,23 +9,28 @@ class Permissao extends Model
 {
     use HasFactory;
 
-    protected $table = "permissoes";
-    protected $primarykey = "id";
+    protected $table = 'permissoes';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "user_id",
-        "tabela_id",
-        "tipo_permissao_id"
+        'user_id',
+        'tabela_id',
+        'tipo_permissao_id',
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function tabela() {
+    public function tabela()
+    {
         return $this->belongsTo(Tabela::class);
     }
-    
-    public function tipoPermissao() {
+
+    public function tipoPermissao()
+    {
         return $this->belongsTo(TipoPermissao::class);
     }
 }

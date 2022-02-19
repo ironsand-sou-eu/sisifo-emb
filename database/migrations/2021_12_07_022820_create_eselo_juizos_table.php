@@ -15,13 +15,13 @@ class CreateEseloJuizosTable extends Migration
     {
         Schema::create('eselo_juizos', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_juizo_eselo", 150)->unique();
-            $table->unsignedBigInteger("eselo_comarca_id");
-            $table->unsignedBigInteger("espaider_juizo_id");
+            $table->string('nome_juizo_eselo', 150)->unique();
+            $table->unsignedBigInteger('eselo_comarca_id');
+            $table->unsignedBigInteger('espaider_juizo_id');
             $table->timestamps();
 
-            $table->foreign("eselo_comarca_id")->references("id")->on("eselo_comarcas");
-            $table->foreign("espaider_juizo_id")->references("id")->on("espaider_juizos");
+            $table->foreign('eselo_comarca_id')->references('id')->on('eselo_comarcas');
+            $table->foreign('espaider_juizo_id')->references('id')->on('espaider_juizos');
         });
     }
 

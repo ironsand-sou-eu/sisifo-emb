@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Access\Permissao;
-use App\Models\Access\User;
 use App\Models\Access\Tabela;
 use App\Models\Access\TipoPermissao;
+use App\Models\Access\User;
 use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
 
 class PermissoesController extends Controller
 {
     protected $mainModel = 'App\Models\Access\Permissao';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -22,19 +22,21 @@ class PermissoesController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::with(['user', 'tabela', 'tipoPermissao'])->get();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Permissões',
                 'description' => 'Permissões dos usuários do Sísifo',
                 'url' => url('/permissoes'),
                 'apiUrl' => url('/api/permissoes'),
-                'dbFieldNames' => ["user.nome_escolhido", "tabela.nome_tabela", "tipo_permissao.nome_permissao"],
-                'dbNameField' => "user.nome_escolhido",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Usuário', 'Tabela', 'Permissão']
+                'dbFieldNames' => ['user.nome_escolhido', 'tabela.nome_tabela', 'tipo_permissao.nome_permissao'],
+                'dbNameField' => 'user.nome_escolhido',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Usuário', 'Tabela', 'Permissão'],
             ]);
         }
     }
@@ -47,12 +49,13 @@ class PermissoesController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = $request->input("user_id");
+        $userId = $request->input('user_id');
         $validationRules = [
-            "user_id" => ["required", "numeric"],
-            "tipo_permissao_id" => ["required", "numeric"],
-            "tabela_id" => ["required", "numeric", new UniqueCombinationRule(Permissao::class, "user_id", $userId)]
+            'user_id' => ['required', 'numeric'],
+            'tipo_permissao_id' => ['required', 'numeric'],
+            'tabela_id' => ['required', 'numeric', new UniqueCombinationRule(Permissao::class, 'user_id', $userId)],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -80,11 +83,11 @@ class PermissoesController extends Controller
             'displayFields' => [
                 0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido'],
                 1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela'],
-                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao']
-            ]
+                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -113,16 +116,16 @@ class PermissoesController extends Controller
             'apiUrl' => url('/api/permissoes'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido', 'selected' => $entity->user->nome_escolhido ],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela ],
-                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao', 'selected' => $entity->tipoPermissao->nome_permissao ]
-            ]
+                0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido', 'selected' => $entity->user->nome_escolhido],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela],
+                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao', 'selected' => $entity->tipoPermissao->nome_permissao],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -131,12 +134,13 @@ class PermissoesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $userId = $request->input("user_id");
+        $userId = $request->input('user_id');
         $validationRules = [
-            "user_id" => ["numeric"],
-            "tipo_permissao_id" => ["numeric"],
-            "tabela_id" => ["numeric"]
+            'user_id' => ['numeric'],
+            'tipo_permissao_id' => ['numeric'],
+            'tabela_id' => ['numeric'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

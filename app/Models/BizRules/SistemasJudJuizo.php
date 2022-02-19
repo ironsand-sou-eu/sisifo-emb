@@ -9,14 +9,17 @@ class SistemasJudJuizo extends Model
 {
     use HasFactory;
 
-    protected $table = "sistemas_jud_juizos";
-    protected $primarykey = "id";
+    protected $table = 'sistemas_jud_juizos';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_juizo_sistemas_jud",
-        "espaider_juizo_id"
+        'nome_juizo_sistemas_jud',
+        'espaider_juizo_id',
     ];
 
-    public function espaiderJuizo() {
+    public function espaiderJuizo()
+    {
         return $this->belongsTo(EspaiderJuizo::class);
     }
 }

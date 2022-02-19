@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class EseloComarcasController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EseloComarca';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class EseloComarcasController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Comarcas (redação do e-Selo)',
                 'description' => 'Comarcas existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/eselo-comarcas'),
                 'apiUrl' => url('/api/eselo-comarcas'),
-                'dbFieldNames' => ["nome_comarca_eselo"],
-                'dbNameField' => "nome_comarca_eselo",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Comarca (e-Selo)']
+                'dbFieldNames' => ['nome_comarca_eselo'],
+                'dbNameField' => 'nome_comarca_eselo',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Comarca (e-Selo)'],
             ]);
         }
     }
@@ -44,8 +46,9 @@ class EseloComarcasController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_comarca_eselo" => ["required", "min:2", "max:40", "unique:eselo_comarcas"]
+            'nome_comarca_eselo' => ['required', 'min:2', 'max:40', 'unique:eselo_comarcas'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -68,11 +71,11 @@ class EseloComarcasController extends Controller
             'url' => url('/eselo-comarcas'),
             'apiUrl' => url('/api/eselo-comarcas'),
             'displayFields' => [
-                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -98,11 +101,11 @@ class EseloComarcasController extends Controller
             'apiUrl' => url('/api/eselo-comarcas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
     /**
@@ -115,8 +118,9 @@ class EseloComarcasController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_comarca_eselo" => ["min:2", "max:40"]
+            'nome_comarca_eselo' => ['min:2', 'max:40'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

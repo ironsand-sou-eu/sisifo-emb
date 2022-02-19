@@ -27,7 +27,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'ativo',
-        'avatar_path'
+        'avatar_path',
     ];
 
     /**
@@ -49,16 +49,19 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function generoDeclarado() {
-        return $this->belongsTo(Genero::class, "genero_declarado_id");
+    public function generoDeclarado()
+    {
+        return $this->belongsTo(Genero::class, 'genero_declarado_id');
     }
 
-    public function permissoes() {
+    public function permissoes()
+    {
         return $this->hasMany(Permissao::class);
     }
 
-    public function camposAlterados() {
-        return $this->hasMany(LogAlteracao::class, "alterado_por");
+    public function camposAlterados()
+    {
+        return $this->hasMany(LogAlteracao::class, 'alterado_por');
     }
 
     /**
@@ -66,7 +69,8 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
@@ -75,8 +79,8 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return array
      */
-    public function getJWTCustomClaims() {
+    public function getJWTCustomClaims()
+    {
         return [];
-    }    
-
+    }
 }

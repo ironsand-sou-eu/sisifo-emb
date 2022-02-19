@@ -9,19 +9,23 @@ class EseloJuizo extends Model
 {
     use HasFactory;
 
-    protected $table = "eselo_juizos";
-    protected $primarykey = "id";
+    protected $table = 'eselo_juizos';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_juizo_eselo",
-        "eselo_comarca_id",
-        "espaider_juizo_id"
+        'nome_juizo_eselo',
+        'eselo_comarca_id',
+        'espaider_juizo_id',
     ];
 
-    public function eseloComarca() {
+    public function eseloComarca()
+    {
         return $this->belongsTo(EseloComarca::class);
     }
 
-    public function espaiderJuizo() {
+    public function espaiderJuizo()
+    {
         return $this->belongsTo(EspaiderJuizo::class);
     }
 }

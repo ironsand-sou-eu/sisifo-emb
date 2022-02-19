@@ -15,11 +15,11 @@ class CreateEspaiderComarcasTable extends Migration
     {
         Schema::create('espaider_comarcas', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_comarca_espaider", 40);
-            $table->string("espaider_uf_id", 2);
+            $table->string('nome_comarca_espaider', 40);
+            $table->string('espaider_uf_id', 2);
             $table->timestamps();
 
-            $table->foreign("espaider_uf_id")->references('sigla')->on('espaider_ufs');
+            $table->foreign('espaider_uf_id')->references('sigla')->on('espaider_ufs');
         });
     }
 

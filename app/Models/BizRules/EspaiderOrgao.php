@@ -9,14 +9,17 @@ class EspaiderOrgao extends Model
 {
     use HasFactory;
 
-    protected $table = "espaider_orgaos";
-    protected $primarykey = "id";
+    protected $table = 'espaider_orgaos';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_orgao_espaider",
-        "sigla_orgao"
+        'nome_orgao_espaider',
+        'sigla_orgao',
     ];
 
-    public function espaiderJuizos() {
+    public function espaiderJuizos()
+    {
         return $this->hasMany(EspaiderJuizo::class);
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class EseloConfigsController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EseloConfig';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class EseloConfigsController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Configurações - Sísifo DAJEs',
                 'description' => 'Configurações necessárias para a geração dos dados pelo Sísifo DAJEs',
                 'url' => url('/eselo-configs'),
                 'apiUrl' => url('/api/eselo-configs'),
-                'dbFieldNames' => ["nome", "valor"],
-                'dbNameField' => "nome",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Nome', "Valor da configuração"]
+                'dbFieldNames' => ['nome', 'valor'],
+                'dbNameField' => 'nome',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Nome', 'Valor da configuração'],
             ]);
         }
     }
@@ -44,9 +46,10 @@ class EseloConfigsController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome" => ["required", "max:50", "unique:nome"],
-            "valor" => ["required"],
-        ];    
+            'nome' => ['required', 'max:50', 'unique:nome'],
+            'valor' => ['required'],
+        ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -65,18 +68,18 @@ class EseloConfigsController extends Controller
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Nova configuração do Sísifo DAJEs',
-            'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha' . 
-                'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para' . 
+            'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha'.
+                'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para'.
                 'compreender, procure o financeiro da PPJ',
             'url' => url('/eselo-configs'),
             'apiUrl' => url('/api/eselo-configs'),
             'displayFields' => [
                 0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text'],
-                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text']
-            ]
+                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -96,8 +99,8 @@ class EseloConfigsController extends Controller
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando configuração do Sísifo DAJEs',
-            'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha' . 
-                'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para' . 
+            'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha'.
+                'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para'.
                 'compreender, procure o financeiro da PPJ.',
             'id' => $id,
             'url' => url('/eselo-configs'),
@@ -105,14 +108,14 @@ class EseloConfigsController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text'],
-                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text']
-            ]
+                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -122,9 +125,10 @@ class EseloConfigsController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome" => ["required", "max:50"],
-            "valor" => ["required"],
-        ];    
+            'nome' => ['required', 'max:50'],
+            'valor' => ['required'],
+        ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

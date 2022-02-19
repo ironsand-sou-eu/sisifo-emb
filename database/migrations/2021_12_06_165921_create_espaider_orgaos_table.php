@@ -15,8 +15,8 @@ class CreateEspaiderOrgaosTable extends Migration
     {
         Schema::create('espaider_orgaos', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_orgao_espaider", 90)->unique();
-            $table->string("sigla_orgao", 25)->unique();
+            $table->string('nome_orgao_espaider', 90)->unique();
+            $table->string('sigla_orgao', 25)->unique();
             $table->timestamps();
         });
     }

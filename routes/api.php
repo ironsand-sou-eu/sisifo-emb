@@ -34,35 +34,35 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post("/login", [AuthController::class, "login"])->name('apiLogin');
+Route::post('/login', [AuthController::class, 'login'])->name('apiLogin');
 // Route::post("/register", [AuthController::class, "register"]);
 
 Route::group([
     'middleware' => ['jwt.verify'],
     // 'prefix' => 'auth'
-    ], function ($router) {
+], function ($router) {
         // Route::post("/logout", [AuthController::class, "logout"]);
-        Route::post("/refresh", [AuthController::class, "refresh"]);
-        Route::get("/user-profile", [AuthController::class, "userProfile"]);
-        Route::get("/info-eselo-via-espaider/{slug}", [EseloJuizosController::class, "getEseloInfoFromEspaiderJuizoSlug"]);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/user-profile', [AuthController::class, 'userProfile']);
+        Route::get('/info-eselo-via-espaider/{slug}', [EseloJuizosController::class, 'getEseloInfoFromEspaiderJuizoSlug']);
 
         Route::apiResources([
-            "campos" => CamposController::class,
-            "eselo-comarcas" => EseloComarcasController::class,
-            "eselo-juizos" => EseloJuizosController::class,
-            "eselo-configs" => EseloConfigsController::class,
-            "espaider-comarcas" => EspaiderComarcasController::class,
-            "espaider-juizos" => EspaiderJuizosController::class,
-            "espaider-orgaos" => EspaiderOrgaosController::class,
-            "espaider-ufs" => EspaiderUfsController::class,
-            "generos" => GenerosController::class,
-            "log-alteracoes" => LogAlteracoesController::class,
-            "permissoes" => PermissoesController::class,
-            "sistemas-jud-juizos" => SistemasJudJuizosController::class,
-            "tabelas" => TabelasController::class,
-            "tipos-permissoes" => TiposPermissoesController::class,
-            "users" => UsersController::class,
-            "dajes" => DajeController::class,
+            'campos' => CamposController::class,
+            'eselo-comarcas' => EseloComarcasController::class,
+            'eselo-juizos' => EseloJuizosController::class,
+            'eselo-configs' => EseloConfigsController::class,
+            'espaider-comarcas' => EspaiderComarcasController::class,
+            'espaider-juizos' => EspaiderJuizosController::class,
+            'espaider-orgaos' => EspaiderOrgaosController::class,
+            'espaider-ufs' => EspaiderUfsController::class,
+            'generos' => GenerosController::class,
+            'log-alteracoes' => LogAlteracoesController::class,
+            'permissoes' => PermissoesController::class,
+            'sistemas-jud-juizos' => SistemasJudJuizosController::class,
+            'tabelas' => TabelasController::class,
+            'tipos-permissoes' => TiposPermissoesController::class,
+            'users' => UsersController::class,
+            'dajes' => DajeController::class,
         ]);
     }
 );

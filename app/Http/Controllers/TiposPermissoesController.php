@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class TiposPermissoesController extends Controller
 {
     protected $mainModel = 'App\Models\Access\TipoPermissao';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class TiposPermissoesController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Tipos de permissão',
                 'description' => 'Tipos de permissão a serem aplicadas aos usuários',
                 'url' => url('/tipos-permissoes'),
                 'apiUrl' => url('/api/tipos-permissoes'),
-                'dbFieldNames' => ["nome_permissao"],
-                'dbNameField' => "nome_permissao",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Permissão']
+                'dbFieldNames' => ['nome_permissao'],
+                'dbNameField' => 'nome_permissao',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Permissão'],
             ]);
         }
     }
@@ -44,8 +46,9 @@ class TiposPermissoesController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_permissao" => ["required", "max:10", "unique:tipos_permissoes"],
+            'nome_permissao' => ['required', 'max:10', 'unique:tipos_permissoes'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -64,16 +67,16 @@ class TiposPermissoesController extends Controller
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Novo tipo de permissão',
-            'description' => 'Esta tabela serve para criar um novo tipo/nível de permissão. Para aplicar permissões' .
+            'description' => 'Esta tabela serve para criar um novo tipo/nível de permissão. Para aplicar permissões'.
                 'a usuários concretos, use o menu "Permissões".',
             'url' => url('/tipos-permissoes'),
             'apiUrl' => url('/api/tipos-permissoes'),
             'displayFields' => [
-                0 => ['name' => 'nome_permissao', 'caption' => 'Nome da permissão', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'nome_permissao', 'caption' => 'Nome da permissão', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -99,11 +102,11 @@ class TiposPermissoesController extends Controller
             'apiUrl' => url('/api/tipos-permissoes'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_permissao', 'caption' => 'Tipo de permissão', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'nome_permissao', 'caption' => 'Tipo de permissão', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
     /**
@@ -116,8 +119,9 @@ class TiposPermissoesController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_permissao" => ["max:10"],
+            'nome_permissao' => ['max:10'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

@@ -9,13 +9,16 @@ class EseloComarca extends Model
 {
     use HasFactory;
 
-    protected $table = "eselo_comarcas";
-    protected $primarykey = "id";
+    protected $table = 'eselo_comarcas';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_comarca_eselo"
+        'nome_comarca_eselo',
     ];
 
-    public function eseloJuizos() {
+    public function eseloJuizos()
+    {
         return $this->hasMany(EseloJuizo::class);
     }
 }

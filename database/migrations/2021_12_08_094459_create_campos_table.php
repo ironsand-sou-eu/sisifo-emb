@@ -15,11 +15,11 @@ class CreateCamposTable extends Migration
     {
         Schema::create('campos', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_campo");
-            $table->unsignedBigInteger("tabela_id");
+            $table->string('nome_campo');
+            $table->unsignedBigInteger('tabela_id');
             $table->timestamps();
 
-            $table->foreign("tabela_id")->references("id")->on("tabelas");
+            $table->foreign('tabela_id')->references('id')->on('tabelas');
         });
     }
 

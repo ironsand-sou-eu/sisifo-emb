@@ -10,18 +10,22 @@ class Campo extends Model
 {
     use HasFactory;
 
-    protected $table = "campos";
-    protected $primarykey = "id";
+    protected $table = 'campos';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_campo",
-        "tabela_id"
+        'nome_campo',
+        'tabela_id',
     ];
 
-    public function tabela() {
+    public function tabela()
+    {
         return $this->belongsTo(Tabela::class);
     }
 
-    public function logsAlteracoes() {
+    public function logsAlteracoes()
+    {
         return $this->hasMany(LogAlteracao::class);
     }
 }

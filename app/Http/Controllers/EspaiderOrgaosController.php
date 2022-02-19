@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class EspaiderOrgaosController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EspaiderOrgao';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class EspaiderOrgaosController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Órgãos',
                 'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/espaider-orgaos'),
                 'apiUrl' => url('/api/espaider-orgaos'),
-                'dbFieldNames' => ["nome_orgao_espaider", "sigla_orgao"],
-                'dbNameField' => "nome_orgao_espaider",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Órgão (Espaider)', 'Sigla']
+                'dbFieldNames' => ['nome_orgao_espaider', 'sigla_orgao'],
+                'dbNameField' => 'nome_orgao_espaider',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Órgão (Espaider)', 'Sigla'],
             ]);
         }
     }
@@ -44,9 +46,10 @@ class EspaiderOrgaosController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_orgao_espaider" => ["required", "min:3", "max:90", "unique:espaider_orgaos"],
-            "sigla_orgao" => ["required", "min:2", "max:25"],
+            'nome_orgao_espaider' => ['required', 'min:3', 'max:90', 'unique:espaider_orgaos'],
+            'sigla_orgao' => ['required', 'min:2', 'max:25'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -70,11 +73,11 @@ class EspaiderOrgaosController extends Controller
             'apiUrl' => url('/api/espaider-orgaos'),
             'displayFields' => [
                 0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Órgão (Espaider)', 'inputType' => 'text'],
-                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text']
-            ]
+                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -101,14 +104,14 @@ class EspaiderOrgaosController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Nome do órgão', 'inputType' => 'text'],
-                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text']
-            ]
+                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -118,9 +121,10 @@ class EspaiderOrgaosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_orgao_espaider" => ["required", "min:3", "max:90"],
-            "sigla_orgao" => ["required", "min:2", "max:25"],
+            'nome_orgao_espaider' => ['required', 'min:3', 'max:90'],
+            'sigla_orgao' => ['required', 'min:2', 'max:25'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

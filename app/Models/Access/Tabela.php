@@ -9,17 +9,21 @@ class Tabela extends Model
 {
     use HasFactory;
 
-    protected $table = "tabelas";
-    protected $primarykey = "id";
+    protected $table = 'tabelas';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_tabela"
+        'nome_tabela',
     ];
 
-    public function permissoes() {
+    public function permissoes()
+    {
         return $this->hasMany(Permissao::class);
     }
 
-    public function campos() {
+    public function campos()
+    {
         return $this->hasMany(Campo::class);
     }
 }

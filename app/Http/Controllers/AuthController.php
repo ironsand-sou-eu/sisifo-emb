@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Access\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +15,8 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
@@ -24,14 +25,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'email' => ['required', '   email'],
             'password' => ['required', 'string', 'min:6'],
         ]);
 
         if ($validator->fails()) {
-            return response()->json(["resp" => __('validation.genericError'), $validator->errors()], 422);
+            return response()->json(['resp' => __('validation.genericError'), $validator->errors()], 422);
         }
 
         if (! $token = auth()->attempt($validator->validated())) {
@@ -73,8 +75,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+    public function logout()
+    {
         auth()->logout(true);
+
         return response()->json(['resp' => __('auth.logoff')]);
     }
 
@@ -83,7 +87,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+    public function refresh()
+    {
         return $this->createNewToken(auth()->refresh());
     }
 
@@ -92,7 +97,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile()
+    {
         return response()->json(auth()->user());
     }
 
@@ -103,11 +109,13 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function createNewToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user(),
         ]);
-    }}
+    }
+}

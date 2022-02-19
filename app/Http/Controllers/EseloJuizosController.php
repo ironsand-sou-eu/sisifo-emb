@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BizRules\EseloJuizo;
 use App\Models\BizRules\EseloComarca;
+use App\Models\BizRules\EseloJuizo;
 use App\Models\BizRules\EspaiderJuizo;
 use Illuminate\Http\Request;
 
 class EseloJuizosController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EseloJuizo';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -19,20 +19,22 @@ class EseloJuizosController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["eseloComarca", "espaiderJuizo"])->get();
-            return response()->json(["fullList" => $fullList]);
+            $fullList = $this->mainModel::with(['eseloComarca', 'espaiderJuizo'])->get();
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Juízos (redação do e-Selo)',
                 'description' => 'Juízos existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/eselo-juizos'),
                 'apiUrl' => url('/api/eselo-juizos'),
-                'dbFieldNames' => ["nome_juizo_eselo", "eselo_comarca.nome_comarca_eselo", "espaider_juizo.nome_juizo_espaider"],
-                'dbNameField' => "nome_juizo_eselo",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Juízo (e-Selo)', 'Comarca (e-Selo)', 'Juízo (Espaider)']
+                'dbFieldNames' => ['nome_juizo_eselo', 'eselo_comarca.nome_comarca_eselo', 'espaider_juizo.nome_juizo_espaider'],
+                'dbNameField' => 'nome_juizo_eselo',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Juízo (e-Selo)', 'Comarca (e-Selo)', 'Juízo (Espaider)'],
             ]);
         }
     }
@@ -46,10 +48,11 @@ class EseloJuizosController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_juizo_eselo" => ["required", "min:2", "max:150", "unique:eselo_juizos"],
-            "eselo_comarca_id" => ["required", "numeric"],
-            "espaider_juizo_id" => ["required", "numeric"]
+            'nome_juizo_eselo' => ['required', 'min:2', 'max:150', 'unique:eselo_juizos'],
+            'eselo_comarca_id' => ['required', 'numeric'],
+            'espaider_juizo_id' => ['required', 'numeric'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -75,12 +78,12 @@ class EseloJuizosController extends Controller
             'apiUrl' => url('/api/eselo-juizos'),
             'displayFields' => [
                 0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text'],
-                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo' ],
-                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider' ]
-            ]
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo'],
+                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -109,12 +112,12 @@ class EseloJuizosController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text'],
-                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo', 'selected' => $entity->eseloComarca->nome_comarca_eselo ],
-                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider ]
-            ]
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo', 'selected' => $entity->eseloComarca->nome_comarca_eselo],
+                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
     /**
@@ -127,10 +130,11 @@ class EseloJuizosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_juizo_eselo" => ["min:2", "max:150"],
-            "eselo_comarca_id" => ["numeric"],
-            "espaider_juizo_id" => ["numeric"]
+            'nome_juizo_eselo' => ['min:2', 'max:150'],
+            'eselo_comarca_id' => ['numeric'],
+            'espaider_juizo_id' => ['numeric'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
@@ -159,10 +163,10 @@ class EseloJuizosController extends Controller
         foreach ($eseloJuizos as $eseloJuizo) {
             $resp[] = [
                 'eseloJuizo' => $eseloJuizo->nome_juizo_eselo,
-                'comarca' => $eseloJuizo->eseloComarca->nome_comarca_eselo
+                'comarca' => $eseloJuizo->eseloComarca->nome_comarca_eselo,
             ];
         }
 
-        return response()->json(["data" => $resp]);
+        return response()->json(['data' => $resp]);
     }
 }

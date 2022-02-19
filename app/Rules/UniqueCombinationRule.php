@@ -7,9 +7,13 @@ use Illuminate\Contracts\Validation\Rule;
 class UniqueCombinationRule implements Rule
 {
     private $modelName;
+
     private $fieldnameUnderValidation;
+
     private $valueUnderValidation;
+
     private $secondFieldName;
+
     private $secondFieldValue;
 
     /**
@@ -39,9 +43,10 @@ class UniqueCombinationRule implements Rule
     {
         $this->attribute = $attribute;
         $this->value = $value;
+
         return $this->modelName::where($attribute, $value)->where($this->secondFieldName, $this->secondFieldValue)->doesntExist();
     }
-    
+
     /**
      * Get the validation error message.
      *
@@ -53,7 +58,7 @@ class UniqueCombinationRule implements Rule
             'fieldUnderValidation' => '$this->fieldnameUnderValidation',
             'valueUnderValidation' => '$this->valueUnderValidation',
             'secondFieldName' => '$this->secondFieldName',
-            'secondFieldValue' => '$this->secondFieldValue'
+            'secondFieldValue' => '$this->secondFieldValue',
         ]);
     }
 }

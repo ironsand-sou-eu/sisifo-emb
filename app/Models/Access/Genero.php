@@ -10,13 +10,16 @@ class Genero extends Model
 {
     use HasFactory;
 
-    protected $table = "generos";
-    protected $primarykey = "id";
+    protected $table = 'generos';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "genero"
+        'genero',
     ];
 
-    public function users() {
-        return $this->hasMany(User::class, "genero_declarado_id");
+    public function users()
+    {
+        return $this->hasMany(User::class, 'genero_declarado_id');
     }
 }

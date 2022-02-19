@@ -9,13 +9,16 @@ class TipoPermissao extends Model
 {
     use HasFactory;
 
-    protected $table = "tipos_permissoes";
-    protected $primarykey = "id";
+    protected $table = 'tipos_permissoes';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_permissao"
+        'nome_permissao',
     ];
 
-    public function permissoes() {
+    public function permissoes()
+    {
         return $this->hasMany(Permissao::class);
     }
 }

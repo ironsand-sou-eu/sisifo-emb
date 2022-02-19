@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BizRules\EspaiderJuizo;
 use App\Models\BizRules\EspaiderComarca;
+use App\Models\BizRules\EspaiderJuizo;
 use App\Models\BizRules\EspaiderOrgao;
 use Illuminate\Http\Request;
 
 class EspaiderJuizosController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EspaiderJuizo';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -19,20 +19,22 @@ class EspaiderJuizosController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["espaiderComarca", "espaiderOrgao"])->get();
-            return response()->json(["fullList" => $fullList]);
+            $fullList = $this->mainModel::with(['espaiderComarca', 'espaiderOrgao'])->get();
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Juízos (redação do Espaider)',
                 'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/espaider-juizos'),
                 'apiUrl' => url('/api/espaider-juizos'),
-                'dbFieldNames' => ["nome_juizo_espaider", "redacao_cabecalho_juizo", "redacao_resumida_juizo", "espaider_comarca.nome_comarca_espaider", "espaider_orgao.sigla_orgao"],
-                'dbNameField' => "nome_juizo_espaider",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Juízo (Espaider)', 'Redação para cabeçalho de peças', 'Redação resumida para peças', 'Comarca (Espaider)', 'Órgão (Espaider)']
+                'dbFieldNames' => ['nome_juizo_espaider', 'redacao_cabecalho_juizo', 'redacao_resumida_juizo', 'espaider_comarca.nome_comarca_espaider', 'espaider_orgao.sigla_orgao'],
+                'dbNameField' => 'nome_juizo_espaider',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Juízo (Espaider)', 'Redação para cabeçalho de peças', 'Redação resumida para peças', 'Comarca (Espaider)', 'Órgão (Espaider)'],
             ]);
         }
     }
@@ -46,12 +48,13 @@ class EspaiderJuizosController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_juizo_espaider" => ["required", "min:5", "max:120", "unique:espaider_juizos"],
-            "redacao_cabecalho_juizo" => ["required", "max:150"],
-            "redacao_resumida_juizo" => ["required", "max:60"],
-            "espaider_comarca_id" => ["required", "numeric"],
-            "espaider_orgao_id" => ["required", "numeric"]
+            'nome_juizo_espaider' => ['required', 'min:5', 'max:120', 'unique:espaider_juizos'],
+            'redacao_cabecalho_juizo' => ['required', 'max:150'],
+            'redacao_resumida_juizo' => ['required', 'max:60'],
+            'espaider_comarca_id' => ['required', 'numeric'],
+            'espaider_orgao_id' => ['required', 'numeric'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -81,11 +84,11 @@ class EspaiderJuizosController extends Controller
                 2 => ['name' => 'redacao_resumida_juizo', 'caption' => 'Texto resumido para peças', 'inputType' => 'text'],
                 3 => ['name' => 'slug', 'caption' => 'Slug (uso interno do sistema)', 'inputType' => 'text'],
                 4 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider'],
-                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider']
-            ]
+                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -117,15 +120,15 @@ class EspaiderJuizosController extends Controller
                 1 => ['name' => 'redacao_cabecalho_juizo', 'caption' => 'Texto de cabeçalho de peças', 'inputType' => 'text'],
                 2 => ['name' => 'redacao_resumida_juizo', 'caption' => 'Texto resumido para peças', 'inputType' => 'text'],
                 3 => ['name' => 'slug', 'caption' => 'Slug (uso interno do sistema)', 'inputType' => 'text'],
-                4 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider', 'selected' => $entity->espaiderComarca->nome_comarca_espaider ],
-                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider', 'selected' => $entity->espaiderOrgao->nome_orgao_espaider ]
-            ]
+                4 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider', 'selected' => $entity->espaiderComarca->nome_comarca_espaider],
+                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider', 'selected' => $entity->espaiderOrgao->nome_orgao_espaider],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -135,12 +138,13 @@ class EspaiderJuizosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_juizo_espaider" => ["min:5", "max:120"],
-            "redacao_cabecalho_juizo" => ["max:150"],
-            "redacao_resumida_juizo" => ["max:60"],
-            "espaider_comarca_id" => ["numeric"],
-            "espaider_orgao_id" => ["numeric"]
+            'nome_juizo_espaider' => ['min:5', 'max:120'],
+            'redacao_cabecalho_juizo' => ['max:150'],
+            'redacao_resumida_juizo' => ['max:60'],
+            'espaider_comarca_id' => ['numeric'],
+            'espaider_orgao_id' => ['numeric'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

@@ -9,30 +9,36 @@ class EspaiderJuizo extends Model
 {
     use HasFactory;
 
-    protected $table = "espaider_juizos";
-    protected $primarykey = "id";
+    protected $table = 'espaider_juizos';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome_juizo_espaider",
-        "redacao_cabecalho_juizo",
-        "redacao_resumida_juizo",
-        "slug",
-        "espaider_comarca_id",
-        "espaider_orgao_id"
+        'nome_juizo_espaider',
+        'redacao_cabecalho_juizo',
+        'redacao_resumida_juizo',
+        'slug',
+        'espaider_comarca_id',
+        'espaider_orgao_id',
     ];
 
-    public function espaiderComarca() {
+    public function espaiderComarca()
+    {
         return $this->belongsTo(EspaiderComarca::class);
     }
 
-    public function espaiderOrgao() {
+    public function espaiderOrgao()
+    {
         return $this->belongsTo(EspaiderOrgao::class);
     }
 
-    public function eseloJuizos() {
+    public function eseloJuizos()
+    {
         return $this->hasMany(EseloJuizo::class);
     }
 
-    public function sistemasJudJuizos() {
+    public function sistemasJudJuizos()
+    {
         return $this->hasMany(SistemasJudJuizo::class);
     }
 }

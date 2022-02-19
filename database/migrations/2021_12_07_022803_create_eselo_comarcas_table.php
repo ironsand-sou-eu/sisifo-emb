@@ -15,7 +15,7 @@ class CreateEseloComarcasTable extends Migration
     {
         Schema::create('eselo_comarcas', function (Blueprint $table) {
             $table->id();
-            $table->string("nome_comarca_eselo", 40)->unique();
+            $table->string('nome_comarca_eselo', 40)->unique();
             $table->timestamps();
         });
     }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Access\User;
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\Access\User;
 
 class FrontendAuth
 {
@@ -20,33 +20,38 @@ class FrontendAuth
         $jwt = $request->cookie('jat');
         if (! $jwt) {
             $request->session()->forget('userInfo');
+
             return redirect()->route('login');
         }
 
         $payload = self::getDecodedPayload($jwt);
-        $expDate = date("Y-m-d H:i:s", $payload['exp']);
+        $expDate = date('Y-m-d H:i:s', $payload['exp']);
         if (time() >= $expDate) {
             $request->session()->forget('userInfo');
+
             return redirect()->route('login');
         }
 
         self::insertUserInfoIntoSession($request, $payload['sub']);
-        
+
         return $next($request);
     }
 
-    static public function getDecodedPayload($jwt) {
+    public static function getDecodedPayload($jwt)
+    {
         $payload = explode('.', $jwt)[1];
         $decodedPayload = base64_decode($payload);
+
         return json_decode($decodedPayload, true);
     }
 
-    static protected function insertUserInfoIntoSession(Request $request, $userId) {
+    protected static function insertUserInfoIntoSession(Request $request, $userId)
+    {
         $user = User::find($userId);
         $userInfo = [
-            "id" => $user->id,
-            "nome" => $user->nome_escolhido,
-            "avatar" => $user->avatar_path
+            'id' => $user->id,
+            'nome' => $user->nome_escolhido,
+            'avatar' => $user->avatar_path,
         ];
 
         $request->session()->put('userInfo', $userInfo);

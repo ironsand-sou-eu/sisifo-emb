@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,9 +35,8 @@ class AppServiceProvider extends ServiceProvider
                     ->numbers()
                     ->symbols()
                     ->uncompromised(2);
-    
+
             return $rule;
         });
-    
     }
 }

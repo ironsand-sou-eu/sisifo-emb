@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class EspaiderComarcasController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EspaiderComarca';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -19,20 +19,22 @@ class EspaiderComarcasController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["espaiderUf"])->get();
-            return response()->json(["fullList" => $fullList]);
+            $fullList = $this->mainModel::with(['espaiderUf'])->get();
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Comarcas (redação do Espaider)',
                 'description' => 'Comarcas existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/espaider-comarcas'),
                 'apiUrl' => url('/api/espaider-comarcas'),
-                'dbFieldNames' => ["nome_comarca_espaider", "espaider_uf.sigla"],
-                'dbNameField' => "nome_comarca_espaider",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Comarca (Espaider)', 'UF']
+                'dbFieldNames' => ['nome_comarca_espaider', 'espaider_uf.sigla'],
+                'dbNameField' => 'nome_comarca_espaider',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Comarca (Espaider)', 'UF'],
             ]);
         }
     }
@@ -45,10 +47,10 @@ class EspaiderComarcasController extends Controller
      */
     public function store(Request $request)
     {
-        $nomeComarca = $request->input("nome_comarca_espaider");
+        $nomeComarca = $request->input('nome_comarca_espaider');
         $validationRules = [
-            "nome_comarca_espaider" => ["required", "min:2", "max:40"],
-            "espaider_uf_id" => ["required", "size:2", new UniqueCombinationRule(EspaiderComarca::class, ["nome_comarca_espaider", $nomeComarca])]
+            'nome_comarca_espaider' => ['required', 'min:2', 'max:40'],
+            'espaider_uf_id' => ['required', 'size:2', new UniqueCombinationRule(EspaiderComarca::class, ['nome_comarca_espaider', $nomeComarca])],
         ];
 
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
@@ -75,11 +77,11 @@ class EspaiderComarcasController extends Controller
             'apiUrl' => url('/api/espaider-comarcas'),
             'displayFields' => [
                 0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text'],
-                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider' ]
-            ]
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -107,14 +109,14 @@ class EspaiderComarcasController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text'],
-                1 => ['name' => 'espaider_uf_id', 'caption' => 'Unidade da Federação', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider', 'selected' => $entity->espaiderUf->nome_uf_espaider ]
-            ]
+                1 => ['name' => 'espaider_uf_id', 'caption' => 'Unidade da Federação', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider', 'selected' => $entity->espaiderUf->nome_uf_espaider],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -123,10 +125,10 @@ class EspaiderComarcasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nomeComarca = $request->input("nome_comarca_espaider");
+        $nomeComarca = $request->input('nome_comarca_espaider');
         $validationRules = [
-            "nome_comarca_espaider" => ["min:2", "max:40"],
-            "espaider_uf_id" => ["size:2", new UniqueCombinationRule(EspaiderComarca::class, ["nome_comarca_espaider", $nomeComarca])]
+            'nome_comarca_espaider' => ['min:2', 'max:40'],
+            'espaider_uf_id' => ['size:2', new UniqueCombinationRule(EspaiderComarca::class, ['nome_comarca_espaider', $nomeComarca])],
         ];
 
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);

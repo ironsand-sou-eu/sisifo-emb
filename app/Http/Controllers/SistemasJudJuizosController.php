@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BizRules\SistemasJudJuizo;
 use App\Models\BizRules\EspaiderJuizo;
+use App\Models\BizRules\SistemasJudJuizo;
 use Illuminate\Http\Request;
 
 class SistemasJudJuizosController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\SistemasJudJuizo';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,20 +18,22 @@ class SistemasJudJuizosController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["espaiderJuizo"])->get();
-            return response()->json(["fullList" => $fullList]);
+            $fullList = $this->mainModel::with(['espaiderJuizo'])->get();
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Juízos (Sistemas do Judiciário)',
                 'description' => 'Juízos existentes nos sistemas processuais do Judiciário (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/sistemas-jud-juizos'),
                 'apiUrl' => url('/api/sistemas-jud-juizos'),
-                'dbFieldNames' => ["nome_juizo_sistemas_jud", "espaider_juizo.nome_juizo_espaider"],
-                'dbNameField' => "nome_juizo_sistemas_jud",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Juízo (sistemas processuais do Judiciário)', 'Juízo (Espaider)']
+                'dbFieldNames' => ['nome_juizo_sistemas_jud', 'espaider_juizo.nome_juizo_espaider'],
+                'dbNameField' => 'nome_juizo_sistemas_jud',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Juízo (sistemas processuais do Judiciário)', 'Juízo (Espaider)'],
             ]);
         }
     }
@@ -45,9 +47,10 @@ class SistemasJudJuizosController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_juizo_sistemas_jud" => ["required", "max:120", "unique:sistemas_jud_juizos"],
-            "espaider_juizo_id" => ["required", "numeric"]
+            'nome_juizo_sistemas_jud' => ['required', 'max:120', 'unique:sistemas_jud_juizos'],
+            'espaider_juizo_id' => ['required', 'numeric'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -72,11 +75,11 @@ class SistemasJudJuizosController extends Controller
             'apiUrl' => url('/api/sistemas-jud-juizo'),
             'displayFields' => [
                 0 => ['name' => 'nome_juizo_sistemas_jud', 'caption' => 'Juízo (outros sistemas)', 'inputType' => 'text'],
-                1 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider' ],
-            ]
+                1 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -104,14 +107,14 @@ class SistemasJudJuizosController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_juizo_sistemas_jud', 'caption' => 'Juízo (sistema do Judiciário)', 'inputType' => 'text'],
-                1 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider ]
-            ]
+                1 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -121,9 +124,10 @@ class SistemasJudJuizosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_juizo_sistemas_jud" => ["max:120"],
-            "espaider_juizo_id" => ["numeric"]
+            'nome_juizo_sistemas_jud' => ['max:120'],
+            'espaider_juizo_id' => ['numeric'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

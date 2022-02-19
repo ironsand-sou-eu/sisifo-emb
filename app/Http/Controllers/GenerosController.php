@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class GenerosController extends Controller
 {
     protected $mainModel = 'App\Models\Access\Genero';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class GenerosController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Gêneros',
                 'description' => 'Gêneros dos usuários',
                 'url' => url('/generos'),
                 'apiUrl' => url('/api/generos'),
-                'dbFieldNames' => ["genero"],
-                'dbNameField' => "genero",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Gênero']
+                'dbFieldNames' => ['genero'],
+                'dbNameField' => 'genero',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Gênero'],
             ]);
         }
     }
@@ -44,8 +46,9 @@ class GenerosController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "genero" => ["required", "max:20", "unique:generos"],
-        ];    
+            'genero' => ['required', 'max:20', 'unique:generos'],
+        ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -68,11 +71,11 @@ class GenerosController extends Controller
             'url' => url('/generos'),
             'apiUrl' => url('/api/generos'),
             'displayFields' => [
-                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -98,14 +101,14 @@ class GenerosController extends Controller
             'apiUrl' => url('/api/generos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -115,8 +118,9 @@ class GenerosController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "genero" => ["max:20"],
-        ];    
+            'genero' => ['max:20'],
+        ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

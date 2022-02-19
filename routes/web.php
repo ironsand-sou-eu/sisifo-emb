@@ -35,29 +35,28 @@ Route::get('/login', function () {
 
 Route::group([
     'middleware' => ['auth.frontend'],
-    ], function ($router) {
+], function ($router) {
         Route::get('/', function () {
             return view('dashboard');
         })->name('dashboard');
-        
+
         Route::resources([
-            "campos" => CamposController::class,
-            "eselo-comarcas" => EseloComarcasController::class,
-            "eselo-juizos" => EseloJuizosController::class,
-            "eselo-configs" => EseloConfigsController::class,
-            "espaider-comarcas" => EspaiderComarcasController::class,
-            "espaider-juizos" => EspaiderJuizosController::class,
-            "espaider-orgaos" => EspaiderOrgaosController::class,
-            "espaider-ufs" => EspaiderUfsController::class,
-            "generos" => GenerosController::class,
-            "log-alteracoes" => LogAlteracoesController::class,
-            "permissoes" => PermissoesController::class,
-            "sistemas-jud-juizos" => SistemasJudJuizosController::class,
-            "tabelas" => TabelasController::class,
-            "tipos-permissoes" => TiposPermissoesController::class,
-            "users" => UsersController::class,
-            "dajes" => DajeController::class,
-        ]); 
+            'campos' => CamposController::class,
+            'eselo-comarcas' => EseloComarcasController::class,
+            'eselo-juizos' => EseloJuizosController::class,
+            'eselo-configs' => EseloConfigsController::class,
+            'espaider-comarcas' => EspaiderComarcasController::class,
+            'espaider-juizos' => EspaiderJuizosController::class,
+            'espaider-orgaos' => EspaiderOrgaosController::class,
+            'espaider-ufs' => EspaiderUfsController::class,
+            'generos' => GenerosController::class,
+            'log-alteracoes' => LogAlteracoesController::class,
+            'permissoes' => PermissoesController::class,
+            'sistemas-jud-juizos' => SistemasJudJuizosController::class,
+            'tabelas' => TabelasController::class,
+            'tipos-permissoes' => TiposPermissoesController::class,
+            'users' => UsersController::class,
+            'dajes' => DajeController::class,
+        ]);
     }
 );
-

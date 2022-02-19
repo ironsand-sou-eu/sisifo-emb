@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Access\Campo;
 use App\Models\Access\Tabela;
-use Illuminate\Http\Request;
 use App\Rules\UniqueCombinationRule;
+use Illuminate\Http\Request;
 
 class CamposController extends Controller
 {
@@ -19,20 +19,22 @@ class CamposController extends Controller
     public function index(Request $request)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(["tabela"])->get();
-            return response()->json(["fullList" => $fullList]);
+            $fullList = $this->mainModel::with(['tabela'])->get();
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Campos',
                 'description' => 'Campos que compõem as tabelas do Sísifo',
                 'url' => url('/campos'),
                 'apiUrl' => url('/api/campos'),
-                'dbFieldNames' => ["nome_campo", "tabela.nome_tabela"],
-                'dbNameField' => "nome_campo",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Campo', 'Tabela']
+                'dbFieldNames' => ['nome_campo', 'tabela.nome_tabela'],
+                'dbNameField' => 'nome_campo',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Campo', 'Tabela'],
             ]);
         }
     }
@@ -45,10 +47,10 @@ class CamposController extends Controller
      */
     public function store(Request $request)
     {
-        $nomeCampo = $request->input("nome_campo");
+        $nomeCampo = $request->input('nome_campo');
         $validationRules = [
-            "nome_campo" => ["required", "max:191"],
-            "tabela_id" => ["required", "numeric", new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])]
+            'nome_campo' => ['required', 'max:191'],
+            'tabela_id' => ['required', 'numeric', new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])],
         ];
 
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
@@ -75,11 +77,11 @@ class CamposController extends Controller
             'apiUrl' => url('/api/campos'),
             'displayFields' => [
                 0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text'],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela' ],
-            ]
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -107,11 +109,11 @@ class CamposController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text'],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela ]
-            ]
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
     /**
@@ -123,10 +125,10 @@ class CamposController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nomeCampo = $request->input("nome_campo");
+        $nomeCampo = $request->input('nome_campo');
         $validationRules = [
-            "nome_campo" => ["max:191"],
-            "tabela_id" => ["numeric", new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])]
+            'nome_campo' => ['max:191'],
+            'tabela_id' => ['numeric', new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])],
         ];
 
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);

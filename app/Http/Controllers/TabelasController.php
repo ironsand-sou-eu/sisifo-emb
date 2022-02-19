@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class TabelasController extends Controller
 {
     protected $mainModel = 'App\Models\Access\Tabela';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class TabelasController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'Tabelas',
                 'description' => 'Tabelas que compõem o banco de dados do Sísifo',
                 'url' => url('/tabelas'),
                 'apiUrl' => url('/api/tabelas'),
-                'dbFieldNames' => ["nome_tabela"],
-                'dbNameField' => "nome_tabela",
-                'dbIdField' => "id",
-                'tableColumnNames' => ['Tabela']
+                'dbFieldNames' => ['nome_tabela'],
+                'dbNameField' => 'nome_tabela',
+                'dbIdField' => 'id',
+                'tableColumnNames' => ['Tabela'],
             ]);
         }
     }
@@ -44,8 +46,9 @@ class TabelasController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_tabela" => ["required", "max:60", "unique:tabelas"]
+            'nome_tabela' => ['required', 'max:60', 'unique:tabelas'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -68,11 +71,11 @@ class TabelasController extends Controller
             'url' => url('/tabelas'),
             'apiUrl' => url('/api/tabelas'),
             'displayFields' => [
-                0 => ['name' => 'nome_tabela', 'caption' => 'Nome da tabela', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'nome_tabela', 'caption' => 'Nome da tabela', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -98,14 +101,14 @@ class TabelasController extends Controller
             'apiUrl' => url('/api/tabelas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -115,8 +118,9 @@ class TabelasController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_tabela" => ["max:60"]
+            'nome_tabela' => ['max:60'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

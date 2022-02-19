@@ -14,11 +14,11 @@ class CreateEspaiderUfsTable extends Migration
     public function up()
     {
         Schema::create('espaider_ufs', function (Blueprint $table) {
-            $table->string("sigla", 2);
-            $table->string("nome_uf_espaider", 25)->unique();
+            $table->string('sigla', 2);
+            $table->string('nome_uf_espaider', 25)->unique();
             $table->timestamps();
 
-            $table->primary("sigla");
+            $table->primary('sigla');
         });
     }
 

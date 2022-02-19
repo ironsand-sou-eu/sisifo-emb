@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class EspaiderUfsController extends Controller
 {
     protected $mainModel = 'App\Models\BizRules\EspaiderUf';
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,19 +18,21 @@ class EspaiderUfsController extends Controller
     {
         if ($this->isApiRoute($request)) {
             $fullList = $this->mainModel::all();
-            return response()->json(["fullList" => $fullList]);
+
+            return response()->json(['fullList' => $fullList]);
         } else {
             $jwt = $request->cookie('jat');
-            return view("components.index", [
+
+            return view('components.index', [
                 'jwt' => $jwt,
                 'title' => 'UFs',
                 'description' => 'Unidades da Federação existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
                 'url' => url('/espaider-ufs'),
                 'apiUrl' => url('/api/espaider-ufs'),
-                'dbFieldNames' => ["nome_uf_espaider", "sigla"],
-                'dbNameField' => "nome_uf_espaider",
-                'dbIdField' => "sigla",
-                'tableColumnNames' => ['UF', 'Sigla']
+                'dbFieldNames' => ['nome_uf_espaider', 'sigla'],
+                'dbNameField' => 'nome_uf_espaider',
+                'dbIdField' => 'sigla',
+                'tableColumnNames' => ['UF', 'Sigla'],
             ]);
         }
     }
@@ -44,9 +46,10 @@ class EspaiderUfsController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            "nome_uf_espaider" => ["required", "min:4", "max:25", "unique:espaider_ufs"],
-            "sigla" => ["required", "regex:/^[A-Z]{2}$/", "unique:espaider_ufs"],
+            'nome_uf_espaider' => ['required', 'min:4', 'max:25', 'unique:espaider_ufs'],
+            'sigla' => ['required', 'regex:/^[A-Z]{2}$/', 'unique:espaider_ufs'],
         ];
+
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -70,11 +73,11 @@ class EspaiderUfsController extends Controller
             'apiUrl' => url('/api/espaider-ufs'),
             'displayFields' => [
                 0 => ['name' => 'nome_uf_espaider', 'caption' => 'Unidade da Federação (Espaider)', 'inputType' => 'text'],
-                1 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text']
-            ]
+                1 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.new", $params);
+        return view('components.new', $params);
     }
 
     /**
@@ -101,14 +104,14 @@ class EspaiderUfsController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_uf_espaider', 'caption' => 'Nome', 'inputType' => 'text'],
-                0 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text']
-            ]
+                0 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text'],
+            ],
         ];
 
-        return view("components.edit", $params);
+        return view('components.edit', $params);
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -118,9 +121,10 @@ class EspaiderUfsController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            "nome_uf_espaider" => ["min:4", "max:25"],
-            "sigla" => ["regex:/^[A-Z]{2}$/"],
+            'nome_uf_espaider' => ['min:4', 'max:25'],
+            'sigla' => ['regex:/^[A-Z]{2}$/'],
         ];
+
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 

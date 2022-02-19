@@ -9,10 +9,12 @@ class EseloConfig extends Model
 {
     use HasFactory;
 
-    protected $table = "eselo_configs";
-    protected $primarykey = "id";
+    protected $table = 'eselo_configs';
+
+    protected $primarykey = 'id';
+
     protected $fillable = [
-        "nome",
-        "valor"
+        'nome',
+        'valor',
     ];
 }

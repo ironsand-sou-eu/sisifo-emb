@@ -22,11 +22,11 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->boolean("ativo");
+            $table->boolean('ativo');
             $table->string('avatar_path')->nullable();
             $table->timestamps();
 
-            $table->foreign('genero_declarado_id')->references("id")->on("generos");
+            $table->foreign('genero_declarado_id')->references('id')->on('generos');
         });
     }
 
