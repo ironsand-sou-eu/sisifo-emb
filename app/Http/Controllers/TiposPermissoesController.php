@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TiposPermissoesController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\TipoPermissao';
+    protected $mainModel = \App\Models\Access\TipoPermissao::class;
 
     /**
      * Display a listing of the resource.

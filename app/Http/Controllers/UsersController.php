@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\User';
+    protected $mainModel = \App\Models\Access\User::class;
 
     /**
      * Display a listing of the resource.

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class PermissoesController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\Permissao';
+    protected $mainModel = \App\Models\Access\Permissao::class;
 
     /**
      * Display a listing of the resource.

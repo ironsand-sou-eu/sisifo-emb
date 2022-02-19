@@ -152,7 +152,7 @@ class Controller extends BaseController
      */
     protected function logUpdates($userId, $updatedFields, $modelName)
     {
-        if ($modelName == 'App\Models\Access\LogAlteracao') {
+        if ($modelName == \App\Models\Access\LogAlteracao::class) {
             return;
         }
 

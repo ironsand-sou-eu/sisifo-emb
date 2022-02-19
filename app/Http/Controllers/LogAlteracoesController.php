@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class LogAlteracoesController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\LogAlteracao';
+    protected $mainModel = \App\Models\Access\LogAlteracao::class;
 
     /**
      * Display a listing of the resource.

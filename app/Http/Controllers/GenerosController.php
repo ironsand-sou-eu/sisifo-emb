@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class GenerosController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\Genero';
+    protected $mainModel = \App\Models\Access\Genero::class;
 
     /**
      * Display a listing of the resource.

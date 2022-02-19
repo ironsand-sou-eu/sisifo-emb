@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TabelasController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\Tabela';
+    protected $mainModel = \App\Models\Access\Tabela::class;
 
     /**
      * Display a listing of the resource.

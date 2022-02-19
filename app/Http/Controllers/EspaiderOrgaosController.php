@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class EspaiderOrgaosController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\EspaiderOrgao';
+    protected $mainModel = \App\Models\BizRules\EspaiderOrgao::class;
 
     /**
      * Display a listing of the resource.

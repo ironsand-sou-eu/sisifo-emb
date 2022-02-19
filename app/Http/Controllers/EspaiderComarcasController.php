@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class EspaiderComarcasController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\EspaiderComarca';
+    protected $mainModel = \App\Models\BizRules\EspaiderComarca::class;
 
     /**
      * Display a listing of the resource.

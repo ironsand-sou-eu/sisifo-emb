@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class EseloComarcasController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\EseloComarca';
+    protected $mainModel = \App\Models\BizRules\EseloComarca::class;
 
     /**
      * Display a listing of the resource.

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class EspaiderUfsController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\EspaiderUf';
+    protected $mainModel = \App\Models\BizRules\EspaiderUf::class;
 
     /**
      * Display a listing of the resource.

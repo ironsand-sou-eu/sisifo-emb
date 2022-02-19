@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class DajeController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\Daje';
+    protected $mainModel = \App\Models\BizRules\Daje::class;
 
     protected $displayFields = [
         0 => ['name' => 'numero', 'caption' => 'Númerodo DAJE', 'inputType' => 'text'],

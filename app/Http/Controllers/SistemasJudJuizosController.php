@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class SistemasJudJuizosController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\SistemasJudJuizo';
+    protected $mainModel = \App\Models\BizRules\SistemasJudJuizo::class;
 
     /**
      * Display a listing of the resource.

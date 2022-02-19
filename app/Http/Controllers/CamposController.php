@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class CamposController extends Controller
 {
-    protected $mainModel = 'App\Models\Access\Campo';
+    protected $mainModel = \App\Models\Access\Campo::class;
 
     /**
      * Display a listing of the resource.

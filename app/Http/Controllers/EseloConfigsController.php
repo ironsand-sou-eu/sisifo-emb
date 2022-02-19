@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class EseloConfigsController extends Controller
 {
-    protected $mainModel = 'App\Models\BizRules\EseloConfig';
+    protected $mainModel = \App\Models\BizRules\EseloConfig::class;
 
     /**
      * Display a listing of the resource.
