@@ -2,21 +2,21 @@
 "relationalFields": {},
 
 "TabelasSeeder": {
-    "0": { "nome_tabela": "campos" },
-    "1": { "nome_tabela": "eselo_comarcas" },
-    "2": { "nome_tabela": "eselo_juizos" },
-    "3": { "nome_tabela": "espaider_comarcas" },
-    "4": { "nome_tabela": "espaider_juizos" },
-    "5": { "nome_tabela": "espaider_orgaos" },
-    "6": { "nome_tabela": "espaider_ufs" },
-    "7": { "nome_tabela": "generos" },
-    "8": { "nome_tabela": "permissoes" },
-    "9": { "nome_tabela": "sistemas_jud_juizos" },
-    "10": { "nome_tabela": "tabelas" },
-    "11": { "nome_tabela": "tipos_permissoes" },
-    "12": { "nome_tabela": "users" },
-    "13": { "nome_tabela": "dajes_gerados" },
-    "14": { "nome_tabela": "eselo_configs" },
-    "15": { "nome_tabela": "log_alteracoes" }
+    "0": { "nome_tabela": "campos", "nome_exibicao": "Campos" },
+    "1": { "nome_tabela": "eselo_comarcas", "nome_exibicao": "Comarcas do eSelo" },
+    "2": { "nome_tabela": "eselo_juizos", "nome_exibicao": "Juízos do eSelo" },
+    "3": { "nome_tabela": "espaider_comarcas", "nome_exibicao": "Comarcas do Espaider" },
+    "4": { "nome_tabela": "espaider_juizos", "nome_exibicao": "Juizos do Espaider" },
+    "5": { "nome_tabela": "espaider_orgaos", "nome_exibicao": "Órgãos do Espaider" },
+    "6": { "nome_tabela": "espaider_ufs", "nome_exibicao": "UFs do Espaider" },
+    "7": { "nome_tabela": "generos", "nome_exibicao": "Gêneros" },
+    "8": { "nome_tabela": "permissoes", "nome_exibicao": "Permissões" },
+    "9": { "nome_tabela": "sistemas_jud_juizos", "nome_exibicao": "Juízos dos sistemas do Judiciário" },
+    "10": { "nome_tabela": "tabelas", "nome_exibicao": "Tabelas" },
+    "11": { "nome_tabela": "tipos_permissoes", "nome_exibicao": "Tipos de permissão" },
+    "12": { "nome_tabela": "users", "nome_exibicao": "Usuários" },
+    "13": { "nome_tabela": "dajes_gerados", "nome_exibicao": "Dajes gerados" },
+    "14": { "nome_tabela": "eselo_configs", "nome_exibicao": "Configurações do Sìsifo Dajes" },
+    "15": { "nome_tabela": "log_alteracoes", "nome_exibicao": "Log de alterações" }
 }
 }
