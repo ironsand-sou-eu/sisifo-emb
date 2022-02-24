@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use App\Http\Resources\GlobalResource;
 
 class JwtMiddleware
 {
@@ -22,11 +23,11 @@ class JwtMiddleware
             $user = JWTAuth::parseToken()->authenticate();
         } catch (\Exception $e) {
             if ($e instanceof TokenInvalidException) {
-                return response()->json(['resp' => __('jwt.invalid')]);
+                return GlobalResource::jsonResponse(['resp' => __('jwt.invalid')], 401);
             } elseif ($e instanceof TokenExpiredException) {
-                return response()->json(['resp' => __('jwt.expired')]);
+                return GlobalResource::jsonResponse(['resp' => __('jwt.expired')], 401);
             } else {
-                return response()->json(['resp' => __('jwt.anotherTokenProblem'), 'data' => $e]);
+                return GlobalResource::jsonResponse(['resp' => __('jwt.anotherTokenProblem'), 'data' => $e], 401);
             }
         }
 

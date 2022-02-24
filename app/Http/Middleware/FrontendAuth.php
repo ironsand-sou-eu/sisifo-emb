@@ -20,15 +20,12 @@ class FrontendAuth
         $jwt = $request->cookie('jat');
         if (! $jwt) {
             $request->session()->forget('userInfo');
-
             return redirect()->route('login');
         }
 
         $payload = self::getDecodedPayload($jwt);
-        $expDate = date('Y-m-d H:i:s', $payload['exp']);
-        if (time() >= $expDate) {
+        if (time() >= $payload['exp']) {
             $request->session()->forget('userInfo');
-
             return redirect()->route('login');
         }
 
