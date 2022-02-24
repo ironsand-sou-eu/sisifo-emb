@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'generos',
             'users',
             'tabelas',
-            'eselo_configs',
+            'custas_configs',
             'tipos_permissoes',
             'campos',
         ];

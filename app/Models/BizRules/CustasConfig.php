@@ -5,11 +5,11 @@ namespace App\Models\BizRules;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EseloConfig extends Model
+class CustasConfig extends Model
 {
     use HasFactory;
 
-    protected $table = 'eselo_configs';
+    protected $table = 'custas_configs';
 
     protected $primarykey = 'id';
 

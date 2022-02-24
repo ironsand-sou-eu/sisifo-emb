@@ -3,7 +3,7 @@
 use App\Http\Controllers\CamposController;
 use App\Http\Controllers\DajeController;
 use App\Http\Controllers\EseloComarcasController;
-use App\Http\Controllers\EseloConfigsController;
+use App\Http\Controllers\CustasConfigsController;
 use App\Http\Controllers\EseloJuizosController;
 use App\Http\Controllers\EspaiderComarcasController;
 use App\Http\Controllers\EspaiderJuizosController;
@@ -38,11 +38,15 @@ Route::middleware('auth.frontend')->group(function ($router) {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/eu', function () {
+        return view('users.me');
+    })->name('myProfile');
+
     Route::resources([
         'campos' => CamposController::class,
         'eselo-comarcas' => EseloComarcasController::class,
         'eselo-juizos' => EseloJuizosController::class,
-        'eselo-configs' => EseloConfigsController::class,
+        'custas-configs' => CustasConfigsController::class,
         'espaider-comarcas' => EspaiderComarcasController::class,
         'espaider-juizos' => EspaiderJuizosController::class,
         'espaider-orgaos' => EspaiderOrgaosController::class,

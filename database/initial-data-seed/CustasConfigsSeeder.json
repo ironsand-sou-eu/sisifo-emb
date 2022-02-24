@@ -1,7 +1,7 @@
 {
     "relationalFields": {},
  
-    "EseloConfigsSeeder": {
+    "CustasConfigsSeeder": {
     "0": { "nome": "Tipo de Documento", "valor": "J2" },
     "2": { "nome": "Referência Cabeçalho", "valor": "PPJCM/DAJES" },
     "3": { "nome": "Texto Cabeçalho", "valor": "PAGTO CUSTAS" },

@@ -16,7 +16,7 @@
     "11": { "nome_tabela": "tipos_permissoes", "nome_exibicao": "Tipos de permissão" },
     "12": { "nome_tabela": "users", "nome_exibicao": "Usuários" },
     "13": { "nome_tabela": "dajes_gerados", "nome_exibicao": "Dajes gerados" },
-    "14": { "nome_tabela": "eselo_configs", "nome_exibicao": "Configurações do Sìsifo Dajes" },
+    "14": { "nome_tabela": "custas_configs", "nome_exibicao": "Configurações do Sìsifo Dajes" },
     "15": { "nome_tabela": "log_alteracoes", "nome_exibicao": "Log de alterações" }
 }
 }

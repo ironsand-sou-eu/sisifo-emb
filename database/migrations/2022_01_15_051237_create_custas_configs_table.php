@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('eselo_configs', function (Blueprint $table) {
+        Schema::create('custas_configs', function (Blueprint $table) {
             $table->id();
             $table->string('nome', 50)->unique();
             $table->string('valor');
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('eselo_configs');
+        Schema::dropIfExists('custas_configs');
     }
 };

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BizRules\EseloConfig;
+use App\Models\BizRules\CustasConfig;
 use Illuminate\Http\Request;
 
-class EseloConfigsController extends Controller
+class CustasConfigsController extends Controller
 {
-    protected $mainModel = \App\Models\BizRules\EseloConfig::class;
+    protected $mainModel = \App\Models\BizRules\CustasConfig::class;
 
     /**
      * Display a listing of the resource.
@@ -27,8 +27,8 @@ class EseloConfigsController extends Controller
                 'jwt' => $jwt,
                 'title' => 'Configurações - Sísifo DAJEs',
                 'description' => 'Configurações necessárias para a geração dos dados pelo Sísifo DAJEs',
-                'url' => url('/eselo-configs'),
-                'apiUrl' => url('/api/eselo-configs'),
+                'url' => url('/custas-configs'),
+                'apiUrl' => url('/api/custas-configs'),
                 'dbFieldNames' => ['nome', 'valor'],
                 'dbNameField' => 'nome',
                 'dbIdField' => 'id',
@@ -46,7 +46,7 @@ class EseloConfigsController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            'nome' => ['required', 'max:50', 'unique:nome'],
+            'nome' => ['required', 'max:50', 'unique:custas_configs'],
             'valor' => ['required'],
         ];
 
@@ -71,11 +71,11 @@ class EseloConfigsController extends Controller
             'description' => 'A configuração abaixo refere-se aos valores que o Sísifo DAJEs insere na planilha'.
                 'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para'.
                 'compreender, procure o financeiro da PPJ',
-            'url' => url('/eselo-configs'),
-            'apiUrl' => url('/api/eselo-configs'),
+            'url' => url('/custas-configs'),
+            'apiUrl' => url('/api/custas-configs'),
             'displayFields' => [
-                0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text'],
-                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text'],
+                0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -103,12 +103,12 @@ class EseloConfigsController extends Controller
                 'que será importada para o SAP. Não altere sem compreender os efeitos. Se precisar de ajuda para'.
                 'compreender, procure o financeiro da PPJ.',
             'id' => $id,
-            'url' => url('/eselo-configs'),
-            'apiUrl' => url('/api/eselo-configs'),
+            'url' => url('/custas-configs'),
+            'apiUrl' => url('/api/custas-configs'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text'],
-                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text'],
+                0 => ['name' => 'nome', 'caption' => 'Nome da configuração', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'valor', 'caption' => 'Valor', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 

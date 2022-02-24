@@ -37,7 +37,7 @@
                             <li><a href="{{ url('/sistemas-jud-juizos') }}" class='collapse-item'>Juízos (outros sistemas)</a></li>
                             <li><a href="{{ url('/eselo-juizos') }}" class='collapse-item'>Juízos (e-Selo)</a></li>
                             <li><a href="{{ url('/eselo-comarcas') }}" class='collapse-item'>Comarcas (e-Selo)</a></li>
-                            <li><a href="{{ url('/eselo-configs') }}" class='collapse-item'>Configurações Sísifo DAJEs</a></li>
+                            <li><a href="{{ url('/custas-configs') }}" class='collapse-item'>Configurações Sísifo DAJEs</a></li>
                         </ul>
                     </div>
                 </div>
