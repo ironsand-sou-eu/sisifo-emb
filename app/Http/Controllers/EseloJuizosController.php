@@ -78,8 +78,8 @@ class EseloJuizosController extends Controller
             'apiUrl' => url('/api/eselo-juizos'),
             'displayFields' => [
                 0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text'],
-                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo'],
-                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider'],
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo', 'bootstrapColSize' => 6],
+                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -112,8 +112,8 @@ class EseloJuizosController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_juizo_eselo', 'caption' => 'Juízo (e-Selo)', 'inputType' => 'text'],
-                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo', 'selected' => $entity->eseloComarca->nome_comarca_eselo],
-                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider],
+                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $eseloComarcas, 'id' => 'id', 'value' => 'nome_comarca_eselo', 'selected' => $entity->eseloComarca->nome_comarca_eselo, 'bootstrapColSize' => 6],
+                2 => ['name' => 'espaider_juizo_id', 'caption' => 'Juízo (Espaider)', 'inputType' => 'select', 'options' => $espaiderJuizos, 'id' => 'id', 'value' => 'nome_juizo_espaider', 'selected' => $entity->espaiderJuizo->nome_juizo_espaider, 'bootstrapColSize' => 6],
             ],
         ];
 

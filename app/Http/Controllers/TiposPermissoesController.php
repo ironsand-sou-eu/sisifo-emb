@@ -72,7 +72,7 @@ class TiposPermissoesController extends Controller
             'url' => url('/tipos-permissoes'),
             'apiUrl' => url('/api/tipos-permissoes'),
             'displayFields' => [
-                0 => ['name' => 'nome_permissao', 'caption' => 'Nome da permissão', 'inputType' => 'text'],
+                0 => ['name' => 'nome_permissao', 'caption' => 'Nome da permissão', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -102,7 +102,7 @@ class TiposPermissoesController extends Controller
             'apiUrl' => url('/api/tipos-permissoes'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_permissao', 'caption' => 'Tipo de permissão', 'inputType' => 'text'],
+                0 => ['name' => 'nome_permissao', 'caption' => 'Tipo de permissão', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 

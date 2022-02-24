@@ -71,7 +71,7 @@ class GenerosController extends Controller
             'url' => url('/generos'),
             'apiUrl' => url('/api/generos'),
             'displayFields' => [
-                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text'],
+                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -101,7 +101,7 @@ class GenerosController extends Controller
             'apiUrl' => url('/api/generos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text'],
+                0 => ['name' => 'genero', 'caption' => 'Gênero', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 

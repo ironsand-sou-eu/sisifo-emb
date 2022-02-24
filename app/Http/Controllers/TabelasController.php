@@ -71,7 +71,7 @@ class TabelasController extends Controller
             'url' => url('/tabelas'),
             'apiUrl' => url('/api/tabelas'),
             'displayFields' => [
-                0 => ['name' => 'nome_tabela', 'caption' => 'Nome da tabela', 'inputType' => 'text'],
+                0 => ['name' => 'nome_tabela', 'caption' => 'Nome da tabela', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -101,7 +101,7 @@ class TabelasController extends Controller
             'apiUrl' => url('/api/tabelas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text'],
+                0 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 

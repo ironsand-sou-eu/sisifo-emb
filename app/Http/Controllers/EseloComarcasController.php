@@ -71,7 +71,7 @@ class EseloComarcasController extends Controller
             'url' => url('/eselo-comarcas'),
             'apiUrl' => url('/api/eselo-comarcas'),
             'displayFields' => [
-                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text'],
+                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -101,7 +101,7 @@ class EseloComarcasController extends Controller
             'apiUrl' => url('/api/eselo-comarcas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text'],
+                0 => ['name' => 'nome_comarca_eselo', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 

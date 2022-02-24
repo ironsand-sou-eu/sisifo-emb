@@ -72,8 +72,8 @@ class EspaiderOrgaosController extends Controller
             'url' => url('/espaider-orgaos'),
             'apiUrl' => url('/api/espaider-orgaos'),
             'displayFields' => [
-                0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Órgão (Espaider)', 'inputType' => 'text'],
-                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text'],
+                0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Órgão (Espaider)', 'inputType' => 'text', 'bootstrapColSize' => 8],
+                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text', 'bootstrapColSize' => 4],
             ],
         ];
 
@@ -103,8 +103,8 @@ class EspaiderOrgaosController extends Controller
             'apiUrl' => url('/api/espaider-orgaos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Nome do órgão', 'inputType' => 'text'],
-                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text'],
+                0 => ['name' => 'nome_orgao_espaider', 'caption' => 'Nome do órgão', 'inputType' => 'text', 'bootstrapColSize' => 8],
+                1 => ['name' => 'sigla_orgao', 'caption' => 'Sigla', 'inputType' => 'text', 'bootstrapColSize' => 4],
             ],
         ];
 

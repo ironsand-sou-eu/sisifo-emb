@@ -76,8 +76,8 @@ class CamposController extends Controller
             'url' => url('/campos'),
             'apiUrl' => url('/api/campos'),
             'displayFields' => [
-                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text'],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela'],
+                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -108,8 +108,8 @@ class CamposController extends Controller
             'apiUrl' => url('/api/campos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text'],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela],
+                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela, 'bootstrapColSize' => 6],
             ],
         ];
 
