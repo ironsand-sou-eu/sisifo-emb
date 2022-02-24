@@ -67,6 +67,7 @@ class DajeController extends Controller
         $validationRules = [
             'numero' => ['required', 'unique:dajes_gerados'],
             'processo' => ['required'],
+            'parte_adversa' => ['string'],
             'valor' => ['required', 'numeric'],
             'emissao' => ['required', 'date'],
             'vencimento' => ['required', 'date'],
