@@ -53,9 +53,8 @@ class PermissoesController extends Controller
         $validationRules = [
             'user_id' => ['required', 'numeric'],
             'tipo_permissao_id' => ['required', 'numeric'],
-            'tabela_id' => ['required', 'numeric', new UniqueCombinationRule(Permissao::class, 'user_id', $userId)],
+            'tabela_id' => ['required', 'numeric', new UniqueCombinationRule(Permissao::class, ['user_id', $userId])],
         ];
-
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -82,8 +81,8 @@ class PermissoesController extends Controller
             'apiUrl' => url('/api/permissoes'),
             'displayFields' => [
                 0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido'],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela'],
-                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao'],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'bootstrapColSize' => 6],
+                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -117,8 +116,8 @@ class PermissoesController extends Controller
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'user_id', 'caption' => 'Usuário', 'inputType' => 'select', 'options' => $users, 'id' => 'id', 'value' => 'nome_escolhido', 'selected' => $entity->user->nome_escolhido],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela],
-                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao', 'selected' => $entity->tipoPermissao->nome_permissao],
+                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela, 'bootstrapColSize' => 6],
+                2 => ['name' => 'tipo_permissao_id', 'caption' => 'Permissão', 'inputType' => 'select', 'options' => $tiposPermissao, 'id' => 'id', 'value' => 'nome_permissao', 'selected' => $entity->tipoPermissao->nome_permissao, 'bootstrapColSize' => 6],
             ],
         ];
 
