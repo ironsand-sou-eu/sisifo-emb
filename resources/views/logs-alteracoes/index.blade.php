@@ -18,7 +18,7 @@
                                 <thead>
                                     <tr role="row">
                                         @foreach ($tableColumnNames as $tableColumnName)
-                                        <th @class(["sorting", "sorting_asc" => $loop->first]) tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1">{{ $tableColumnName }}</th>
+                                        <th @class(["sorting"]) tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1">{{ $tableColumnName }}</th>
                                         @endforeach
                                     </tr>
                                 </thead>
@@ -54,6 +54,7 @@
                         "Authorization": "Bearer {{ $jwt }}"
                     }
                 },
+                "order": [[ {{ $sortingColumnIndexBase0 }}, "{{ $sortingDirection }}" ]],
                 "columns": [
                     @foreach ($dbFieldNames as $dbFieldName)
                     { data: "{{ $dbFieldName }}" },

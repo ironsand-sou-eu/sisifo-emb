@@ -33,6 +33,8 @@ class LogAlteracoesController extends Controller
                 'dbNameField' => 'campo.nome_campo',
                 'dbIdField' => 'id',
                 'tableColumnNames' => ['Campo', 'Tabela', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por'],
+                'sortingColumnIndexBase0' => 4,
+                'sortingDirection' => 'desc',
             ]);
         }
     }
