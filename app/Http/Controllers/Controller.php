@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DbErrorException;
+use App\Exceptions\EntryNotFoundException;
+use App\Exceptions\ValidationErrorException;
+use App\Http\Resources\GlobalResource;
 use App\Http\Middleware\FrontendAuth;
 use App\Models\Access\Campo;
 use App\Models\Access\LogAlteracao;
@@ -18,55 +22,26 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected function validateAndStore(Request $request, $modelClassName, $validationRules)
+    public function show(Request $request, $id)
     {
-        $validationResponse = [];
-        if (! $this->successfullyValidated($request, $validationRules, $validationResponse)) {
-            return $validationResponse;
-        }
-
-        try {
-            $modelClassName::create($validationResponse);
-        } catch (\Throwable $th) {
-            return $this->dbErrorResponse($th);
-        }
-
-        return $this->jsonResponse(['resp' => __('db.create.success'), 'createdEntity' => $validationResponse], 201);
-    }
-
-    protected function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules)
-    {
-        $validationResponse = [];
-        if (! $this->successfullyValidated($request, $validationRules, $validationResponse)) {
-            return $validationResponse;
-        }
-
-        try {
-            $entity = $modelClassName::findOrFail($id);
-            $updatedData = $this->getUpdatedFields($entity, $validationResponse);
-            $entity->update($validationResponse);
-        } catch (\Throwable $th) {
-            return $this->dbErrorResponse($th);
-        }
-        $jwt = $this->getJwtFromAuthorizationHeader($request);
-        $userId = FrontendAuth::getDecodedPayload($jwt)['sub'];
-        $this->logUpdates($userId, $updatedData, $modelClassName);
-
-        return $this->jsonResponse(['resp' => __('db.update.success'), 'updatedEntity' => $validationResponse], 200);
-    }
-
-    private function successfullyValidated(Request $request, $rules, &$validationResponse)
-    {
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            $validationResponse = $this->jsonResponse(['resp' => __('validation.genericError'), $validation->errors()], 422);
-
-            return false;
+        $entity = $this->mainModel::findOrFail($id);
+        if ($this->isApiRoute($request)) {
+            $modelBaseName = $this->stripNamespaceFromClassName($this->mainModel);
+            $entityResourceName = "App\\Http\\Resources\\{$modelBaseName}Resource";
+            $resource = new $entityResourceName($entity);
+            return GlobalResource::jsonResponse(['entity' => $resource]);
         } else {
-            $validationResponse = $validation->validated();
-
-            return true;
+            return $this->edit($request, $entity);
         }
+    }
+
+    private function stripNamespaceFromClassName($className) {
+        return substr($className, strrpos($className, '\\') + 1);
+    }
+
+    protected function isApiRoute(Request $request)
+    {
+        return $request->route()->getPrefix() === 'api';
     }
 
     protected function delete($modelClassName, $id)
@@ -75,108 +50,122 @@ class Controller extends BaseController
         try {
             $entity->delete();
         } catch (\Throwable $th) {
-            return $this->dbErrorResponse($th);
+            throw new DbErrorException($th);
         }
 
-        return $this->jsonResponse(['resp' => __('db.delete.success'), 'deletedEntity' => $entity], 200);
+        return GlobalResource::jsonResponse(['resp' => __('db.delete.success'), 'deletedEntity' => $entity], 200);
     }
 
-    protected function dbErrorResponse($th)
+    protected function validateAndStore(Request $request, $modelClassName, $validationRules)
     {
-        return $this->jsonResponse(['resp' => __('db.error'), 'data' => $th], 500);
+        $validationResponse = $this->validateData($request, $validationRules);
+        $createdData = $this->storeData($modelClassName, $validationResponse);
+        $this->logUpdates($request, $createdData, $modelClassName);
+        return GlobalResource::jsonResponse(['resp' => __('db.create.success'), 'createdEntity' => $validationResponse], 201);
     }
 
-    protected function isApiRoute(Request $request)
+    protected function validateAndUpdate(Request $request, $modelClassName, $id, $validationRules)
     {
-        return $request->route()->getPrefix() === 'api';
+        $validationResponse = $this->validateData($request, $validationRules);
+        $entity = $this->getEntity($modelClassName, $id);
+        $updatedData = $this->updateData($entity, $validationResponse);
+        $this->logUpdates($request, $updatedData, $modelClassName);
+        return GlobalResource::jsonResponse(['resp' => __('db.update.success'), 'updatedEntity' => $validationResponse], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $id)
+    private function validateData(Request $request, $rules)
     {
-        if ($this->isApiRoute($request)) {
-            $entity = $this->mainModel::findOrFail($id);
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails())
+            throw new ValidationErrorException($validation->errors());
+        
+        return $validation->validated();
+    }
 
-            return $this->jsonResponse(['entity' => $entity]);
-        } else {
-            return $this->edit($request, $id);
+    private function storeData($modelClassName, $validationResponse)
+    {
+        try {
+            $dataToCreate = $this->getFieldsToCreate($validationResponse);
+            $modelClassName::create($validationResponse);
+        } catch (\Throwable $th) {
+            throw new DbErrorException($th);
         }
+        return $dataToCreate;
     }
 
-    protected function jsonResponse($data, $code = 200)
+    private function getEntity($modelClassName, $id)
     {
-        return response()->json(
-            $data,
-            $code,
-            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
-            JSON_UNESCAPED_UNICODE
-        );
+        try {
+            $entity = $modelClassName::findOrFail($id);
+        } catch (\Throwable $th) {
+            throw new EntryNotFoundException($th);
+        }
+        return $entity;
     }
 
-    /**
-     * Returns the fields whose values were changed.
-     *
-     * @param  Entity $entity
-     * @param  array  $ValidatedInputFields
-     *
-     * @return array
-     */
-    protected function getUpdatedFields($entity, $ValidatedInputFields)
+    private function updateData($entity, $validationResponse)
     {
-        $updatedFields = [];
+        try {
+            $dataToUpdate = $this->getFieldsToUpdate($validationResponse, $entity);
+            $entity->update($validationResponse);
+        } catch (\Throwable $th) {
+            throw new DbErrorException($th);
+        }
+        return $dataToUpdate;
+    }
+
+    protected function getFieldsToUpdate($ValidatedInputFields, $entity)
+    {
+        $fieldsToUpdate = [];
         foreach ($ValidatedInputFields as $fieldName => $value) {
             if ($entity->$fieldName !== $value) {
-                $updatedFields[$fieldName] = [
+                $fieldsToUpdate[$fieldName] = [
                     'valor_anterior' => $entity->$fieldName,
                     'valor_atual' => $value,
                 ];
             }
         }
 
-        return $updatedFields;
+        return $fieldsToUpdate;
     }
 
-    /**
-     * Log the changes.
-     *
-     * @param  int $userId
-     * @param  array  $updatedFields
-     *
-     * @return array
-     */
-    protected function logUpdates($userId, $updatedFields, $modelName)
+    protected function getFieldsToCreate($ValidatedInputFields)
     {
-        if ($modelName == \App\Models\Access\LogAlteracao::class) {
-            return;
+        $fieldsToCreate = [];
+        foreach ($ValidatedInputFields as $fieldName => $value) {
+            $fieldsToCreate[$fieldName] = [
+                'valor_anterior' => '',
+                'valor_atual' => $value,
+            ];
         }
+        
+        return $fieldsToCreate;
+    }
 
+    protected function logUpdates($request, $updatedFields, $modelName)
+    {
+        if ($modelName == \App\Models\Access\LogAlteracao::class)
+        return; // Não se logam alterações na tabela de log
+        
         $table = $this->getTableFromModelName($modelName);
-
+        $userId = $this->getCurrentUserId($request);
         foreach ($updatedFields as $campoName => $valuesArray) {
             $campo = Campo::where('nome_campo', $campoName)->where('tabela_id', $table->id)->first();
             $this->logIndividualUpdate($campo, $userId, $valuesArray);
         }
     }
 
-    protected function logIndividualUpdate($campo, $userId, $valuesArray)
+    protected function getCurrentUserId($request)
     {
-        $valuesArray['campo_id'] = $campo->id;
-        $valuesArray['data_alteracao'] = date('Y-m-d H:i:s');
-        $valuesArray['alterado_por'] = $userId;
-        LogAlteracao::create($valuesArray);
+        $jwt = $this->getJwtFromAuthorizationHeader($request);
+        $userId = FrontendAuth::getDecodedPayload($jwt)['sub'];
+        return $userId;
     }
 
     protected function getJwtFromAuthorizationHeader(Request $request)
     {
         $jwt = $request->header('authorization');
         $jwt = str_replace('Bearer ', '', $jwt);
-
         return $jwt;
     }
 
@@ -184,7 +173,17 @@ class Controller extends BaseController
     {
         $model = new $modelName;
         $tableName = $model->getTable();
-
         return Tabela::where('nome_tabela', $tableName)->first();
     }
+
+    private function logIndividualUpdate($campo, $userId, $valuesArray)
+    {
+        if ($valuesArray['valor_anterior'] == $valuesArray['valor_atual'])
+            return;
+        $valuesArray['campo_id'] = $campo->id;
+        $valuesArray['data_alteracao'] = date('Y-m-d H:i:s');
+        $valuesArray['alterado_por'] = $userId;
+        LogAlteracao::create($valuesArray);
+    }
+
 }
