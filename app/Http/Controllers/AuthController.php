@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\GlobalResource;
 
 class AuthController extends Controller
 {
@@ -111,7 +112,7 @@ class AuthController extends Controller
      */
     protected function createNewToken($token)
     {
-        return response()->json([
+        return GlobalResource::jsonResponse([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
