@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('tipos_permissoes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome_permissao', 10)->unique();
+            $table->string('nome_permissao', 20)->unique();
             $table->timestamps();
         });
     }

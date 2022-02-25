@@ -38,7 +38,7 @@ class TiposPermissoesController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            'nome_permissao' => ['required', 'max:10', 'unique:tipos_permissoes'],
+            'nome_permissao' => ['required', 'max:20', 'unique:tipos_permissoes'],
         ];
 
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
@@ -111,7 +111,7 @@ class TiposPermissoesController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            'nome_permissao' => ['max:10'],
+            'nome_permissao' => ['string', 'max:20'],
         ];
 
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
