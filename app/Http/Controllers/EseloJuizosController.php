@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BizRules\EseloComarca;
 use App\Models\BizRules\EseloJuizo;
 use App\Models\BizRules\EspaiderJuizo;
+use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
 
 class EseloJuizosController extends Controller
@@ -40,7 +41,7 @@ class EseloJuizosController extends Controller
     public function store(Request $request)
     {
         $validationRules = [
-            'nome_juizo_eselo' => ['required', 'min:2', 'max:150', 'unique:eselo_juizos'],
+            'nome_juizo_eselo' => ['required', 'min:2', 'max:150', new UniqueCombinationRule($this->mainModel, ['espaider_juizo_id', $request->input('espaider_juizo_id')])],
             'eselo_comarca_id' => ['required', 'numeric'],
             'espaider_juizo_id' => ['required', 'numeric'],
         ];
