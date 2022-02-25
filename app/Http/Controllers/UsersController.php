@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Access\Genero;
 use App\Models\Access\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\GlobalResource;
 
 class UsersController extends Controller
 {
@@ -17,25 +18,17 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(['generoDeclarado'])->get();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Usuários',
-                'description' => 'Usuários do Sísifo',
-                'url' => url('/users'),
-                'apiUrl' => url('/api/users'),
-                'dbFieldNames' => ['nome_escolhido', 'nome_completo', 'email', 'genero_declarado.genero', 'ativo'],
-                'dbNameField' => 'nome_escolhido',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Nome', 'Nome completo', 'E-mail', 'Gênero', 'Ativo'],
-            ]);
-        }
+        $params = [
+            'title' => 'Usuários',
+            'description' => 'Usuários do Sísifo',
+            'url' => url('/users'),
+            'apiUrl' => url('/api/users'),
+            'dbFieldNames' => ['nome_escolhido', 'nome_completo', 'email', 'genero_declarado.genero', 'ativo'],
+            'dbNameField' => 'nome_escolhido',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Nome', 'Nome completo', 'E-mail', 'Gênero', 'Ativo'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**
@@ -83,8 +76,8 @@ class UsersController extends Controller
             'displayFields' => [
                 0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
                 1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
-                2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
-                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero'],
+                2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -117,8 +110,8 @@ class UsersController extends Controller
             'displayFields' => [
                 0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
                 1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
-                2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text'],
-                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero],
+                2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -156,5 +149,37 @@ class UsersController extends Controller
     public function destroy($id)
     {
         return $this->delete($this->mainModel, $id);
+    }
+
+    public function showMe(Request $request)
+    {
+        $id = $this->getCurrentUserId($request);
+        if ($this->isApiRoute($request)) {
+            $entity = $this->mainModel::findOrFail($id);
+            return GlobalResource::jsonResponse(['entity' => $entity]);
+
+        } else {
+            $entity = $this->mainModel::with('generoDeclarado')->find($id);
+            $generos = Genero::all();
+            $params = [
+                'jwt' => $request->cookie('jat'),
+                'title' => 'Meu Perfil',
+                'description' => '',
+                'id' => $id,
+                'url' => url('/users'),
+                'apiUrl' => url('/api/users'),
+                'entity' => $entity,
+                'displayFields' => [
+                    0 => ['name' => 'avatar_path', 'caption' => 'Avatar', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 6 ],
+                    1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
+                    2 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
+                    3 => ['name' => 'ativo', 'caption' => 'Ativo', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 3 ],
+                    4 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 6 ],
+                    5 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
+                ],
+            ];
+    
+            return view('components.edit', $params);
+        }
     }
 }

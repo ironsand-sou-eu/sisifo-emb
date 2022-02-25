@@ -16,25 +16,17 @@ class GenerosController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Gêneros',
-                'description' => 'Gêneros dos usuários',
-                'url' => url('/generos'),
-                'apiUrl' => url('/api/generos'),
-                'dbFieldNames' => ['genero'],
-                'dbNameField' => 'genero',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Gênero'],
-            ]);
-        }
+        $params = [
+            'title' => 'Gêneros',
+            'description' => 'Gêneros dos usuários',
+            'url' => url('/generos'),
+            'apiUrl' => url('/api/generos'),
+            'dbFieldNames' => ['genero'],
+            'dbNameField' => 'genero',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Gênero'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

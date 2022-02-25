@@ -16,25 +16,17 @@ class CustasConfigsController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Configurações - Sísifo DAJEs',
-                'description' => 'Configurações necessárias para a geração dos dados pelo Sísifo DAJEs',
-                'url' => url('/custas-configs'),
-                'apiUrl' => url('/api/custas-configs'),
-                'dbFieldNames' => ['nome', 'valor'],
-                'dbNameField' => 'nome',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Nome', 'Valor da configuração'],
-            ]);
-        }
+        $params = [
+            'title' => 'Configurações - Sísifo DAJEs',
+            'description' => 'Configurações necessárias para a geração dos dados pelo Sísifo DAJEs',
+            'url' => url('/custas-configs'),
+            'apiUrl' => url('/api/custas-configs'),
+            'dbFieldNames' => ['nome', 'valor'],
+            'dbNameField' => 'nome',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Nome', 'Valor da configuração'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

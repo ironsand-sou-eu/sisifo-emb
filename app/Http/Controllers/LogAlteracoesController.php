@@ -16,27 +16,19 @@ class LogAlteracoesController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(['campo', 'campo.tabela', 'alteradoPor'])->get();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('logs-alteracoes.index', [
-                'jwt' => $jwt,
-                'title' => 'Log de Alterações',
-                'description' => '',
-                'url' => url('/log-alteracoes'),
-                'apiUrl' => url('/api/log-alteracoes'),
-                'dbFieldNames' => ['campo.nome_exibicao', 'campo.tabela.nome_exibicao', 'valor_anterior', 'valor_atual', 'data_alteracao', 'alterado_por.nome_escolhido'],
-                'dbNameField' => 'campo.nome_campo',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Campo', 'Tabela', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por'],
-                'sortingColumnIndexBase0' => 4,
-                'sortingDirection' => 'desc',
-            ]);
-        }
+        $params = [
+            'title' => 'Log de Alterações',
+            'description' => '',
+            'url' => url('/log-alteracoes'),
+            'apiUrl' => url('/api/log-alteracoes'),
+            'dbFieldNames' => ['campo.nome_exibicao', 'campo.tabela.nome_exibicao', 'valor_anterior', 'valor_atual', 'data_alteracao', 'alterado_por.nome_escolhido'],
+            'dbNameField' => 'campo.nome_campo',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Campo', 'Tabela', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por'],
+            'sortingColumnIndexBase0' => 4,
+            'sortingDirection' => 'desc',
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

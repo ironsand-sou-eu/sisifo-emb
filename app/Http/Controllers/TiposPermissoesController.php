@@ -16,25 +16,17 @@ class TiposPermissoesController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Tipos de permissão',
-                'description' => 'Tipos de permissão a serem aplicadas aos usuários',
-                'url' => url('/tipos-permissoes'),
-                'apiUrl' => url('/api/tipos-permissoes'),
-                'dbFieldNames' => ['nome_permissao'],
-                'dbNameField' => 'nome_permissao',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Permissão'],
-            ]);
-        }
+        $params = [
+            'title' => 'Tipos de permissão',
+            'description' => 'Tipos de permissão a serem aplicadas aos usuários',
+            'url' => url('/tipos-permissoes'),
+            'apiUrl' => url('/api/tipos-permissoes'),
+            'dbFieldNames' => ['nome_permissao'],
+            'dbNameField' => 'nome_permissao',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Permissão'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

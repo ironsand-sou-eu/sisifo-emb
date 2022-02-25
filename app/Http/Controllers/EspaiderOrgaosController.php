@@ -16,25 +16,17 @@ class EspaiderOrgaosController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Órgãos',
-                'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
-                'url' => url('/espaider-orgaos'),
-                'apiUrl' => url('/api/espaider-orgaos'),
-                'dbFieldNames' => ['nome_orgao_espaider', 'sigla_orgao'],
-                'dbNameField' => 'nome_orgao_espaider',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Órgão (Espaider)', 'Sigla'],
-            ]);
-        }
+        $params = [
+            'title' => 'Órgãos',
+            'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
+            'url' => url('/espaider-orgaos'),
+            'apiUrl' => url('/api/espaider-orgaos'),
+            'dbFieldNames' => ['nome_orgao_espaider', 'sigla_orgao'],
+            'dbNameField' => 'nome_orgao_espaider',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Órgão (Espaider)', 'Sigla'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

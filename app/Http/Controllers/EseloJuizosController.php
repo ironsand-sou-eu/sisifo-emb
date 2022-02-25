@@ -18,25 +18,17 @@ class EseloJuizosController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(['eseloComarca', 'espaiderJuizo'])->get();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Juízos (redação do e-Selo)',
-                'description' => 'Juízos existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
-                'url' => url('/eselo-juizos'),
-                'apiUrl' => url('/api/eselo-juizos'),
-                'dbFieldNames' => ['nome_juizo_eselo', 'eselo_comarca.nome_comarca_eselo', 'espaider_juizo.nome_juizo_espaider'],
-                'dbNameField' => 'nome_juizo_eselo',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Juízo (e-Selo)', 'Comarca (e-Selo)', 'Juízo (Espaider)'],
-            ]);
-        }
+        $params = [
+            'title' => 'Juízos (redação do e-Selo)',
+            'description' => 'Juízos existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
+            'url' => url('/eselo-juizos'),
+            'apiUrl' => url('/api/eselo-juizos'),
+            'dbFieldNames' => ['nome_juizo_eselo', 'eselo_comarca.nome_comarca_eselo', 'espaider_juizo.nome_juizo_espaider'],
+            'dbNameField' => 'nome_juizo_eselo',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Juízo (e-Selo)', 'Comarca (e-Selo)', 'Juízo (Espaider)'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

@@ -16,27 +16,19 @@ class EseloComarcasController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Comarcas (redação do e-Selo)',
-                'description' => 'Comarcas existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
-                'url' => url('/eselo-comarcas'),
-                'apiUrl' => url('/api/eselo-comarcas'),
-                'dbFieldNames' => ['nome_comarca_eselo'],
-                'dbNameField' => 'nome_comarca_eselo',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Comarca (e-Selo)'],
-            ]);
-        }
+        $params = [
+            'title' => 'Comarcas (redação do e-Selo)',
+            'description' => 'Comarcas existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
+            'url' => url('/eselo-comarcas'),
+            'apiUrl' => url('/api/eselo-comarcas'),
+            'dbFieldNames' => ['nome_comarca_eselo'],
+            'dbNameField' => 'nome_comarca_eselo',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Comarca (e-Selo)'],
+        ];
+        return $this->generalIndex($request, $params);
     }
-
+        
     /**
      * Store a newly created resource in storage.
      *

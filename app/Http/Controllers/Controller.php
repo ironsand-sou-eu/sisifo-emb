@@ -22,6 +22,24 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generalIndex(Request $request, $params)
+    {
+        if ($this->isApiRoute($request)) {
+            $fullList = $this->mainModel::all();
+            return GlobalResource::jsonResponse(['fullList' => $fullList]);
+
+        } else {
+            $jwt = $request->cookie('jat');
+            $params += compact('jwt', $params);
+            return view('components.index', $params);
+        }
+    }
+
     public function show(Request $request, $id)
     {
         $entity = $this->mainModel::findOrFail($id);
@@ -35,13 +53,13 @@ class Controller extends BaseController
         }
     }
 
-    private function stripNamespaceFromClassName($className) {
-        return substr($className, strrpos($className, '\\') + 1);
-    }
-
     protected function isApiRoute(Request $request)
     {
         return $request->route()->getPrefix() === 'api';
+    }
+
+    private function stripNamespaceFromClassName($className) {
+        return substr($className, strrpos($className, '\\') + 1);
     }
 
     protected function delete($modelClassName, $id)

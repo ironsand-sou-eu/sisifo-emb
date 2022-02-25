@@ -18,25 +18,17 @@ class EspaiderComarcasController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(['espaiderUf'])->get();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Comarcas (redação do Espaider)',
-                'description' => 'Comarcas existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
-                'url' => url('/espaider-comarcas'),
-                'apiUrl' => url('/api/espaider-comarcas'),
-                'dbFieldNames' => ['nome_comarca_espaider', 'espaider_uf.sigla'],
-                'dbNameField' => 'nome_comarca_espaider',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Comarca (Espaider)', 'UF'],
-            ]);
-        }
+        $params = [
+            'title' => 'Comarcas (redação do Espaider)',
+            'description' => 'Comarcas existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
+            'url' => url('/espaider-comarcas'),
+            'apiUrl' => url('/api/espaider-comarcas'),
+            'dbFieldNames' => ['nome_comarca_espaider', 'espaider_uf.sigla'],
+            'dbNameField' => 'nome_comarca_espaider',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Comarca (Espaider)', 'UF'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

@@ -16,25 +16,17 @@ class TabelasController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Tabelas',
-                'description' => 'Tabelas que compõem o banco de dados do Sísifo',
-                'url' => url('/tabelas'),
-                'apiUrl' => url('/api/tabelas'),
-                'dbFieldNames' => ['nome_tabela'],
-                'dbNameField' => 'nome_tabela',
-                'dbIdField' => 'id',
-                'tableColumnNames' => ['Tabela'],
-            ]);
-        }
+        $params = [
+            'title' => 'Tabelas',
+            'description' => 'Tabelas que compõem o banco de dados do Sísifo',
+            'url' => url('/tabelas'),
+            'apiUrl' => url('/api/tabelas'),
+            'dbFieldNames' => ['nome_tabela'],
+            'dbNameField' => 'nome_tabela',
+            'dbIdField' => 'id',
+            'tableColumnNames' => ['Tabela'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

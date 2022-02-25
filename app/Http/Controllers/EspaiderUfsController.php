@@ -9,32 +9,19 @@ class EspaiderUfsController extends Controller
 {
     protected $mainModel = \App\Models\BizRules\EspaiderUf::class;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'UFs',
-                'description' => 'Unidades da Federação existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
-                'url' => url('/espaider-ufs'),
-                'apiUrl' => url('/api/espaider-ufs'),
-                'dbFieldNames' => ['nome_uf_espaider', 'sigla'],
-                'dbNameField' => 'nome_uf_espaider',
-                'dbIdField' => 'sigla',
-                'tableColumnNames' => ['UF', 'Sigla'],
-            ]);
-        }
+        $params = [
+            'title' => 'UFs',
+            'description' => 'Unidades da Federação existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
+            'url' => url('/espaider-ufs'),
+            'apiUrl' => url('/api/espaider-ufs'),
+            'dbFieldNames' => ['nome_uf_espaider', 'sigla'],
+            'dbNameField' => 'nome_uf_espaider',
+            'dbIdField' => 'sigla',
+            'tableColumnNames' => ['UF', 'Sigla'],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**
@@ -72,8 +59,8 @@ class EspaiderUfsController extends Controller
             'url' => url('/espaider-ufs'),
             'apiUrl' => url('/api/espaider-ufs'),
             'displayFields' => [
-                0 => ['name' => 'nome_uf_espaider', 'caption' => 'Unidade da Federação (Espaider)', 'inputType' => 'text'],
-                1 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text'],
+                0 => ['name' => 'nome_uf_espaider', 'caption' => 'Unidade da Federação (Espaider)', 'inputType' => 'text', 'bootstrapColSize' => 8],
+                1 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text', 'bootstrapColSize' => 4],
             ],
         ];
 
@@ -87,24 +74,24 @@ class EspaiderUfsController extends Controller
      * @param  int  $id
      * @return Illuminate\Support\Facades\View
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $entity)
     {
         if ($this->isApiRoute($request)) {
             return response('', 404);
         }
 
-        $entity = $this->mainModel::find($id);
+        // $entity = $this->mainModel::find($id);
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando UF (redação do Espaider)',
             'description' => 'Unidades da Federação',
-            'id' => $id,
+            'id' => $entity->id,
             'url' => url('/espaider-ufs'),
             'apiUrl' => url('/api/espaider-ufs'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_uf_espaider', 'caption' => 'Nome', 'inputType' => 'text'],
-                0 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text'],
+                0 => ['name' => 'nome_uf_espaider', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 8],
+                0 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text', 'bootstrapColSize' => 4],
             ],
         ];
 

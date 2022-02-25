@@ -29,31 +29,23 @@ class DajeController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
-                'title' => 'Dajes gerados',
-                'description' => 'Consulta de DAJEs gerados pelo Sísifo DAJEs',
-                'url' => url('/dajes'),
-                'apiUrl' => url('/api/dajes'),
-                'dbFieldNames' => [
-                    'numero', 'processo', 'parte_adversa', 'valor', 'emissao',
-                    'vencimento', 'tipo', 'qtd_atos', 'eventos_atos', 'gerencia',
-                ],
-                'dbNameField' => 'numero',
-                'dbIdField' => 'id',
-                'tableColumnNames' => [
-                    'Número do DAJE', 'Número do processo', 'Nome do adverso', 'Valor do DAJE', 'Data de emissão',
-                    'Data de vencimento', 'Tipo de DAJE', 'Quantidade de atos', 'Números dos evento dos atos', 'Gerência',
-                ],
-            ]);
-        }
+        $params = [
+            'title' => 'Dajes gerados',
+            'description' => 'Consulta de DAJEs gerados pelo Sísifo DAJEs',
+            'url' => url('/dajes'),
+            'apiUrl' => url('/api/dajes'),
+            'dbFieldNames' => [
+                'numero', 'processo', 'parte_adversa', 'valor', 'emissao',
+                'vencimento', 'tipo', 'qtd_atos', 'eventos_atos', 'gerencia',
+            ],
+            'dbNameField' => 'numero',
+            'dbIdField' => 'id',
+            'tableColumnNames' => [
+                'Número do DAJE', 'Número do processo', 'Nome do adverso', 'Valor do DAJE', 'Data de emissão',
+                'Data de vencimento', 'Tipo de DAJE', 'Quantidade de atos', 'Números dos evento dos atos', 'Gerência',
+            ],
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**

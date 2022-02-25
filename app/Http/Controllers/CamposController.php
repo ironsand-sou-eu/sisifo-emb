@@ -18,15 +18,7 @@ class CamposController extends Controller
      */
     public function index(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::with(['tabela'])->get();
-
-            return response()->json(['fullList' => $fullList]);
-        } else {
-            $jwt = $request->cookie('jat');
-
-            return view('components.index', [
-                'jwt' => $jwt,
+        $params = [
                 'title' => 'Campos',
                 'description' => 'Campos que compõem as tabelas do Sísifo',
                 'url' => url('/campos'),
@@ -35,8 +27,8 @@ class CamposController extends Controller
                 'dbNameField' => 'nome_campo',
                 'dbIdField' => 'id',
                 'tableColumnNames' => ['Campo', 'Tabela'],
-            ]);
-        }
+        ];
+        return $this->generalIndex($request, $params);
     }
 
     /**
