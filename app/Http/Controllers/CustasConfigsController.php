@@ -117,8 +117,8 @@ class CustasConfigsController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            'nome' => ['required', 'max:50'],
-            'valor' => ['required'],
+            'nome' => ['required', 'string', 'max:50'],
+            'valor' => ['string'],
         ];
 
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);

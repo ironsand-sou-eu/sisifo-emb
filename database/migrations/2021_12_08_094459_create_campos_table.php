@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('campos', function (Blueprint $table) {
             $table->id();
             $table->string('nome_campo');
-            $table->string('nome_exibicao', 60);
+            $table->string('nome_exibicao');
             $table->unsignedBigInteger('tabela_id');
             $table->timestamps();
 

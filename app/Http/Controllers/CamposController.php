@@ -41,7 +41,8 @@ class CamposController extends Controller
     {
         $nomeCampo = $request->input('nome_campo');
         $validationRules = [
-            'nome_campo' => ['required', 'max:191'],
+            'nome_campo' => ['required', 'string', 'max:191'],
+            'nome_exibicao' => ['required', 'string', 'max:191'],
             'tabela_id' => ['required', 'numeric', new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])],
         ];
 
@@ -119,7 +120,8 @@ class CamposController extends Controller
     {
         $nomeCampo = $request->input('nome_campo');
         $validationRules = [
-            'nome_campo' => ['max:191'],
+            'nome_campo' => ['string', 'max:191'],
+            'nome_exibicao' => ['string', 'max:191'],
             'tabela_id' => ['numeric', new UniqueCombinationRule($this->mainModel, ['nome_campo', $nomeCampo])],
         ];
 

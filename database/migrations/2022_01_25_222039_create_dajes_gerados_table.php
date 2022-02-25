@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->date('vencimento');
             $table->string('tipo', 50);
             $table->integer('qtd_atos', false, true);
-            $table->string('eventos_atos', 150);
+            $table->string('eventos_atos', 150)->nullable();
             $table->string('gerencia', 5);
             $table->timestamps();
         });

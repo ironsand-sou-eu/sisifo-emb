@@ -65,7 +65,7 @@ class DajeController extends Controller
             'vencimento' => ['required', 'date'],
             'tipo' => ['required'],
             'qtd_atos' => ['required'],
-            'eventos_atos' => ['required'],
+            'eventos_atos' => ['nullable'],
             'gerencia' => ['required'],
         ];
 
@@ -135,15 +135,16 @@ class DajeController extends Controller
     public function update(Request $request, $id)
     {
         $validationRules = [
-            'numero' => ['required'],
-            'processo' => ['required'],
-            'valor' => ['required', 'numeric'],
-            'emissao' => ['required', 'date'],
-            'vencimento' => ['required', 'date'],
-            'tipo' => ['required'],
-            'qtd_atos' => ['required'],
-            'eventos_atos' => ['required'],
-            'gerencia' => ['required'],
+            'numero' => ['string'],
+            'parte_adversa' => ['string'],
+            'processo' => ['string'],
+            'valor' => ['numeric'],
+            'emissao' => ['date'],
+            'vencimento' => ['date'],
+            'tipo' => ['string'],
+            'qtd_atos' => ['numeric'],
+            'eventos_atos' => ['string'],
+            'gerencia' => ['string'],
         ];
 
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);

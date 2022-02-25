@@ -16,6 +16,7 @@ class Campo extends Model
 
     protected $fillable = [
         'nome_campo',
+        'nome_exibicao',
         'tabela_id',
     ];
 

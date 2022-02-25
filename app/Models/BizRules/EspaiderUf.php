@@ -10,13 +10,9 @@ class EspaiderUf extends Model
     use HasFactory;
 
     protected $table = 'espaider_ufs';
-
-    protected $primarykey = 'sigla';
-
+    protected $primaryKey = 'sigla';
     protected $keyType = 'string';
-
     public $incrementing = false;
-
     protected $fillable = [
         'nome_uf_espaider',
         'sigla',
