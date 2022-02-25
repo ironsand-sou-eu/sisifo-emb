@@ -1,0 +1,42 @@
+{
+    "relationalFields": {},
+ 
+    "DajesGeradosSeeder": {
+    "0": {
+        "numero": "999028562873",
+        "processo": "1234567-89.2022.8.05.0001",
+        "parte_adversa": "ANA PAULA LACERDA DE QUEIROZ",
+        "valor": "325.00",
+        "emissao": "2022-03-01",
+        "vencimento": "2022-03-06",
+        "tipo": "Causas em geral",
+        "qtd_atos": "1",
+        "eventos_atos": "3.000,00",
+        "gerencia": "PPJCM"
+    },
+    "1": {
+        "numero": "999028562876",
+        "processo": "1234567-89.2022.8.05.0001",
+        "parte_adversa": "ANA PAULA LACERDA DE QUEIROZ",
+        "valor": "319.50",
+        "emissao": "2022-03-01",
+        "vencimento": "2022-03-06",
+        "tipo": "Recurso inominado",
+        "qtd_atos": "1",
+        "eventos_atos": "",
+        "gerencia": "PPJCM"
+    },
+    "2": {
+        "numero": "999028562881",
+        "processo": "1234567-89.2022.8.05.0001",
+        "parte_adversa": "ANA PAULA LACERDA DE QUEIROZ",
+        "valor": "32.50",
+        "emissao": "2022-03-01",
+        "vencimento": "2022-03-06",
+        "tipo": "Comunicações eletrônicas",
+        "qtd_atos": "3",
+        "eventos_atos": "10,26,42",
+        "gerencia": "PPJCM"
+    }
+}
+}

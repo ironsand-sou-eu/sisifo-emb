@@ -23,12 +23,14 @@ class DatabaseSeeder extends Seeder
             'espaider_juizos',
             'eselo_comarcas',
             'eselo_juizos',
+            'dajes_gerados',
             'sistemas_jud_juizos',
             'generos',
             'users',
             'tabelas',
             'custas_configs',
             'tipos_permissoes',
+            'permissoes',
             'campos',
         ];
 
@@ -42,7 +44,7 @@ class DatabaseSeeder extends Seeder
         $seederName = Str::studly($snakeCaseTableName).'Seeder';
         $path = database_path('initial-data-seed'.DIRECTORY_SEPARATOR.$seederName.'.json');
         $dataArray = json_decode(file_get_contents($path), true);
-
+        
         if (! empty($dataArray['relationalFields'])) {
             foreach ($dataArray[$seederName] as &$entry) {
                 foreach ($dataArray['relationalFields'] as $relationalField) {
@@ -51,10 +53,12 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-
+        
+        
         try {
             DB::table($snakeCaseTableName)->insert($dataArray[$seederName]);
         } catch (Exception $e) {
+            die($e);
             return $e;
         }
     }

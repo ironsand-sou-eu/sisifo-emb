@@ -1,0 +1,31 @@
+{
+"relationalFields": {
+    "0": {
+        "originField": "user_id",
+        "relatedTable": "users",
+        "relatedIdField": "id",
+        "relatedSearchingField": "nome_escolhido"    
+    },
+
+    "1": {
+        "originField": "tabela_id",
+        "relatedTable": "tabelas",
+        "relatedIdField": "id",
+        "relatedSearchingField": "nome_tabela"    
+    },
+
+    "2": {
+        "originField": "tipo_permissao_id",
+        "relatedTable": "tipos_permissoes",
+        "relatedIdField": "id",
+        "relatedSearchingField": "nome_permissao"    
+    }
+},
+
+"PermissoesSeeder": {
+    "0": { "user_id": "Don César de Toledo", "tabela_id": "espaider_ufs", "tipo_permissao_id": "criação" },
+    "1": { "user_id": "Don César de Toledo", "tabela_id": "dajes_gerados", "tipo_permissao_id": "catchanga" },
+    "2": { "user_id": "FTI", "tabela_id": "espaider_ufs", "tipo_permissao_id": "edição" },
+    "3": { "user_id": "FTI", "tabela_id": "dajes_gerados", "tipo_permissao_id": "exclusão" }
+}
+}
