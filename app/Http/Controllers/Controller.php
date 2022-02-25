@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\DbErrorException;
 use App\Exceptions\EntryNotFoundException;
+use App\Exceptions\LoggingException;
 use App\Exceptions\ValidationErrorException;
 use App\Http\Resources\GlobalResource;
 use App\Http\Middleware\FrontendAuth;
