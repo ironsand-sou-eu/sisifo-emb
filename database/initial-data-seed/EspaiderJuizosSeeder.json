@@ -13,7 +13,6 @@
         "relatedIdField": "id",
         "relatedSearchingField": "nome_orgao_espaider"    
     }
-
 },
  
 "EspaiderJuizosSeeder": {

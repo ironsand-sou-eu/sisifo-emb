@@ -16,7 +16,6 @@ class DbErrorException extends Exception
 
     public function render()
     {
-        
         return GlobalResource::jsonResponse(['resp' => __('validation.genericError'), 'data' => $this->errors], 500);
     }
 }
