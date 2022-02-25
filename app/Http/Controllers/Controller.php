@@ -30,7 +30,8 @@ class Controller extends BaseController
     public function generalIndex(Request $request, $params)
     {
         if ($this->isApiRoute($request)) {
-            $fullList = $this->mainModel::all();
+            $modelResourceName = $this->getResourceName();
+            $fullList = $modelResourceName::collection($this->mainModel::all());
             return GlobalResource::jsonResponse(['fullList' => $fullList]);
 
         } else {
@@ -40,13 +41,23 @@ class Controller extends BaseController
         }
     }
 
+    protected function getResourceName()
+    {
+        $modelBaseName = $this->stripNamespaceFromClassName($this->mainModel);
+        $modelResourceName = "App\\Http\\Resources\\{$modelBaseName}Resource";
+        return $modelResourceName;
+    }
+
+    private function stripNamespaceFromClassName($className) {
+        return substr($className, strrpos($className, '\\') + 1);
+    }
+
     public function show(Request $request, $id)
     {
         $entity = $this->mainModel::findOrFail($id);
         if ($this->isApiRoute($request)) {
-            $modelBaseName = $this->stripNamespaceFromClassName($this->mainModel);
-            $entityResourceName = "App\\Http\\Resources\\{$modelBaseName}Resource";
-            $resource = new $entityResourceName($entity);
+            $modelResourceName = $this->getResourceName();
+            $resource = new $modelResourceName($entity);
             return GlobalResource::jsonResponse(['entity' => $resource]);
         } else {
             return $this->edit($request, $entity);
@@ -56,10 +67,6 @@ class Controller extends BaseController
     protected function isApiRoute(Request $request)
     {
         return $request->route()->getPrefix() === 'api';
-    }
-
-    private function stripNamespaceFromClassName($className) {
-        return substr($className, strrpos($className, '\\') + 1);
     }
 
     protected function delete($modelClassName, $id)
