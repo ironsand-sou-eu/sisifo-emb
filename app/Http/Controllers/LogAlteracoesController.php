@@ -21,14 +21,29 @@ class LogAlteracoesController extends Controller
             'description' => '',
             'url' => url('/log-alteracoes'),
             'apiUrl' => url('/api/log-alteracoes'),
-            'dbFieldNames' => ['campo.nome_exibicao', 'campo.tabela.nome_exibicao', 'valor_anterior', 'valor_atual', 'data_alteracao', 'alterado_por.nome_escolhido'],
+            'dbFieldNames' => [
+                'campo.nome_exibicao',
+                'campo.tabela.nome_exibicao',
+                'valorAnterior',
+                'valorAtual',
+                'dataAlteracao',
+                'alteradoPor.nome_escolhido'
+            ],
             'dbNameField' => 'campo.nome_campo',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Campo', 'Tabela', 'Valor anterior', 'Valor atual', 'Data da alteração', 'Alterado por'],
+            'tableColumnNames' => [
+                'Campo',
+                'Tabela',
+                'Valor anterior',
+                'Valor atual',
+                'Data da alteração',
+                'Alterado por'
+            ],
             'sortingColumnIndexBase0' => 4,
             'sortingDirection' => 'desc',
         ];
-        return $this->generalIndex($request, $params);
+        return $this->generalIndex($request,
+        $params);
     }
 
     /**

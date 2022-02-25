@@ -21,10 +21,10 @@ class TabelasController extends Controller
             'description' => 'Tabelas que compõem o banco de dados do Sísifo',
             'url' => url('/tabelas'),
             'apiUrl' => url('/api/tabelas'),
-            'dbFieldNames' => ['nome_tabela'],
-            'dbNameField' => 'nome_tabela',
+            'dbFieldNames' => ['nomeParaExibicao', 'nome'],
+            'dbNameField' => 'nomeParaExibicao',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Tabela'],
+            'tableColumnNames' => ['Tabela', 'Nome'],
         ];
         return $this->generalIndex($request, $params);
     }

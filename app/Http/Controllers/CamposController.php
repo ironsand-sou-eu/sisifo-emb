@@ -23,8 +23,8 @@ class CamposController extends Controller
                 'description' => 'Campos que compõem as tabelas do Sísifo',
                 'url' => url('/campos'),
                 'apiUrl' => url('/api/campos'),
-                'dbFieldNames' => ['nome_campo', 'tabela.nome_tabela'],
-                'dbNameField' => 'nome_campo',
+                'dbFieldNames' => ['nome', 'tabela.nome_tabela'],
+                'dbNameField' => 'nome',
                 'dbIdField' => 'id',
                 'tableColumnNames' => ['Campo', 'Tabela'],
         ];

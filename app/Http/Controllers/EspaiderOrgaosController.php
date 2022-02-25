@@ -21,8 +21,8 @@ class EspaiderOrgaosController extends Controller
             'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/espaider-orgaos'),
             'apiUrl' => url('/api/espaider-orgaos'),
-            'dbFieldNames' => ['nome_orgao_espaider', 'sigla_orgao'],
-            'dbNameField' => 'nome_orgao_espaider',
+            'dbFieldNames' => ['nome', 'sigla'],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
             'tableColumnNames' => ['Órgão (Espaider)', 'Sigla'],
         ];

@@ -23,8 +23,8 @@ class EspaiderComarcasController extends Controller
             'description' => 'Comarcas existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/espaider-comarcas'),
             'apiUrl' => url('/api/espaider-comarcas'),
-            'dbFieldNames' => ['nome_comarca_espaider', 'espaider_uf.sigla'],
-            'dbNameField' => 'nome_comarca_espaider',
+            'dbFieldNames' => ['nome', 'espaiderUf.sigla'],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
             'tableColumnNames' => ['Comarca (Espaider)', 'UF'],
         ];

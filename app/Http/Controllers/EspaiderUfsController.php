@@ -16,8 +16,8 @@ class EspaiderUfsController extends Controller
             'description' => 'Unidades da Federação existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/espaider-ufs'),
             'apiUrl' => url('/api/espaider-ufs'),
-            'dbFieldNames' => ['nome_uf_espaider', 'sigla'],
-            'dbNameField' => 'nome_uf_espaider',
+            'dbFieldNames' => ['nome', 'sigla'],
+            'dbNameField' => 'nome',
             'dbIdField' => 'sigla',
             'tableColumnNames' => ['UF', 'Sigla'],
         ];

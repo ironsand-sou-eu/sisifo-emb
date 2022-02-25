@@ -21,8 +21,8 @@ class GenerosController extends Controller
             'description' => 'Gêneros dos usuários',
             'url' => url('/generos'),
             'apiUrl' => url('/api/generos'),
-            'dbFieldNames' => ['genero'],
-            'dbNameField' => 'genero',
+            'dbFieldNames' => ['nome'],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
             'tableColumnNames' => ['Gênero'],
         ];

@@ -23,10 +23,22 @@ class EspaiderJuizosController extends Controller
             'description' => 'Juízos existentes no Espaider (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/espaider-juizos'),
             'apiUrl' => url('/api/espaider-juizos'),
-            'dbFieldNames' => ['nome_juizo_espaider', 'redacao_cabecalho_juizo', 'redacao_resumida_juizo', 'espaider_comarca.nome_comarca_espaider', 'espaider_orgao.sigla_orgao'],
-            'dbNameField' => 'nome_juizo_espaider',
+            'dbFieldNames' => [
+                'nome',
+                'redacaoCabecalhoJuizo',
+                'redacaoResumidaJuizo',
+                'espaiderComarca.nome_comarca_espaider',
+                'espaiderOrgao.sigla_orgao'
+            ],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Juízo (Espaider)', 'Redação para cabeçalho de peças', 'Redação resumida para peças', 'Comarca (Espaider)', 'Órgão (Espaider)'],
+            'tableColumnNames' => [
+                'Juízo (Espaider)',
+                'Redação para cabeçalho de peças',
+                'Redação resumida para peças',
+                'Comarca (Espaider)',
+                'Órgão (Espaider)'
+            ],
         ];
         return $this->generalIndex($request, $params);
     }

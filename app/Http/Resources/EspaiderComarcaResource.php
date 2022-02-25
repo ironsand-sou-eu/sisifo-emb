@@ -14,7 +14,7 @@ class EspaiderComarcaResource extends GlobalResource
     {
         return [
             "id" => $this->id,
-            "nome" => $this->nome_juizo_espaider,
+            "nome" => $this->nome_comarca_espaider,
             "espaiderUf" => $this->espaiderUf,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at

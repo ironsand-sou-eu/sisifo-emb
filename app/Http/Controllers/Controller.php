@@ -37,7 +37,7 @@ class Controller extends BaseController
 
         } else {
             $jwt = $request->cookie('jat');
-            $params += compact('jwt', $params);
+            $params['jwt'] = $jwt;
             return view('components.index', $params);
         }
     }

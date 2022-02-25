@@ -22,10 +22,16 @@ class SistemasJudJuizosController extends Controller
             'description' => 'Juízos existentes nos sistemas processuais do Judiciário (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/sistemas-jud-juizos'),
             'apiUrl' => url('/api/sistemas-jud-juizos'),
-            'dbFieldNames' => ['nome_juizo_sistemas_jud', 'espaider_juizo.nome_juizo_espaider'],
-            'dbNameField' => 'nome_juizo_sistemas_jud',
+            'dbFieldNames' => [
+                'nome',
+                'espaiderJuizo.nome_juizo_espaider'
+            ],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Juízo (sistemas processuais do Judiciário)', 'Juízo (Espaider)'],
+            'tableColumnNames' => [
+                'Juízo (sistemas processuais do Judiciário)',
+                'Juízo (Espaider)'
+            ],
         ];
         return $this->generalIndex($request, $params);
     }

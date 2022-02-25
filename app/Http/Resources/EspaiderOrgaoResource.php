@@ -15,7 +15,7 @@ class EspaiderOrgaoResource extends GlobalResource
         return [
             "id" => $this->id,
             "nome" => $this->nome_orgao_espaider,
-            "siglaOrgao" => $this->sigla_orgao,
+            "sigla" => $this->sigla_orgao,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at
         ];

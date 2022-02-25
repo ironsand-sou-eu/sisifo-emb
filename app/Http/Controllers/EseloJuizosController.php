@@ -24,10 +24,18 @@ class EseloJuizosController extends Controller
             'description' => 'Juízos existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/eselo-juizos'),
             'apiUrl' => url('/api/eselo-juizos'),
-            'dbFieldNames' => ['nome_juizo_eselo', 'eselo_comarca.nome_comarca_eselo', 'espaider_juizo.nome_juizo_espaider'],
-            'dbNameField' => 'nome_juizo_eselo',
+            'dbFieldNames' => [
+                'nome',
+                'eseloComarca.nome_comarca_eselo',
+                'espaiderJuizo.nome_juizo_espaider'
+            ],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Juízo (e-Selo)', 'Comarca (e-Selo)', 'Juízo (Espaider)'],
+            'tableColumnNames' => [
+                'Juízo (e-Selo)',
+                'Comarca (e-Selo)',
+                'Juízo (Espaider)'
+            ],
         ];
         return $this->generalIndex($request, $params);
     }

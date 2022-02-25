@@ -23,10 +23,22 @@ class UsersController extends Controller
             'description' => 'Usuários do Sísifo',
             'url' => url('/users'),
             'apiUrl' => url('/api/users'),
-            'dbFieldNames' => ['nome_escolhido', 'nome_completo', 'email', 'genero_declarado.genero', 'ativo'],
+            'dbFieldNames' => [
+                'nomeEscolhido',
+                'nomeCompleto',
+                'email',
+                'generoDeclarado.genero',
+                'ativo'
+            ],
             'dbNameField' => 'nome_escolhido',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Nome', 'Nome completo', 'E-mail', 'Gênero', 'Ativo'],
+            'tableColumnNames' => [
+                'Nome',
+                'Nome completo',
+                'E-mail',
+                'Gênero',
+                'Ativo'
+            ],
         ];
         return $this->generalIndex($request, $params);
     }

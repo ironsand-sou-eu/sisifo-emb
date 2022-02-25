@@ -25,10 +25,18 @@ class PermissoesController extends Controller
             'description' => 'Permissões dos usuários do Sísifo',
             'url' => url('/permissoes'),
             'apiUrl' => url('/api/permissoes'),
-            'dbFieldNames' => ['user.nome_escolhido', 'tabela.nome_tabela', 'tipo_permissao.nome_permissao'],
+            'dbFieldNames' => [
+                'user.nome_escolhido',
+                'tabela.nome_tabela',
+                'tipoPermissao.nome_permissao'
+            ],
             'dbNameField' => 'user.nome_escolhido',
             'dbIdField' => 'id',
-            'tableColumnNames' => ['Usuário', 'Tabela', 'Permissão'],
+            'tableColumnNames' => [
+                'Usuário',
+                'Tabela',
+                'Permissão'
+            ],
         ];
         return $this->generalIndex($request, $params);
     }

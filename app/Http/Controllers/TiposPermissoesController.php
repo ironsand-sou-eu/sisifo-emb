@@ -21,8 +21,8 @@ class TiposPermissoesController extends Controller
             'description' => 'Tipos de permissão a serem aplicadas aos usuários',
             'url' => url('/tipos-permissoes'),
             'apiUrl' => url('/api/tipos-permissoes'),
-            'dbFieldNames' => ['nome_permissao'],
-            'dbNameField' => 'nome_permissao',
+            'dbFieldNames' => ['nome'],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
             'tableColumnNames' => ['Permissão'],
         ];

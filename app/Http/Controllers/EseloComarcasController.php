@@ -21,8 +21,8 @@ class EseloComarcasController extends Controller
             'description' => 'Comarcas existentes no e-Selo TJ/BA (a redação deve ser idêntica à daquele sistema).',
             'url' => url('/eselo-comarcas'),
             'apiUrl' => url('/api/eselo-comarcas'),
-            'dbFieldNames' => ['nome_comarca_eselo'],
-            'dbNameField' => 'nome_comarca_eselo',
+            'dbFieldNames' => ['nome'],
+            'dbNameField' => 'nome',
             'dbIdField' => 'id',
             'tableColumnNames' => ['Comarca (e-Selo)'],
         ];
