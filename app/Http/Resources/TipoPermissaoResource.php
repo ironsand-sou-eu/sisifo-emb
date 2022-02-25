@@ -14,7 +14,7 @@ class TipoPermissaoResource extends GlobalResource
     {
         return [
             "id" => $this->id,
-            "nomePermissao" => $this->nome_permissao,
+            "nome" => $this->nome_permissao,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at
         ];

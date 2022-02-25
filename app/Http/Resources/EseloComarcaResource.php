@@ -14,7 +14,7 @@ class EseloComarcaResource extends GlobalResource
     {
         return [
             "id" => $this->id,
-            "nomeComarcaEselo" => $this->nome_comarca_eselo,
+            "nome" => $this->nome_comarca_eselo,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at
         ];

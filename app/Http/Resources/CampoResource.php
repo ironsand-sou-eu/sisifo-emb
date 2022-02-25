@@ -14,7 +14,7 @@ class CampoResource extends GlobalResource
     {
         return [
             "id" => $this->id,
-            "nomeCampo" => $this->nome_campo,
+            "nome" => $this->nome_campo,
             "nomeExibicao" => $this->nome_exibicao,
             "tabela" => $this->tabela,
             "createdAt" => $this->created_at,
