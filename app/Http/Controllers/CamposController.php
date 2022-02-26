@@ -90,7 +90,7 @@ class CamposController extends Controller
             return response('', 404);
         }
 
-        $entity = $this->mainModel::with('tabelas')->find($id);
+        $entity = $this->mainModel::with('tabela')->find($id);
         $tabelas = Tabela::all();
         $params = [
             'jwt' => $request->cookie('jat'),
