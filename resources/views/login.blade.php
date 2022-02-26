@@ -28,7 +28,12 @@
                                 <input type="text" name="email" id="email" placeholder="e-mail" class="form-control m-3">
                                 <input type="password" name="password" id="password" placeholder="senha" class="form-control m-3">
                             </fieldset>
-                            <button type="submit" class="btn btn-primary m-3">login</button>
+                            <button type="submit" class="btn btn-primary m-3">Login
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </button>
                         </form>
                     </div>
                 </div>

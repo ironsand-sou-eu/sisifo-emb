@@ -1,5 +1,6 @@
 document.login.onsubmit = async e => {
     e.preventDefault()
+    toggleLoginButtonWait()
     const form = e.target
     const loginData = new FormData(form)
     const options = {
@@ -9,8 +10,13 @@ document.login.onsubmit = async e => {
 
     try {
         const resp = await fetch(form.action, options)
-        if (resp.status >= 401) {
-            throw 'Usuário ou senha incorretos.'
+        switch (resp.status) {
+            case 422:
+                toggleLoginButtonWait()
+                throw 'Usuário ou senha incorretos. Tente novamente.'
+            case 500:
+                toggleLoginButtonWait()
+                throw 'Não foi possível estabelecer comunicação com o banco de dados. Tente novamente mais tarde.'
         }
         const json = await resp.json()
         const jwt = json.access_token
@@ -23,6 +29,16 @@ document.login.onsubmit = async e => {
         errorDiv.innerHTML = e
         errorDiv.style.display = 'block'
     }
+}
+
+function toggleLoginButtonWait() {
+    const btn = document.querySelector('button.btn-primary')
+    if (btn.innerHTML.indexOf('Login') >= 0) {
+        btn.innerHTML = btn.innerHTML.replace('Login', '')
+    } else {
+        btn.innerHTML = 'Login' + btn.innerHTML
+    }
+    btn.classList.toggle('lds-ellipsis')
 }
 
 function setJwtCookie(value, secondsToExpire) {
