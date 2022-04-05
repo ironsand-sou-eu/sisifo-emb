@@ -14,16 +14,19 @@
         <div class="card-body">
             <div class="row col-sm-12">
                 <form name="new" action="{{ $url }}" method="post" class="w-100" create-form>
-                    <fieldset class="position-relative">
+                    <fieldset class="position-relative d-flex flex-column">
                         @csrf
 
                         @foreach ($displayFields as $field)
                             @switch ($field['inputType'])
                             @case ('text')
-                                <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" />
+                                <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
                                 @break
                             @case ('select')
-                                <x-forms.select name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" id="{{ $field['id'] }}" value="{{ $field['value'] }}" />
+                                <x-forms.select name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" id="{{ $field['id'] }}" value="{{ $field['value'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
+                                @break
+                            @case ('checkbox')
+                                <x-forms.checkbox name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" selected="{{ $field['selected'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
                                 @break
                             @endswitch
                         @endforeach
