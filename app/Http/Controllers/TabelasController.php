@@ -39,6 +39,7 @@ class TabelasController extends Controller
     {
         $validationRules = [
             'nome_tabela' => ['required', 'max:60', 'unique:tabelas'],
+            'nome_exibicao' => ['required', 'unique:tabelas'],
         ];
 
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
@@ -63,7 +64,8 @@ class TabelasController extends Controller
             'url' => url('/tabelas'),
             'apiUrl' => url('/api/tabelas'),
             'displayFields' => [
-                0 => ['name' => 'nome_tabela', 'caption' => 'Nome da tabela', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                0 => ['name' => 'nome_exibicao', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -93,7 +95,8 @@ class TabelasController extends Controller
             'apiUrl' => url('/api/tabelas'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                0 => ['name' => 'nome_exibicao', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'nome_tabela', 'caption' => 'Tabela', 'inputType' => 'text', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -111,6 +114,7 @@ class TabelasController extends Controller
     {
         $validationRules = [
             'nome_tabela' => ['max:60'],
+            'nome_exibicao' => ['string'],
         ];
 
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);

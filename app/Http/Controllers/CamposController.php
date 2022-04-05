@@ -23,10 +23,10 @@ class CamposController extends Controller
                 'description' => 'Campos que compõem as tabelas do Sísifo',
                 'url' => url('/campos'),
                 'apiUrl' => url('/api/campos'),
-                'dbFieldNames' => ['nome', 'tabela.nome_tabela'],
-                'dbNameField' => 'nome',
+                'dbFieldNames' => ['nomeExibicao', 'nome', 'tabela.nome_tabela'],
+                'dbNameField' => 'nomeExibicao',
                 'dbIdField' => 'id',
-                'tableColumnNames' => ['Campo', 'Tabela'],
+                'tableColumnNames' => ['Campo', 'Nome', 'Tabela'],
         ];
         return $this->generalIndex($request, $params);
     }
@@ -69,8 +69,9 @@ class CamposController extends Controller
             'url' => url('/campos'),
             'apiUrl' => url('/api/campos'),
             'displayFields' => [
-                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text', 'bootstrapColSize' => 6],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'bootstrapColSize' => 6],
+                0 => ['name' => 'nome_exibicao', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'nome_campo', 'caption' => 'Campo', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                2 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -101,8 +102,9 @@ class CamposController extends Controller
             'apiUrl' => url('/api/campos'),
             'entity' => $entity,
             'displayFields' => [
-                0 => ['name' => 'nome_campo', 'caption' => 'Nome do campo', 'inputType' => 'text', 'bootstrapColSize' => 6],
-                1 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela, 'bootstrapColSize' => 6],
+                0 => ['name' => 'nome_exibicao', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'nome_campo', 'caption' => 'Campo', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                2 => ['name' => 'tabela_id', 'caption' => 'Tabela', 'inputType' => 'select', 'options' => $tabelas, 'id' => 'id', 'value' => 'nome_tabela', 'selected' => $entity->tabela->nome_tabela, 'bootstrapColSize' => 6],
             ],
         ];
 
