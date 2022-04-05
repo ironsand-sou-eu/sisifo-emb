@@ -3,14 +3,20 @@ async function apiUpdate(params) {
 
     const form = document.querySelector('[update-form]')
     const updateData = new FormData(form)
-    // Mudar os textos de belongsTo para IDs
+    // Mudar os textos de selects (relacionamentos belongsTo) para IDs
     form.querySelectorAll('datalist').forEach(element => {
-        const bindedInput = element.previousElementSibling.previousElementSibling
-        const selectedOption = element.options.namedItem(bindedInput.value);
+        const boundInput = element.previousElementSibling.previousElementSibling
+        const selectedOption = element.options.namedItem(boundInput.value);
         if (selectedOption) {
             const selectedId = selectedOption.getAttribute('data-id');
-            updateData.set(bindedInput.name, selectedId)
+            updateData.set(boundInput.name, selectedId)
         }
+    })
+
+    // Mudar os valores dos checkboxes para booleano
+    form.querySelectorAll('input[type="checkbox"]').forEach(element => {
+        const status  = element.checked ? 1 : 0
+        updateData.set(element.name, status)
     })
 
     const options = {

@@ -31,8 +31,8 @@ class Topbar extends Component
         $userInfo = $this->request->session()->get('userInfo');
         $params['userName'] = $userInfo['nome'];
         $params['avatarPath'] = '/assets/img/avatars/'.($userInfo['avatar'] ?? 'undraw_profile.svg');
-        $params['profileUrl'] = "route('/users/{$userInfo['id']}')";
-        $params['logoffUrl'] = "route('/logoff')";
+        $params['profileUrl'] = route('myProfile');
+        $params['logoffUrl'] = route('logout');
 
         return view('components.topbar', ['params' => $params]);
     }

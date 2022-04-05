@@ -38,9 +38,11 @@ Route::middleware('auth.frontend')->group(function ($router) {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/eu', function () {
-        return view('users.me');
-    })->name('myProfile');
+    Route::get('/eu', [UsersController::class, 'showMe'])->name('myProfile');
+    Route::get('/eu', [UsersController::class, 'showMe'])->name('myProfile');
+    Route::get('/mudar-senha', function() { return view('users.change-password'); });
+    Route::post('/mudar-senha', [UsersController::class, 'changePassword'])->name('changePassword');
+    Route::get('/logout', [UsersController::class, 'logout'])->name('logout');
 
     Route::resources([
         'campos' => CamposController::class,

@@ -6,6 +6,12 @@ use App\Models\Access\Genero;
 use App\Models\Access\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\GlobalResource;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Validator;
+use App\Exceptions\ValidationErrorException;
+use \Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Cookie;
 
 class UsersController extends Controller
 {
@@ -30,7 +36,7 @@ class UsersController extends Controller
                 'generoDeclarado.genero',
                 'ativo'
             ],
-            'dbNameField' => 'nome_escolhido',
+            'dbNameField' => 'nomeEscolhido',
             'dbIdField' => 'id',
             'tableColumnNames' => [
                 'Nome',
@@ -51,13 +57,14 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $pwdRules = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()];
         $validationRules = [
             'nome_completo' => ['required', 'min:5', 'max:100'],
             'nome_escolhido' => ['nullable', 'min:2', 'max:50'],
             'genero_declarado_id' => ['required', 'numeric'],
             'email' => ['required', 'email', 'unique:users'],
             'email_verified_at' => ['nullable', 'date'],
-            'password' => ['required'],
+            'password' => $pwdRules,
             'remember_token' => ['nullable', 'max:100'],
             'ativo' => ['required', 'boolean'],
             'avatar_path' => ['nullable'],
@@ -163,35 +170,94 @@ class UsersController extends Controller
         return $this->delete($this->mainModel, $id);
     }
 
+    public function logout(Request $request)
+    {
+        $cookie = Cookie::forget('jat');
+        return Redirect::route('login')->withCookie($cookie);
+    }
+
     public function showMe(Request $request)
     {
         $id = $this->getCurrentUserId($request);
-        if ($this->isApiRoute($request)) {
-            $entity = $this->mainModel::findOrFail($id);
-            return GlobalResource::jsonResponse(['entity' => $entity]);
+        $entity = $this->mainModel::with('generoDeclarado')->find($id);
+        $generos = Genero::all();
+        $params = [
+            'jwt' => $request->cookie('jat'),
+            'title' => 'Meu Perfil',
+            'description' => '',
+            'id' => $id,
+            'url' => url('/users'),
+            'apiUrl' => url('/api/users'),
+            'entity' => $entity,
+            'displayFields' => [
+                1 => ['name' => 'nome_escolhido', 'id' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
+                2 => ['name' => 'nome_completo', 'id' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
+                3 => ['name' => 'email', 'id' => 'email', 'caption' => 'E-mail', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
+                4 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'id' => 'id', 'options' => $generos, 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 6 ],
+                5 => ['name' => 'ativo', 'id' => 'ativo', 'caption' => 'Ativo', 'inputType' => 'checkbox', 'selected' => (bool)$entity->ativo, 'bootstrapColSize' => 3 ],
+            ],
+        ];
 
-        } else {
-            $entity = $this->mainModel::with('generoDeclarado')->find($id);
-            $generos = Genero::all();
-            $params = [
-                'jwt' => $request->cookie('jat'),
-                'title' => 'Meu Perfil',
-                'description' => '',
-                'id' => $id,
-                'url' => url('/users'),
-                'apiUrl' => url('/api/users'),
-                'entity' => $entity,
-                'displayFields' => [
-                    0 => ['name' => 'avatar_path', 'caption' => 'Avatar', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 6 ],
-                    1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
-                    2 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
-                    3 => ['name' => 'ativo', 'caption' => 'Ativo', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 3 ],
-                    4 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'selected' => $entity->generoDeclarado->genero, 'bootstrapColSize' => 6 ],
-                    5 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text', 'bootstrapColSize' => 6 ],
-                ],
-            ];
-    
-            return view('components.edit', $params);
+        return view('users.me', $params);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $currentPwd = $request->input('current-pwd');
+        $newPwd = $request->input('new-pwd');
+        $pwdConfirmation = $request->input('pwd-confirmation');
+        $userId = $this->getCurrentUserId($request);
+
+        $confirmationMatch = $this->confirmPasswordMatch($newPwd, $pwdConfirmation);
+        $currentPwdMatch = $this->currentPasswordMatch($userId, $currentPwd); 
+        $newPwdValidatedAnalysis = $this->validatePassword($newPwd);
+        
+        $errors = [];
+        if (!$confirmationMatch)
+            $errors[] = 'As senhas digitadas não conferem.';
+        if (!$currentPwdMatch)
+            $errors[] = 'A senha atual está incorreta.';
+        if (!$newPwdValidatedAnalysis['valid']) {
+            $errors[] = 'A senha nova não atende às exigências:';
+            $errors = array_merge($errors, $newPwdValidatedAnalysis['data']);
         }
+        
+        if($confirmationMatch && $currentPwdMatch && $newPwdValidatedAnalysis['valid']) {
+            $this->savePassword($userId, $newPwd);
+            session()->flash('status', 'success');
+            session()->flash('data', $newPwdValidatedAnalysis['data']);
+            return redirect()->route('myProfile');;
+            
+        } else {
+            session()->flash('status', 'error');
+            session()->flash('data', $errors);
+            return Redirect::back();
+        }
+    }
+
+    protected function confirmPasswordMatch($pwd1, $pwd2) {
+        return $pwd1 === $pwd2;
+    }
+
+    protected function currentPasswordMatch($userId, $pwd) {
+        $user = User::find($userId);
+        return Hash::check($pwd, $user->password);
+    }
+
+    protected function validatePassword($pwd) {
+        $input = ['password' => $pwd];
+        $pwdRules = ['required', Password::defaults()];
+        $validation = Validator::make($input, ['password' => $pwdRules]);
+        if ($validation->fails()) {
+            $array = $validation->messages()->all();
+            return ['valid' => false, 'data' => $array];
+        }
+        
+        return ['valid' => true, 'data' => ['Senha alterada com sucesso.']];
+    }
+
+    protected function savePassword($userId, $pwd) {
+        $user = User::find($userId);
+        $user->fill(['password' => Hash::make($pwd)])->save();
     }
 }
