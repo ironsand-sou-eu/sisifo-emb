@@ -32,7 +32,11 @@ class Controller extends BaseController
     {
         if ($this->isApiRoute($request)) {
             $modelResourceName = $this->getResourceName();
-            $fullList = $modelResourceName::collection($this->mainModel::all());
+            if (array_key_exists('nestedRelations', $params)) {
+                $fullList = $modelResourceName::collection($this->mainModel::with($params['nestedRelations'])->get());
+            } else {
+                $fullList = $modelResourceName::collection($this->mainModel::all());
+            }
             return GlobalResource::jsonResponse(['fullList' => $fullList]);
 
         } else {
@@ -61,7 +65,7 @@ class Controller extends BaseController
             $resource = new $modelResourceName($entity);
             return GlobalResource::jsonResponse(['entity' => $resource]);
         } else {
-            return $this->edit($request, $entity);
+            return $this->edit($request, $id);
         }
     }
 
@@ -183,9 +187,16 @@ class Controller extends BaseController
 
     protected function getCurrentUserId($request)
     {
-        $jwt = $this->getJwtFromAuthorizationHeader($request);
+        $jwtHeader = $this->getJwtFromAuthorizationHeader($request);
+        $jwtCookie = $this->getJwtFromJatCookie($request);
+        $jwt = $jwtHeader ?: $jwtCookie;
         $userId = FrontendAuth::getDecodedPayload($jwt)['sub'];
         return $userId;
+    }
+
+    protected function getJwtFromJatCookie(Request $request)
+    {
+        return $request->cookie('jat');
     }
 
     protected function getJwtFromAuthorizationHeader(Request $request)

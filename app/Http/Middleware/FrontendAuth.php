@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Access\User;
 use Closure;
+use Exception;
 use Illuminate\Http\Request;
 
 class FrontendAuth
@@ -18,7 +19,7 @@ class FrontendAuth
     public function handle(Request $request, Closure $next)
     {
         $jwt = $request->cookie('jat');
-        if (! $jwt) {
+        if (!$jwt) {
             $request->session()->forget('userInfo');
             return redirect()->route('login');
         }
@@ -36,9 +37,9 @@ class FrontendAuth
 
     public static function getDecodedPayload($jwt)
     {
-        $payload = explode('.', $jwt)[1];
+        $sections = explode('.', $jwt);
+        $payload = $sections[1];    
         $decodedPayload = base64_decode($payload);
-
         return json_decode($decodedPayload, true);
     }
 
