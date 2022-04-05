@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Http\Resources\GlobalResource;
+use Illuminate\Http\Request;
 
-class EntryNotFoundException extends Exception
+class EntryNotFoundException extends BaseException
 {
     private $errors;
 
@@ -14,8 +14,10 @@ class EntryNotFoundException extends Exception
         $this->errors = $errors;
     }
 
-    public function render()
+    public function render(Request $request)
     {
-        return GlobalResource::jsonResponse(['resp' => __('db.notFound'), $this->errors], 422);
+        if($this->isApiRoute($request)) {
+            return GlobalResource::jsonResponse(['resp' => __('db.notFound'), $this->errors], 422);
+        }
     }
 }

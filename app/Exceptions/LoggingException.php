@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Http\Resources\GlobalResource;
+use Illuminate\Http\Request;
 
-class LoggingException extends Exception
+class LoggingException extends BaseException
 {
     private $errors;
 
@@ -14,8 +14,10 @@ class LoggingException extends Exception
         $this->errors = $errors;
     }
 
-    public function render()
+    public function render(Request $request)
     {
-        return GlobalResource::jsonResponse(['resp' => "A transação foi realizada, mas não registrada", 'data' => $this->errors], 500);
+        if($this->isApiRoute($request)) {
+            return GlobalResource::jsonResponse(['resp' => "A transação foi realizada, mas não registrada", 'data' => $this->errors], 500);
+        }
     }
 }

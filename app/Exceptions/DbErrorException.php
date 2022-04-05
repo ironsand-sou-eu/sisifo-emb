@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Http\Resources\GlobalResource;
+use Illuminate\Http\Request;
 
-class DbErrorException extends Exception
+class DbErrorException extends BaseException
 {
     private $errors;
 
@@ -14,8 +14,10 @@ class DbErrorException extends Exception
         $this->errors = $errors;
     }
 
-    public function render()
+    public function render(Request $request)
     {
-        return GlobalResource::jsonResponse(['resp' => __('validation.genericError'), 'data' => $this->errors], 500);
+        if($this->isApiRoute($request)) {
+            return GlobalResource::jsonResponse(['resp' => __('validation.genericError'), 'data' => $this->errors], 500);
+        }
     }
 }

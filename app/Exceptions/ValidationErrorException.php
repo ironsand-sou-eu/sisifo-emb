@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Http\Resources\GlobalResource;
+use Illuminate\Http\Request;
 
-class ValidationErrorException extends Exception
+class ValidationErrorException extends BaseException
 {
     private $errors;
 
@@ -14,8 +14,10 @@ class ValidationErrorException extends Exception
         $this->errors = $errors;
     }
 
-    public function render()
+    public function render(Request $request)
     {
-        return GlobalResource::jsonResponse(['resp' => __('validation.genericError'), $this->errors], 422);
+        if($this->isApiRoute($request)) {
+            return GlobalResource::jsonResponse(['resp' => __('validation.genericError'), $this->errors], 422);
+        }
     }
 }
