@@ -108,7 +108,6 @@ class EspaiderJuizosController extends Controller
         if ($this->isApiRoute($request)) {
             return response('', 404);
         }
-
         $entity = $this->mainModel::with(['espaiderComarca', 'espaiderOrgao'])->find($id);
         $espaiderComarcas = EspaiderComarca::all();
         $espaiderOrgaos = EspaiderOrgao::all();
@@ -125,8 +124,8 @@ class EspaiderJuizosController extends Controller
                 1 => ['name' => 'redacao_cabecalho_juizo', 'caption' => 'Texto de cabeçalho de peças', 'inputType' => 'text'],
                 2 => ['name' => 'redacao_resumida_juizo', 'caption' => 'Texto resumido para peças', 'inputType' => 'text'],
                 3 => ['name' => 'slug', 'caption' => 'Slug (uso interno do sistema)', 'inputType' => 'text'],
-                4 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider', 'selected' => $entity->espaiderComarca->nome_comarca_espaider, 'bootstrapColSize' => 6],
-                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider', 'selected' => $entity->espaiderOrgao->nome_orgao_espaider, 'bootstrapColSize' => 6],
+                4 => ['name' => 'espaiderComarca', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider', 'selected' => $entity->espaiderComarca->nome_comarca_espaider, 'bootstrapColSize' => 6],
+                5 => ['name' => 'espaiderOrgao', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider', 'selected' => $entity->espaiderOrgao->nome_orgao_espaider, 'bootstrapColSize' => 6],
             ],
         ];
 
