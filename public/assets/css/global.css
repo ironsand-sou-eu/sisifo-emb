@@ -1,6 +1,7 @@
 :root {
     --ceu-noturno-color: #0b2160;
     --turquesa-sisifo-color: #64a19d;
+    --global-line-height: 40px;
 }
 
 .bg-gradient-sisifo {
@@ -44,7 +45,7 @@
     * Edit pages 
     */
     
-    #save_button_wrapper {
+    #save_button_wrapper, #chpassword_button_wrapper, #updt_button_wrapper {
       max-width: fit-content;
     }
 
@@ -106,6 +107,10 @@
       border-left: none;
     }
 
+    .form-input.fail {
+      border-bottom: 2px red solid;
+    }
+
     .form-input::before {
       content: '';
       position: absolute;
@@ -144,7 +149,7 @@
       position: absolute;
       top: 0;
       left: 15px;
-      line-height: 40px;
+      line-height: var(--global-line-height);
       font-size: 14px;
       color: #777;
       transition: 300ms all;
@@ -152,7 +157,7 @@
 
     .field input {
       width: 100%;
-      line-height: 40px;
+      line-height: var(--global-line-height);
       padding: 0 8px;
       box-sizing: border-box;
       font-size: 14px;
@@ -179,10 +184,19 @@
       left: 1px;
     }
 
+    .field input:valid + label.fail::before {
+      color: red;
+    }
+
     .field input:focus + label::before {
       line-height: 20px;
       font-size: 12px;
       top: -10px;
       background: transparent;
       padding: 0 6px;
+    }
+
+    .field input[type='checkbox'] ~ label {
+      line-height: var(--global-line-height);
+      color: var(--turquesa-sisifo-color);
     }

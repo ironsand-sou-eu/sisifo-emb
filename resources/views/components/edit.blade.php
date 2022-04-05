@@ -22,16 +22,19 @@
         <div class="card-body">
             <div class="row col-sm-12">
                 <form name="update" action="{{ $url }}" method="post" class="w-100" update-form>
-                    <fieldset class="position-relative">
+                    <fieldset class="position-relative d-flex flex-column">
                         @csrf
 
                         @foreach ($displayFields as $field)
                             @switch ($field['inputType'])
                             @case ('text')
-                                <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" value="{{ $entity->{$field['name']} }}" />
+                                <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" value="{{ $entity->{$field['name']} }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
                                 @break
                             @case ('select')
-                                <x-forms.select name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" id="{{ $field['id'] }}" value="{{ $field['value'] }}" selected="{{ $field['selected'] }}" />
+                                <x-forms.select name="{{ $field['name'] }}" id="{{ $field['id'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" value="{{ $field['value'] }}" selected="{{ $field['selected'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
+                                @break
+                            @case ('checkbox')
+                                <x-forms.checkbox name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" selected="{{ $field['selected'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
                                 @break
                             @endswitch
                         @endforeach

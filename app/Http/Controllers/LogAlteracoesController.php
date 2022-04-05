@@ -39,11 +39,11 @@ class LogAlteracoesController extends Controller
                 'Data da alteração',
                 'Alterado por'
             ],
+            'nestedRelations' => 'campo.tabela',
             'sortingColumnIndexBase0' => 4,
-            'sortingDirection' => 'desc',
+            'sortingDirection' => 'desc'
         ];
-        return $this->generalIndex($request,
-        $params);
+        return $this->generalIndex($request, $params);
     }
 
     /**
@@ -88,8 +88,8 @@ class LogAlteracoesController extends Controller
         if ($this->isApiRoute($request)) {
             return response('', 404);
         }
-
-        $entity = $this->mainModel::find($id);
+        
+        $entity = $this->mainModel::with('campo.tabela')->find($id);
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Visualizando registro de alteração',

@@ -17,26 +17,22 @@
     <body id="page-top">        
         <!-- Masthead-->
         <header class="masthead">
-            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-                <div class="d-flex justify-content-center">
-                    <div class="text-center">
-                        <div class="errors form-control m-3"></div>
-                        <h1 class="mx-auto my-0 text-uppercase">Sísifo</h1>
-                        <form name="login" action="{{ route('apiLogin') }}" method="post">
-                            @csrf
-                            <fieldset>
-                                <input type="text" name="email" id="email" placeholder="e-mail" class="form-control m-3">
-                                <input type="password" name="password" id="password" placeholder="senha" class="form-control m-3">
-                            </fieldset>
-                            <button type="submit" class="btn btn-primary m-3">Login
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+            <div class="container flex-form px-4 px-lg-5 h-100">
+                <div class="errors form-control"></div>
+                <h1 class="mx-auto my-0 text-uppercase">Sísifo</h1>
+                <form class="w-75" name="login" action="{{ route('apiLogin') }}" method="post">
+                    @csrf
+                    <fieldset>
+                        <input type="text" name="email" id="email" placeholder="e-mail" class="form-control">
+                        <input type="password" name="password" id="password" placeholder="senha" class="form-control">
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary m-3">Login
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </button>
+                </form>
             </div>
         </header>
         
