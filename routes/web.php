@@ -43,7 +43,9 @@ Route::middleware('auth.frontend')->group(function ($router) {
     Route::get('/mudar-senha', function() { return view('users.change-password'); });
     Route::post('/mudar-senha', [UsersController::class, 'changePassword'])->name('changePassword');
     Route::get('/logout', [UsersController::class, 'logout'])->name('logout');
-
+    
+    Route::get('/log-alteracoes', [LogAlteracoesController::class, 'index']);
+    
     Route::resources([
         'campos' => CamposController::class,
         'eselo-comarcas' => EseloComarcasController::class,
@@ -54,7 +56,6 @@ Route::middleware('auth.frontend')->group(function ($router) {
         'espaider-orgaos' => EspaiderOrgaosController::class,
         'espaider-ufs' => EspaiderUfsController::class,
         'generos' => GenerosController::class,
-        'log-alteracoes' => LogAlteracoesController::class,
         'permissoes' => PermissoesController::class,
         'sistemas-jud-juizos' => SistemasJudJuizosController::class,
         'tabelas' => TabelasController::class,
