@@ -2,21 +2,27 @@ async function apiCreate(params) {
     params.e?.preventDefault()
 
     const form = document.querySelector('[create-form]')
-    const updateData = new FormData(form)
-    // Mudar os textos de belongsTo para IDs
+    const createData = new FormData(form)
+    // Mudar os textos de selects (relacionamentos belongsTo) para IDs
     form.querySelectorAll('datalist').forEach(element => {
         const bindedInput = element.previousElementSibling.previousElementSibling
         const selectedOption = element.options.namedItem(bindedInput.value);
         if (selectedOption) {
             const selectedId = selectedOption.getAttribute('data-id');
-            updateData.set(bindedInput.name, selectedId)
+            createData.set(bindedInput.name, selectedId)
         }
+    })
+
+    // Mudar os valores dos checkboxes para booleano
+    form.querySelectorAll('input[type="checkbox"]').forEach(element => {
+        const status  = element.checked ? 1 : 0
+        createData.set(element.name, status)
     })
 
     const options = {
         method: 'POST',
         headers: { "Authorization": `Bearer ${params.jwt}` },
-        body: new URLSearchParams(updateData)
+        body: new URLSearchParams(createData)
     }
     
     const flashDiv = document.querySelector("[flash]")

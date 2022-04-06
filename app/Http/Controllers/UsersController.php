@@ -57,14 +57,13 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $pwdRules = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()];
         $validationRules = [
             'nome_completo' => ['required', 'min:5', 'max:100'],
             'nome_escolhido' => ['nullable', 'min:2', 'max:50'],
             'genero_declarado_id' => ['required', 'numeric'],
             'email' => ['required', 'email', 'unique:users'],
             'email_verified_at' => ['nullable', 'date'],
-            'password' => $pwdRules,
+            'password' => ['required', 'confirmed', Password::defaults()],
             'remember_token' => ['nullable', 'max:100'],
             'ativo' => ['required', 'boolean'],
             'avatar_path' => ['nullable'],
@@ -93,10 +92,13 @@ class UsersController extends Controller
             'url' => url('/users'),
             'apiUrl' => url('/api/users'),
             'displayFields' => [
-                0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text'],
-                1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text'],
+                0 => ['name' => 'nome_escolhido', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 6],
+                1 => ['name' => 'nome_completo', 'caption' => 'Nome completo', 'inputType' => 'text', 'bootstrapColSize' => 6],
                 2 => ['name' => 'email', 'caption' => 'E-mail', 'inputType' => 'text', 'bootstrapColSize' => 6],
                 3 => ['name' => 'genero_declarado_id', 'caption' => 'Gênero', 'inputType' => 'select', 'options' => $generos, 'id' => 'id', 'value' => 'genero', 'bootstrapColSize' => 6],
+                4 => ['name' => 'password', 'caption' => 'Senha', 'inputType' => 'password', 'bootstrapColSize' => 6],
+                5 => ['name' => 'password_confirmation', 'caption' => 'Confirme a senha', 'inputType' => 'password', 'bootstrapColSize' => 6],
+                6 => ['name' => 'ativo', 'caption' => 'Ativo', 'inputType' => 'checkbox', 'selected' => true, 'bootstrapColSize' => 3],
             ],
         ];
 

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Illuminate\Support\Facades\Hash;
 
 class Controller extends BaseController
 {
@@ -42,7 +43,7 @@ class Controller extends BaseController
         } else {
             $jwt = $request->cookie('jat');
             $params['jwt'] = $jwt;
-            return view('components.index', $params);
+            return view($params['indexView'] ?? 'components.index', $params);
         }
     }
 
@@ -115,12 +116,13 @@ class Controller extends BaseController
     private function storeData($modelClassName, $validationResponse)
     {
         try {
-            $dataToCreate = $this->getFieldsToCreate($validationResponse);
-            $modelClassName::create($validationResponse);
+            $pwdHashedValidationResponse = $this->hashFieldsNamedPassword($validationResponse);
+            $dataToLog = $this->getFieldsToLogOnCreate($pwdHashedValidationResponse);
+            $modelClassName::create($pwdHashedValidationResponse);
         } catch (\Throwable $th) {
             throw new DbErrorException($th);
         }
-        return $dataToCreate;
+        return $dataToLog;
     }
 
     private function getEntity($modelClassName, $id)
@@ -136,15 +138,15 @@ class Controller extends BaseController
     private function updateData($entity, $validationResponse)
     {
         try {
-            $dataToUpdate = $this->getFieldsToUpdate($validationResponse, $entity);
+            $dataToLog = $this->getFieldsToLogOnUpdate($validationResponse, $entity);
             $entity->update($validationResponse);
         } catch (\Throwable $th) {
             throw new DbErrorException($th);
         }
-        return $dataToUpdate;
+        return $dataToLog;
     }
 
-    protected function getFieldsToUpdate($ValidatedInputFields, $entity)
+    protected function getFieldsToLogOnUpdate($ValidatedInputFields, $entity)
     {
         $fieldsToUpdate = [];
         foreach ($ValidatedInputFields as $fieldName => $value) {
@@ -159,16 +161,26 @@ class Controller extends BaseController
         return $fieldsToUpdate;
     }
 
-    protected function getFieldsToCreate($ValidatedInputFields)
+    protected function hashFieldsNamedPassword($dataArray) {
+        foreach ($dataArray as $key => &$value) {
+            if($key == 'password')
+                $value = Hash::make($value);
+        }
+        return $dataArray;
+    }
+
+    protected function getFieldsToLogOnCreate($validatedInputFields)
     {
         $fieldsToCreate = [];
-        foreach ($ValidatedInputFields as $fieldName => $value) {
+        foreach ($validatedInputFields as $fieldName => $value) {
+            if($fieldName == 'password')
+                break;
+
             $fieldsToCreate[$fieldName] = [
                 'valor_anterior' => '',
                 'valor_atual' => $value,
             ];
         }
-        
         return $fieldsToCreate;
     }
 
