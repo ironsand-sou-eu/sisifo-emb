@@ -30,6 +30,9 @@
                             @case ('text')
                                 <x-forms.text name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" value="{{ $entity->{$field['name']} }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
                                 @break
+                            @case ('password')
+                                <x-forms.password name="{{ $field['name'] }}" caption="{{ $field['caption'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
+                                @break
                             @case ('select')
                                 <x-forms.select name="{{ $field['name'] }}" id="{{ $field['id'] }}" caption="{{ $field['caption'] }}" :options="$field['options']" value="{{ $field['value'] }}" selected="{{ $field['selected'] }}" bootstrapColSize="{{ $field['bootstrapColSize'] ?? 12 }}" />
                                 @break
