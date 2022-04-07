@@ -2,6 +2,7 @@ document.login.onsubmit = async e => {
     e.preventDefault()
     toggleLoginButtonWait()
     const form = e.target
+    fillEmailFieldWithEmbasaData(form)
     const loginData = new FormData(form)
     const options = {
         method: form.method,
@@ -16,7 +17,7 @@ document.login.onsubmit = async e => {
                 throw 'Usuário ou senha incorretos. Tente novamente.'
             case 500:
                 toggleLoginButtonWait()
-                throw 'Não foi possível estabelecer comunicação com o banco de dados. Tente novamente mais tarde.'
+                throw 'Ocorreu um erro no servidor. Tente novamente mais tarde.'
         }
         const json = await resp.json()
         const jwt = json.access_token
@@ -53,4 +54,10 @@ function setCookie(name, value, secondsToExpire) {
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function fillEmailFieldWithEmbasaData(form) {
+    const email = form.email.value;
+    if (!email.includes('@'))
+        form.email.value = `${email}@embasa.ba.gov.br`
 }
