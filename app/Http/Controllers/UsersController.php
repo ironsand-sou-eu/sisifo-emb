@@ -12,6 +12,8 @@ use App\Exceptions\ValidationErrorException;
 use \Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -80,9 +82,11 @@ class UsersController extends Controller
      */
     public function create(Request $request)
     {
-        if ($this->isApiRoute($request)) {
-            return response('', 404);
-        }
+        if ($this->isApiRoute($request))
+            abort(404);
+
+        if (!Gate::allows('create-user'))
+            abort(403);
 
         $generos = Genero::all();
         $params = [
@@ -172,8 +176,11 @@ class UsersController extends Controller
         return $this->delete($this->mainModel, $id);
     }
 
-    public function logout(Request $request)
+    public static function logout(Request $request)
     {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         $cookie = Cookie::forget('jat');
         return Redirect::route('login')->withCookie($cookie);
     }
