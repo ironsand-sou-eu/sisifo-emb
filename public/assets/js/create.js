@@ -37,6 +37,7 @@ async function apiCreate(params) {
         flashDiv.innerHTML = json.resp + ' Redirecionando...'
         flashDiv.classList.add("success")
         flashDiv.classList.remove("hidden", "error")
+        window.scrollTo({top: 0, behavior: "smooth"})
         setTimeout(() => {
             window.location.href = params.url
         }, 3000);
@@ -46,5 +47,6 @@ async function apiCreate(params) {
         flashDiv.innerHTML = errMsg
         flashDiv.classList.add("error")
         flashDiv.classList.remove("hidden", "success")
+        window.scrollTo({top: 0, behavior: "smooth"})
     }
 }
