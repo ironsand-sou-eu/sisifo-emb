@@ -7,6 +7,7 @@ use App\Models\BizRules\EseloJuizo;
 use App\Models\BizRules\EspaiderJuizo;
 use App\Rules\UniqueCombinationRule;
 use Illuminate\Http\Request;
+use App\Http\Resources\GlobalResource;
 
 class EseloJuizosController extends Controller
 {
@@ -159,15 +160,23 @@ class EseloJuizosController extends Controller
     public function getEseloInfoFromEspaiderJuizoSlug($slug)
     {
         $espaiderJuizo = EspaiderJuizo::where('slug', $slug)->first();
-        $eseloJuizos = $this->mainModel::with('eseloComarca')->whereBelongsTo($espaiderJuizo)->get();
+        if (!$espaiderJuizo)
+            return GlobalResource::jsonResponse(['resp' => __('db.notFound')], 404);
+
+        $eseloJuizos = $this->mainModel::with('eseloComarca')
+                        ->whereBelongsTo($espaiderJuizo)
+                        ->get();
+        
+        if ($eseloJuizos->count() === 0)
+            return GlobalResource::jsonResponse(['resp' => __('db.notFound')], 404);
 
         foreach ($eseloJuizos as $eseloJuizo) {
             $resp[] = [
                 'eseloJuizo' => $eseloJuizo->nome_juizo_eselo,
-                'comarca' => $eseloJuizo->eseloComarca->nome_comarca_eselo,
+                'eseloComarca' => $eseloJuizo->eseloComarca->nome_comarca_eselo,
             ];
         }
 
-        return response()->json(['data' => $resp]);
+        return GlobalResource::jsonResponse(['data' => $resp], 200);
     }
 }
