@@ -6,6 +6,8 @@ use App\Models\Access\User;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UsersController;
 
 class FrontendAuth
 {
@@ -20,17 +22,19 @@ class FrontendAuth
     {
         $jwt = $request->cookie('jat');
         if (!$jwt) {
-            $request->session()->forget('userInfo');
+            UsersController::logout($request);
             return redirect()->route('login');
         }
 
         $payload = self::getDecodedPayload($jwt);
         if (time() >= $payload['exp']) {
-            $request->session()->forget('userInfo');
+            UsersController::logout($request);
             return redirect()->route('login');
         }
 
-        self::insertUserInfoIntoSession($request, $payload['sub']);
+        $userId = $payload['sub'];
+        $user = User::find($userId);
+        Auth::login($user);
 
         return $next($request);
     }
@@ -41,17 +45,5 @@ class FrontendAuth
         $payload = $sections[1];    
         $decodedPayload = base64_decode($payload);
         return json_decode($decodedPayload, true);
-    }
-
-    protected static function insertUserInfoIntoSession(Request $request, $userId)
-    {
-        $user = User::find($userId);
-        $userInfo = [
-            'id' => $user->id,
-            'nome' => $user->nome_escolhido,
-            'avatar' => $user->avatar_path,
-        ];
-
-        $request->session()->put('userInfo', $userInfo);
     }
 }

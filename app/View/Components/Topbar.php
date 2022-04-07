@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\Http\Request;
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Topbar extends Component
 {
@@ -28,9 +29,8 @@ class Topbar extends Component
      */
     public function render()
     {
-        $userInfo = $this->request->session()->get('userInfo');
-        $params['userName'] = $userInfo['nome'];
-        $params['avatarPath'] = '/assets/img/avatars/'.($userInfo['avatar'] ?? 'undraw_profile.svg');
+        $params['userName'] = Auth::user()->nome_escolhido;
+        $params['avatarPath'] = '/assets/img/avatars/'.(Auth::user()->avatar_path ?? 'undraw_profile.svg');
         $params['profileUrl'] = route('myProfile');
         $params['logoffUrl'] = route('logout');
 
