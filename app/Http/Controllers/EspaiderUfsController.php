@@ -74,24 +74,24 @@ class EspaiderUfsController extends Controller
      * @param  int  $id
      * @return Illuminate\Support\Facades\View
      */
-    public function edit(Request $request, $entity)
+    public function edit(Request $request, $id)
     {
         if ($this->isApiRoute($request)) {
             return response('', 404);
         }
 
-        // $entity = $this->mainModel::find($id);
+        $entity = $this->mainModel::find($id);
         $params = [
             'jwt' => $request->cookie('jat'),
             'title' => 'Editando UF (redação do Espaider)',
             'description' => 'Unidades da Federação',
-            'id' => $entity->id,
+            'id' => $entity->sigla,
             'url' => url('/espaider-ufs'),
             'apiUrl' => url('/api/espaider-ufs'),
             'entity' => $entity,
             'displayFields' => [
                 0 => ['name' => 'nome_uf_espaider', 'caption' => 'Nome', 'inputType' => 'text', 'bootstrapColSize' => 8],
-                0 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text', 'bootstrapColSize' => 4],
+                1 => ['name' => 'sigla', 'caption' => 'Sigla', 'inputType' => 'text', 'bootstrapColSize' => 4],
             ],
         ];
 
