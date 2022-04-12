@@ -20,6 +20,7 @@ class Daje extends Model
         'valor',
         'emissao',
         'vencimento',
+        'codigo_barras',
         'tipo',
         'qtd_atos',
         'eventos_atos',

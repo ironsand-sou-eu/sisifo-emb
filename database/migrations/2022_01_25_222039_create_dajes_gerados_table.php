@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->float('valor', 20, 2, true);
             $table->date('emissao');
             $table->date('vencimento');
+            $table->string('codigo_barras', 60)->unique();
             $table->string('tipo', 50);
             $table->integer('qtd_atos', false, true);
             $table->string('eventos_atos', 150)->nullable();
