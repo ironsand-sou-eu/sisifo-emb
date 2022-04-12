@@ -178,9 +178,11 @@ class UsersController extends Controller
 
     public static function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if (Auth::user()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
         $cookie = Cookie::forget('jat');
         return Redirect::route('login')->withCookie($cookie);
     }
