@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\BizRules\Daje;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DajesExport;
 
 class DajeController extends Controller
 {
@@ -175,5 +177,11 @@ class DajeController extends Controller
     public function destroy($id)
     {
         return $this->delete($this->mainModel, $id);
+    }
+
+    public function getDajesInfoForSap(Request $request) {
+        $initialReportDate = date('Y-m-d', 1646103600);
+        $finalReportDate = date('Y-m-d', 1646189999);
+        return  Excel::download(new DajesExport($initialReportDate, $finalReportDate), 'Relatorio DAJEs.xlsx');
     }
 }
