@@ -6,6 +6,7 @@ use App\Models\BizRules\EspaiderComarca;
 use App\Models\BizRules\EspaiderJuizo;
 use App\Models\BizRules\EspaiderOrgao;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class EspaiderJuizosController extends Controller
 {
@@ -53,13 +54,15 @@ class EspaiderJuizosController extends Controller
     {
         $validationRules = [
             'nome_juizo_espaider' => ['required', 'min:5', 'max:120', 'unique:espaider_juizos'],
-            'slug' => ['string'],
             'redacao_cabecalho_juizo' => ['required', 'max:150'],
+            'slug' => ['required', 'string'],
             'redacao_resumida_juizo' => ['required', 'max:60'],
             'espaider_comarca_id' => ['required', 'numeric'],
             'espaider_orgao_id' => ['required', 'numeric'],
         ];
 
+        $slug = Str::slug($request->input('nome_juizo_espaider'));
+        $request->mergeIfMissing(['slug' => $slug]);
         return $this->validateAndStore($request, $this->mainModel, $validationRules);
     }
 
@@ -87,9 +90,8 @@ class EspaiderJuizosController extends Controller
                 0 => ['name' => 'nome_juizo_espaider', 'caption' => 'Nome do juízo (Espaider)', 'inputType' => 'text'],
                 1 => ['name' => 'redacao_cabecalho_juizo', 'caption' => 'Texto de cabeçalho de peças', 'inputType' => 'text'],
                 2 => ['name' => 'redacao_resumida_juizo', 'caption' => 'Texto resumido para peças', 'inputType' => 'text'],
-                3 => ['name' => 'slug', 'caption' => 'Slug (uso interno do sistema)', 'inputType' => 'text'],
-                4 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider', 'bootstrapColSize' => 6],
-                5 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider', 'bootstrapColSize' => 6],
+                3 => ['name' => 'espaider_comarca_id', 'caption' => 'Comarca (Espaider)', 'inputType' => 'select', 'options' => $espaiderComarcas, 'id' => 'id', 'value' => 'nome_comarca_espaider', 'bootstrapColSize' => 6],
+                4 => ['name' => 'espaider_orgao_id', 'caption' => 'Órgão (Espaider)', 'inputType' => 'select', 'options' => $espaiderOrgaos, 'id' => 'id', 'value' => 'nome_orgao_espaider', 'bootstrapColSize' => 6],
             ],
         ];
 
@@ -145,10 +147,13 @@ class EspaiderJuizosController extends Controller
             'nome_juizo_espaider' => ['min:5', 'max:120'],
             'redacao_cabecalho_juizo' => ['max:150'],
             'redacao_resumida_juizo' => ['max:60'],
+            'slug' => ['string'],
             'espaider_comarca_id' => ['numeric'],
             'espaider_orgao_id' => ['numeric'],
         ];
-
+        
+        $slug = Str::slug($request->input('nome_juizo_espaider'));
+        $request->merge(['slug' => $slug]);
         return $this->validateAndUpdate($request, $this->mainModel, $id, $validationRules);
     }
 
