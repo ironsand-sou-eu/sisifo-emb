@@ -12,6 +12,7 @@
         "tipo": "Causas em geral",
         "qtd_atos": "1",
         "eventos_atos": "3.000,00",
+        "codigo_barras": "34789321657896249454676541943249847",
         "gerencia": "PPJCM"
     },
     "1": {
@@ -24,6 +25,7 @@
         "tipo": "Recurso inominado",
         "qtd_atos": "1",
         "eventos_atos": "",
+        "codigo_barras": "34789321657896249454676541943643248",
         "gerencia": "PPJCM"
     },
     "2": {
@@ -36,6 +38,7 @@
         "tipo": "Comunicações eletrônicas",
         "qtd_atos": "3",
         "eventos_atos": "10,26,42",
+        "codigo_barras": "34789321657896249454676541943687574978654",
         "gerencia": "PPJCM"
     }
 }

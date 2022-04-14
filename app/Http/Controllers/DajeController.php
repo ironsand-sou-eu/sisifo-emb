@@ -20,8 +20,9 @@ class DajeController extends Controller
         5 => ['name' => 'vencimento', 'caption' => 'Data de vencimento', 'inputType' => 'date'],
         6 => ['name' => 'tipo', 'caption' => 'Tipo de DAJE', 'inputType' => 'text'],
         7 => ['name' => 'qtd_atos', 'caption' => 'Quantidade de atos', 'inputType' => 'text'],
-        8 => ['name' => 'eventos_atos', 'caption' => 'Número dos eventos dos atos', 'inputType' => 'text'],
-        9 => ['name' => 'gerencia', 'caption' => 'Gerência', 'inputType' => 'text'],
+        8 => ['name' => 'eventos_atos', 'caption' => 'Eventos/valores dos atos', 'inputType' => 'text'],
+        9 => ['name' => 'codigo_barras', 'caption' => 'Código de barras', 'inputType' => 'text'],
+        10 => ['name' => 'gerencia', 'caption' => 'Gerência', 'inputType' => 'text'],
     ];
 
     /**
@@ -46,6 +47,7 @@ class DajeController extends Controller
                 'tipo',
                 'qtdAtos',
                 'eventosAtos',
+                'codigoBarras',
                 'gerencia',
             ],
             'dbNameField' => 'numero',
@@ -60,6 +62,7 @@ class DajeController extends Controller
                 'Tipo de DAJE',
                 'Quantidade de atos',
                 'Números dos evento dos atos',
+                'Código de barras',
                 'Gerência',
             ],
         ];
@@ -84,6 +87,7 @@ class DajeController extends Controller
             'tipo' => ['required'],
             'qtd_atos' => ['required'],
             'eventos_atos' => ['nullable'],
+            'codigo_barras' => ['nullable', 'string'],
             'gerencia' => ['required'],
         ];
 
@@ -162,6 +166,7 @@ class DajeController extends Controller
             'tipo' => ['string'],
             'qtd_atos' => ['numeric'],
             'eventos_atos' => ['string'],
+            'codigo_barras' => ['string'],
             'gerencia' => ['string'],
         ];
 
@@ -180,8 +185,10 @@ class DajeController extends Controller
     }
 
     public function getDajesInfoForSap(Request $request) {
-        $initialReportDate = date('Y-m-d', 1646103600);
-        $finalReportDate = date('Y-m-d', 1646189999);
-        return  Excel::download(new DajesExport($initialReportDate, $finalReportDate), 'Relatorio DAJEs.xlsx');
+        $initialReportDate = $request->input('initialDate');
+        $finalReportDate = $request->input('finalDate');
+        $formattedDate = date('Y-m-d H-i-s');
+        $reportName = "Sisifo - Relatorio DAJEs gerado $formattedDate.xlsx";
+        return  Excel::download(new DajesExport($initialReportDate, $finalReportDate), $reportName);
     }
 }
