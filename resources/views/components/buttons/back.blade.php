@@ -1,4 +1,4 @@
-<div id="button_wrapper" class="float-right mb-3 w-100">
+<div id="button_wrapper" class="float-right clear-right mb-3 w-100">
     <a href="{{ $url }}" class="btn btn-secondary btn-icon-split w-100">
         <span class="icon text-white-50">
             <i class="fas fa-angle-double-left"></i>

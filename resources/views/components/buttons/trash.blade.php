@@ -1,4 +1,4 @@
-<div id="del_button_wrapper" class="float-right mb-3 w-100">
+<div id="del_button_wrapper" class="float-right clear-right mb-3 w-100">
     <a href="#" class="btn btn-danger btn-icon-split w-100">
         <span class="icon text-white-50">
             <i class="fas fa-trash-alt"></i>
