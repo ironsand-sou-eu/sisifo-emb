@@ -2307,6 +2307,7 @@ textarea.form-control {
 
 .btn {
   display: inline-block;
+  width: fit-content;
   font-weight: 400;
   color: #858796;
   text-align: center;
