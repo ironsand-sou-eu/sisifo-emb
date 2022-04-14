@@ -45,7 +45,7 @@ Route::middleware('auth.frontend')->group(function ($router) {
     Route::get('/logout', [UsersController::class, 'logout'])->name('logout');
     
     Route::get('/log-alteracoes', [LogAlteracoesController::class, 'index']);
-    Route::get('/dajes/relatorio-sap', [DajeController::class, 'getDajesInfoForSap']);
+    Route::get('/dajes/relatorio-sap', [DajeController::class, 'getDajesInfoForSap'])->name('sapReport');
 
     Route::resources([
         'campos' => CamposController::class,

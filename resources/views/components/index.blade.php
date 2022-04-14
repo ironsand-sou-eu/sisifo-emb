@@ -21,6 +21,10 @@
                             @else
                                 <x-buttons.new url='{{ "{$url}/novo" }}'/>
                             @endif
+
+                            @if ($url == url('/dajes'))
+                                <x-buttons.dajes-report />
+                            @endif
                             <table class="display dataTable dtr-inline" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <thead>
                                     <tr role="row">

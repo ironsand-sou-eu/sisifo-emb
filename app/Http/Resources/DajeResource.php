@@ -12,17 +12,23 @@ class DajeResource extends GlobalResource
      */
     public function toArray($request)
     {
+        $emissionDate = date_create($this->emissao);
+        $dueDate = date_create($this->vencimento);
+        $value = number_format($this->valor, 2, ",", ".");
+        $qtdAtos = $this->qtd_atos ?: "";
+
         return [
             "id" => $this->id,
             "numero" => $this->numero,
             "processo" => $this->processo,
             "parteAdversa" => $this->parte_adversa,
-            "valor" => $this->valor,
-            "emissao" => $this->emissao,
-            "vencimento" => $this->vencimento,
+            "valor" => $value,
+            "emissao" => date_format($emissionDate, 'd/m/Y'),
+            "vencimento" => date_format($dueDate, 'd/m/Y'),
             "tipo" => $this->tipo,
-            "qtdAtos" => $this->qtd_atos,
+            "qtdAtos" => $qtdAtos,
             "eventosAtos" => $this->eventos_atos,
+            "codigoBarras" => $this->codigo_barras,
             "gerencia" => $this->gerencia,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at

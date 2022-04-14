@@ -61,10 +61,10 @@
     .header-wrapper .column {
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-evenly;
       align-items: flex-end;
       width: min-content;
-    }
+    align-content: stretch;flex-wrap: nowrap;}
 
     .header-wrapper .column a {
       justify-content: flex-start;
@@ -199,4 +199,21 @@
     .field input[type='checkbox'] ~ label {
       line-height: var(--global-line-height);
       color: var(--turquesa-sisifo-color);
+    }
+
+    .clear-right {
+      clear: right;
+    }
+
+    #report-data {
+      transform: translateX(100%);
+      z-index: -1;
+      display: none;
+      transition: 400ms ease-in-out;
+    }
+    
+    #report-data.show {
+      transform: translateX(0);
+      z-index: 0;
+      display: inline-flex;
     }
