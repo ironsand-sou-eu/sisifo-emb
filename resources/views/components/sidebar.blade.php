@@ -20,16 +20,16 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Externas
+        Por aplicação
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+    {{-- <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCitacoes" aria-expanded="true" aria-controls="collapseCitacoes">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Espaider</span>
+            <span>Citações</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseCitacoes" class="collapse" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Custom Components:</h6> -->
                 <a href="{{ url('/espaider-juizos') }}" class='collapse-item'>Juízos</a>
@@ -42,17 +42,52 @@
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseIntimacoes" aria-expanded="true" aria-controls="collapseIntimacoes">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Tribunais</span>
+            <span>Intimações</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseIntimacoes" class="collapse" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Custom Utilities:</h6> -->
                 <a href="{{ url('/sistemas-jud-juizos') }}" class='collapse-item'>Juízos (outros sistemas)</a>
                 <a href="{{ url('/eselo-juizos') }}" class='collapse-item'>Juízos (e-Selo)</a>
                 <a href="{{ url('/eselo-comarcas') }}" class='collapse-item'>Comarcas (e-Selo)</a>
                 <a href="{{ url('/custas-configs') }}" class='collapse-item'>Configurações Sísifo DAJEs</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePecas" aria-expanded="true" aria-controls="collapsePecas">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Peças</span>
+        </a>
+        <div id="collapsePecas" class="collapse" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <!-- <h6 class="collapse-header">Custom Utilities:</h6> -->
+                <a href="{{ url('/sistemas-jud-juizos') }}" class='collapse-item'>Juízos (outros sistemas)</a>
+                <a href="{{ url('/eselo-juizos') }}" class='collapse-item'>Juízos (e-Selo)</a>
+                <a href="{{ url('/eselo-comarcas') }}" class='collapse-item'>Comarcas (e-Selo)</a>
+                <a href="{{ url('/custas-configs') }}" class='collapse-item'>Configurações Sísifo DAJEs</a>
+            </div>
+        </div>
+    </li>
+ --}}
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustas" aria-expanded="true" aria-controls="collapseCustas">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Custas</span>
+        </a>
+        <div id="collapseCustas" class="collapse" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <!-- <h6 class="collapse-header">Custom Utilities:</h6> -->
+                <a href="{{ url('/dajes') }}" class='collapse-item'>DAJEs gerados</a>
+                <a href="{{ url('/eselo-juizos') }}" class='collapse-item'>Juízos (e-Selo)</a>
+                <a href="{{ url('/eselo-comarcas') }}" class='collapse-item'>Comarcas (e-Selo)</a>
+                <a href="{{ url('/espaider-juizos') }}" class='collapse-item'>Juízos (Espaider)</a>
+                <a href="{{ url('/custas-configs') }}" class='collapse-item'>Configs Sísifo Custas</a>
             </div>
         </div>
     </li>
