@@ -7,8 +7,11 @@ use App\Models\BizRules\CustasConfig;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class DajesExport implements FromCollection, WithHeadings, WithColumnWidths
+class DajesExport implements FromCollection, WithHeadings,
+                 WithColumnWidths, WithStyles
 {
     protected $initialDate;
     protected $finalDate;
@@ -39,6 +42,12 @@ class DajesExport implements FromCollection, WithHeadings, WithColumnWidths
             'P' => 9, 'Q' => 9, 'R' => 65, 'S' => 9, 'T' => 9,
             'U' => 11, 'V' => 9, 'W' => 7, 'X' => 25, 'Y' => 15,
             'Z' => 50
+        ];
+    }
+
+    public function styles(Worksheet $sheet): array {
+        return [
+            1 => ['font' => ['bold' => true]]
         ];
     }
 
