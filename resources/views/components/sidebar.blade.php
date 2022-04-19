@@ -87,6 +87,7 @@
                 <a href="{{ url('/eselo-juizos') }}" class='collapse-item'>Juízos (e-Selo)</a>
                 <a href="{{ url('/eselo-comarcas') }}" class='collapse-item'>Comarcas (e-Selo)</a>
                 <a href="{{ url('/espaider-juizos') }}" class='collapse-item'>Juízos (Espaider)</a>
+                <a href="{{ url('/espaider-comarcas') }}" class='collapse-item'>Comarcas (Espaider)</a>
                 <a href="{{ url('/custas-configs') }}" class='collapse-item'>Configs Sísifo Custas</a>
             </div>
         </div>
