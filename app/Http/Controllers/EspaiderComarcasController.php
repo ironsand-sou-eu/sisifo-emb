@@ -69,7 +69,7 @@ class EspaiderComarcasController extends Controller
             'apiUrl' => url('/api/espaider-comarcas'),
             'displayFields' => [
                 0 => ['name' => 'nome_comarca_espaider', 'caption' => 'Comarca (Espaider)', 'inputType' => 'text', 'bootstrapColSize' => 6],
-                1 => ['name' => 'eselo_comarca_id', 'caption' => 'Comarca (e-Selo)', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider', 'bootstrapColSize' => 6],
+                1 => ['name' => 'espaider_uf_id', 'caption' => 'UF (Espaider)', 'inputType' => 'select', 'options' => $espaiderUfs, 'id' => 'sigla', 'value' => 'nome_uf_espaider', 'bootstrapColSize' => 6],
             ],
         ];
 
